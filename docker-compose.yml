@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xeye-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # OJO: al ser una SPA estas URL las usa el NAVEGADOR, no el contenedor —
+      # deben ser alcanzables desde fuera (localhost en dev, dominios públicos en prod).
+      - NUXT_PUBLIC_BACKEND_URL=${NUXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
+      - NUXT_PUBLIC_SEARCH_URL=${NUXT_PUBLIC_SEARCH_URL:-http://localhost:8002}
+    restart: unless-stopped
+    networks:
+      - xeye-network
+
+networks:
+  xeye-network:
+    external: true
+    name: xeye-network

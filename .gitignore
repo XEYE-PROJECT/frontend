@@ -1,0 +1,23 @@
+# Nuxt / Node
+node_modules
+*.log
+.nuxt
+.nitro
+.cache
+.output
+dist
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Metadatos Zone.Identifier de Windows/WSL
+*.Identifier
