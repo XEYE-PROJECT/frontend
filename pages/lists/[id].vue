@@ -82,6 +82,22 @@ async function launchTraining(model: string | null) {
   }
 }
 
+// Cambiar el entrenamiento en uso (solo los que cubren los elementos actuales de la lista).
+const switchingTrainingId = ref<number | null>(null)
+
+async function useTraining(trainingId: number) {
+  switchingTrainingId.value = trainingId
+  try {
+    await trainingsApi.use(trainingId)
+    toast.success(t('trainings.useSuccess'))
+    await refreshTrainings()
+  } catch (e) {
+    toast.error(apiErrorMessage(e, t))
+  } finally {
+    switchingTrainingId.value = null
+  }
+}
+
 // Elementos: filtro
 const elementFilter = ref('')
 const filteredElements = computed(() => {
@@ -354,7 +370,13 @@ async function confirmDeleteList() {
         />
 
         <div v-else class="space-y-3">
-          <TrainingsRow v-for="tr in historyTrainings" :key="tr.id" :training="tr" />
+          <TrainingsRow
+            v-for="tr in historyTrainings"
+            :key="tr.id"
+            :training="tr"
+            :switching="switchingTrainingId === tr.id"
+            @use="useTraining(tr.id)"
+          />
         </div>
       </section>
 

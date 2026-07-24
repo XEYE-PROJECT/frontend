@@ -216,6 +216,11 @@ export const es: Messages = {
     autoRefresh: 'Auto',
     active: 'Activo',
     inUse: 'En uso',
+    use: 'Usar',
+    useSuccess: 'Entrenamiento activado: la búsqueda ya usa su modelo',
+    notUsable: 'Elementos distintos',
+    notUsableHint:
+      'Solo se puede usar un entrenamiento con los mismos elementos que tiene ahora la lista.',
     model: 'Modelo',
     elements: 'Elementos',
     duration: 'Duración',

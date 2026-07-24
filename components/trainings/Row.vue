@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import type { Training } from '~/types/api'
 
-defineProps<{ training: Training }>()
+const props = defineProps<{ training: Training; switching?: boolean }>()
+
+const emit = defineEmits<{ use: [] }>()
 
 const { locale } = useI18n()
+
+// Elegible para "usar": lo calcula el backend (completado y con los mismos elementos que la lista).
+const canUse = computed(() => !props.training.inUse && props.training.usable === true)
+const notUsable = computed(
+  () =>
+    !props.training.inUse && props.training.status === 'completed' && props.training.usable === false,
+)
 </script>
 
 <template>
@@ -14,9 +23,24 @@ const { locale } = useI18n()
           <TrainingsStatusBadge :status="training.status" />
           <UiBadge v-if="training.inUse" variant="primary" dot>{{ $t('trainings.inUse') }}</UiBadge>
         </div>
-        <span class="text-xs text-subtle">
-          {{ $t('trainings.started', { date: formatRelative(training.createdAt, locale) }) }}
-        </span>
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="text-xs text-subtle">
+            {{ $t('trainings.started', { date: formatRelative(training.createdAt, locale) }) }}
+          </span>
+          <UiButton
+            v-if="canUse"
+            variant="subtle"
+            size="sm"
+            icon="check"
+            :loading="switching"
+            @click="emit('use')"
+          >
+            {{ $t('trainings.use') }}
+          </UiButton>
+          <span v-else-if="notUsable" class="text-xs text-subtle" :title="$t('trainings.notUsableHint')">
+            {{ $t('trainings.notUsable') }}
+          </span>
+        </div>
       </div>
 
       <dl class="grid grid-cols-1 gap-3 sm:grid-cols-3">

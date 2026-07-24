@@ -143,7 +143,6 @@ export interface Training {
   instanceId: string | null
   status: TrainingStatus
   options: TrainingOption[] | null
-  /** Elementos que embebió la ejecución (null hasta lanzar); compárese con el tamaño actual de la lista. */
   elementCount: number | null
   model: string | null
   time: TrainingTime | null
@@ -151,6 +150,7 @@ export interface Training {
   error: string | null
   inUse: boolean
   hasEmbeddings: boolean
+  usable: boolean | null
   createdAt: string
   updatedAt: string
 }

@@ -12,6 +12,8 @@ export function useTrainingsApi() {
     embeddingModels: () => $api<EmbeddingModels>('/trainings/embedding-models'),
     launch: (id: number, body: LaunchTrainingPayload) =>
       $api<Training>(`/trainings/${id}/launch`, { method: 'POST', body }),
+    /** Activa un entrenamiento completado como el modelo en uso (debe cubrir los elementos actuales). */
+    use: (id: number) => $api<Training>(`/trainings/${id}/use`, { method: 'POST' }),
     /** Reentrena la lista ya: reutiliza su entrenamiento pendiente o crea uno y lo lanza. */
     retrain: (listId: number, body: LaunchTrainingPayload) =>
       $api<Training>(`/lists/${listId}/trainings`, { method: 'POST', body }),
