@@ -14,20 +14,20 @@ const { data, pending } = useAsyncData(
   'search-setup',
   async () => {
     const [keys, lists] = await Promise.all([keysApi.all(), listsApi.all()])
-    return { keys, publicLists: lists.filter((l) => l.public) }
+    return { keys, lists }
   },
   { lazy: true },
 )
 
 const keys = computed(() => data.value?.keys ?? [])
-const publicLists = computed(() => data.value?.publicLists ?? [])
+const lists = computed(() => data.value?.lists ?? [])
 
 const hasKeys = computed(() => keys.value.length > 0)
-const hasPublicLists = computed(() => publicLists.value.length > 0)
-const canSearch = computed(() => hasKeys.value && hasPublicLists.value)
+const hasLists = computed(() => lists.value.length > 0)
+const canSearch = computed(() => hasKeys.value && hasLists.value)
 
 const keyOptions = computed(() => keys.value.map((k) => ({ value: k.apiKey, label: k.name })))
-const listOptions = computed(() => publicLists.value.map((l) => ({ value: l.name, label: l.name })))
+const listOptions = computed(() => lists.value.map((l) => ({ value: l.name, label: l.name })))
 const limitOptions = [
   { value: 10, label: '10' },
   { value: 20, label: '20' },
@@ -45,16 +45,16 @@ const loading = ref(false)
 const errorMsg = ref('')
 const result = ref<SearchResponse | null>(null)
 
-// Preselecciona la primera clave y lista pública al cargar, respetando ?list=<nombre>.
+// Preselecciona la primera clave y lista al cargar, respetando ?list=<nombre>.
 watch(
   data,
   (d) => {
     if (!d) return
     if (!form.key && d.keys.length) form.key = d.keys[0].apiKey
-    if (!form.list && d.publicLists.length) {
+    if (!form.list && d.lists.length) {
       const wanted = route.query.list as string | undefined
-      const match = wanted ? d.publicLists.find((l) => l.name === wanted) : undefined
-      form.list = match ? match.name : d.publicLists[0].name
+      const match = wanted ? d.lists.find((l) => l.name === wanted) : undefined
+      form.list = match ? match.name : d.lists[0].name
     }
   },
   { immediate: true },
@@ -116,10 +116,10 @@ async function run() {
           {{ $t('search.createKey') }}
         </NuxtLink>
       </UiAlert>
-      <UiAlert v-else-if="!hasPublicLists" variant="info" class="mb-4">
-        {{ $t('search.noPublicLists') }}
+      <UiAlert v-else-if="!hasLists" variant="info" class="mb-4">
+        {{ $t('search.noLists') }}
         <NuxtLink to="/lists" class="font-medium text-primary hover:underline">
-          {{ $t('search.makePublic') }}
+          {{ $t('search.createList') }}
         </NuxtLink>
       </UiAlert>
 

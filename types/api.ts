@@ -180,6 +180,7 @@ export interface SearchPayload {
   limit?: number
   session?: string | null
   register_log?: boolean
+  allow_private?: boolean
 }
 
 export interface SearchResultItem {
