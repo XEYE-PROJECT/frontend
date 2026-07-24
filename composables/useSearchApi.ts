@@ -12,7 +12,7 @@ export function useSearchApi() {
       baseURL: config.public.searchUrl,
       method: 'POST',
       headers: { 'X-API-Key': apiKey },
-      body: payload,
+      body: { register_log: false, ...payload },
     })
   }
 

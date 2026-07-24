@@ -179,6 +179,7 @@ export interface SearchPayload {
   search_term: string
   limit?: number
   session?: string | null
+  register_log?: boolean
 }
 
 export interface SearchResultItem {
