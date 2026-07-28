@@ -44,6 +44,7 @@ export const es: Messages = {
     lists: 'Listas',
     apiKeys: 'Claves API',
     search: 'Búsqueda',
+    docs: 'Documentación',
     account: 'Cuenta',
     logout: 'Cerrar sesión',
   },
@@ -311,6 +312,219 @@ export const es: Messages = {
     required: 'Este campo es obligatorio.',
     invalidEmail: 'Introduce un correo válido.',
     tooShort: 'Demasiado corto.',
+  },
+  docs: {
+    title: 'Documentación',
+    subtitle: 'Todo lo que necesitas para crear listas buscables y conectarlas a tu aplicación.',
+    stepLabel: 'Paso {n}',
+    recTitle: 'Recomendaciones',
+    nextLabel: 'Siguiente',
+    nav: {
+      intro: 'Introducción',
+      gettingStarted: 'Primeros pasos',
+      lists: 'Listas y elementos',
+      trainings: 'Entrenamientos',
+      api: 'Integración por API',
+      bestPractices: 'Recomendaciones y FAQ',
+    },
+    intro: {
+      whatTitle: '¿Qué es XEYE?',
+      whatP1:
+        'XEYE convierte tus listas de datos en un buscador inteligente. Creas una lista, le añades elementos y la entrenas: a partir de ahí puedes consultarla con búsqueda semántica y difusa desde esta consola o desde tus propias aplicaciones con una clave API.',
+      whatP2:
+        'La búsqueda es híbrida: combina coincidencia difusa de texto (tolera erratas y palabras parciales) con coincidencia semántica (entiende el significado: «auriculares inalámbricos» también encuentra «cascos Bluetooth»).',
+      conceptsTitle: 'Conceptos clave',
+      conceptList: 'Lista',
+      conceptListDesc:
+        'Una colección de elementos sobre la que se busca (productos, artículos, FAQs…). Cada lista se entrena y se consulta por separado.',
+      conceptElement: 'Elemento',
+      conceptElementDesc:
+        'Una entrada buscable: un texto, contexto opcional y una carga opcional que se devuelve con cada coincidencia.',
+      conceptTraining: 'Entrenamiento',
+      conceptTrainingDesc:
+        'El proceso que calcula los embeddings que hacen posible la búsqueda semántica. Lo lanzas tú cuando decides.',
+      conceptKey: 'Clave API',
+      conceptKeyDesc:
+        'La credencial con la que tus integraciones consultan tus listas públicas desde fuera de la consola.',
+      flowTitle: 'El flujo de un vistazo',
+      flow1: 'Crea una lista',
+      flow2: 'Añade elementos',
+      flow3: 'Entrénala',
+      flow4: 'Crea una clave API',
+      flow5: 'Busca',
+      waysTitle: 'Dos formas de usar XEYE',
+      wayConsoleTitle: 'La consola',
+      wayConsoleDesc:
+        'Esta aplicación web: gestiona listas, elementos, entrenamientos y claves, y prueba búsquedas sobre cualquiera de tus listas.',
+      wayApiTitle: 'La API de búsqueda',
+      wayApiDesc:
+        'Un único endpoint HTTP al que tus aplicaciones llaman con una clave API. Solo sirve tus listas públicas.',
+    },
+    start: {
+      intro:
+        'Esta guía te lleva de una cuenta vacía a tu primera búsqueda en unos cinco minutos.',
+      s1Title: 'Crea tu cuenta',
+      s1Step1: 'Regístrate con tu nombre, correo y una contraseña (mínimo 8 caracteres).',
+      s1Step2: 'Puedes actualizar tu perfil o credenciales cuando quieras desde la página Cuenta.',
+      s2Title: 'Crea una lista',
+      s2Step1: 'Ve a Listas y pulsa «Nueva lista».',
+      s2Step2:
+        'Dale un nombre y una descripción que explique qué contiene: el entrenamiento usa la descripción como contexto.',
+      s2Step3: 'Márcala como pública si piensas consultarla con una clave API.',
+      s3Title: 'Añade elementos',
+      s3Step1: 'Abre la lista y pulsa «Añadir elemento».',
+      s3Step2: 'Rellena el texto (contra lo que se compara cada búsqueda) y, a ser posible, una descripción.',
+      s3Step3: '¿Ya tienes los datos? Usa «Importar desde archivo» para cargar un JSON de una vez.',
+      s3Tip: 'En «Listas y elementos» tienes la anatomía de un buen elemento y el formato de importación.',
+      s4Title: 'Entrena la lista',
+      s4Step1: 'Abre la pestaña Entrenamientos: tus cambios han dejado ahí un entrenamiento pendiente.',
+      s4Step2: 'Elige un modelo de embeddings y pulsa «Entrenar».',
+      s4Step3: 'Espera a Completado: el entrenamiento queda «En uso» y la búsqueda semántica está activa.',
+      s4Tip: 'La búsqueda también funciona antes de entrenar, pero solo por texto. Entrenar añade comprensión del significado.',
+      s5Title: 'Crea una clave API',
+      s5Step1: 'Ve a Claves API y pulsa «Nueva clave».',
+      s5Step2: 'Etiquétala según dónde se vaya a usar (p. ej. «Producción»).',
+      s5Step3: 'Cópiala y guárdala en un lugar seguro: trátala como una contraseña.',
+      s6Title: 'Haz tu primera búsqueda',
+      s6Step1: 'Abre la página Búsqueda y elige tu clave y tu lista.',
+      s6Step2: 'Escribe una consulta: prueba una errata o un sinónimo para ver la coincidencia difusa y semántica en acción.',
+      s6Step3: 'Examina cada resultado: puntuación combinada, desglose y los parámetros del elemento.',
+      doneTitle: '¿Listo para integrar?',
+      doneDesc:
+        'La misma búsqueda que acabas de hacer está disponible para tus aplicaciones a través de un único endpoint HTTP.',
+      doneCta: 'Guía de integración por API',
+    },
+    lists: {
+      listsTitle: 'Listas',
+      listsP1:
+        'Una lista agrupa los elementos sobre los que se busca en conjunto. Mantén una lista por caso de uso (una para productos, otra para artículos de ayuda, otra para FAQs…): las búsquedas nunca mezclan listas.',
+      fName: 'Nombre',
+      fNameDesc:
+        'Cómo identificáis la lista tú y la API. La API busca por nombre de lista, así que elige uno estable y único.',
+      fDescription: 'Descripción',
+      fDescriptionDesc:
+        'De qué trata la lista. Se pasa al entrenamiento como contexto, así que una descripción precisa mejora los resultados semánticos.',
+      fVisibility: 'Visibilidad',
+      fVisibilityDesc:
+        'Las listas públicas se pueden consultar con una clave API. Las privadas solo se pueden buscar desde esta consola.',
+      elementsTitle: 'Elementos',
+      elementsP1: 'Un elemento es una entrada buscable. Tiene tres campos, cada uno con su función:',
+      fText: 'Texto',
+      fTextDesc:
+        'El contenido principal contra el que se comparan las consultas. Que sea la frase que tus usuarios buscarían de verdad.',
+      fDesc2: 'Descripción (opcional)',
+      fDesc2Desc:
+        'Contexto extra: sinónimos, características, otras formas de decirlo. Alimenta la coincidencia semántica, no el resultado visible.',
+      fParams: 'Parámetros (opcional)',
+      fParamsDesc:
+        'JSON o texto que se devuelve intacto con cada coincidencia: ids, URLs, precios… lo que tu aplicación necesite para pintar el resultado.',
+      exampleTitle: 'Un elemento bien formado',
+      exampleNote:
+        'El texto es lo que buscan los usuarios; la descripción aporta significado; los parámetros permiten a tu aplicación enlazar directamente al producto.',
+      importTitle: 'Importación masiva',
+      importP1:
+        'Desde la lista, «Importar desde archivo» acepta un archivo JSON con una lista de objetos. Solo «text» es obligatorio; «description» y «params» son opcionales.',
+      importNote:
+        'Importar añade los elementos y deja un único entrenamiento pendiente: lánzalo una sola vez al terminar.',
+      rec1: 'Textos cortos y específicos: un concepto por elemento funciona mejor que un elemento gigante con todo.',
+      rec2: 'Usa la descripción para sinónimos y contexto con los que buscarían tus usuarios, no para repetir el texto.',
+      rec3: 'Pon en los parámetros todo lo que tu aplicación necesita para pintar un resultado: la API los devuelve tal cual.',
+      rec4: 'Evita elementos casi duplicados: compiten entre sí y ensucian los resultados.',
+    },
+    trainings: {
+      p1:
+        'Entrenar calcula un embedding (una representación numérica del significado) para cada elemento de la lista: eso es lo que hace posible la búsqueda semántica. Editar elementos nunca lanza nada por sí solo: deja un entrenamiento pendiente y tú decides cuándo lanzarlo.',
+      lifecycleTitle: 'Ciclo de vida de un entrenamiento',
+      lifecycleP1:
+        'Cada lista tiene como mucho un entrenamiento pendiente. Al lanzarlo, pasa por estos estados:',
+      stPendingDesc: 'La lista cambió desde el último entrenamiento. Espera a que lo lances.',
+      stQueuedDesc: 'Lanzado: se está arrancando un worker dedicado para esta ejecución.',
+      stTrainingDesc: 'El worker está calculando embeddings y enriqueciendo elementos. Suele tardar unos minutos.',
+      stCompletedDesc: 'Terminado: el entrenamiento queda «En uso» y las búsquedas usan su modelo de inmediato.',
+      stFailedDesc: 'Algo salió mal. El error se muestra en el entrenamiento y puedes lanzarlo de nuevo.',
+      modelsTitle: 'Modelos de embeddings',
+      modelsP1:
+        'Cada lanzamiento usa el modelo de embeddings que elijas. Los modelos intercambian calidad por velocidad: los grandes captan mejor los matices, pero tardan más en entrenar y responden algo más lento.',
+      modelsP2:
+        'Puedes entrenar la misma lista con varios modelos y compararlos desde la página Búsqueda antes de decidir cuál queda en uso.',
+      inUseTitle: 'El entrenamiento «en uso»',
+      inUseP1:
+        'El entrenamiento marcado «En uso» es el que responde a las búsquedas de la lista. Al completarse un entrenamiento pasa a estar en uso automáticamente.',
+      inUseP2:
+        'Puedes volver a un entrenamiento completado anterior con «Usar», siempre que cubra exactamente los elementos que la lista tiene ahora. Si los elementos han cambiado, reentrena.',
+      limitsTitle: 'Límites',
+      limit1:
+        'Una ejecución por lista: una lista con un entrenamiento en marcha no puede lanzar otro hasta que termine o falle.',
+      limit2:
+        'Límite global de la plataforma: cada ejecución reserva cómputo real, así que el número de entrenamientos simultáneos está limitado. Si un lanzamiento se rechaza, reintenta cuando quede un hueco libre.',
+      rec1: 'Agrupa tus cambios: termina de añadir y editar elementos y entrena una vez, no tras cada cambio.',
+      rec2: 'Los elementos añadidos después de un entrenamiento puntúan solo por texto hasta el siguiente; reentrena tras cambios sustanciales.',
+      rec3: 'Compara modelos con consultas reales desde la página Búsqueda antes de quedarte con uno.',
+      rec4: 'Un entrenamiento fallido libera su hueco: revisa el error, corrige la causa si la hay y lánzalo de nuevo.',
+    },
+    api: {
+      keysTitle: 'Claves API',
+      keysP1:
+        'Las claves API autentican las llamadas a la API de búsqueda. Créalas desde la página Claves API, etiquétalas según dónde se usan y rótalas creando una nueva y borrando la antigua.',
+      keysWarning:
+        'Cualquiera con una clave puede buscar en todas tus listas públicas. Guarda las claves en tu servidor: nunca las incluyas en código frontend ni en apps móviles.',
+      endpointTitle: 'El endpoint de búsqueda',
+      endpointP1:
+        'La búsqueda es una única llamada HTTP, autenticada con la cabecera X-API-Key. Solo sirve listas públicas.',
+      paramsTitle: 'Cuerpo de la petición',
+      pListNameDesc: 'Nombre de la lista (pública) donde buscar, exactamente como aparece en la consola.',
+      pSearchTermDesc:
+        'La consulta del usuario. Las erratas y palabras parciales no son problema: la coincidencia es difusa y semántica.',
+      pLimitDesc: 'Opcional. Número máximo de resultados a devolver.',
+      responseTitle: 'La respuesta',
+      responseP1:
+        'Los resultados vienen ordenados por puntuación (0–1, cuanto más alta mejor). Cada uno incluye el texto del elemento («item»), sus parámetros intactos y, opcionalmente, el desglose de puntuación texto/semántica.',
+      errorsTitle: 'Errores habituales',
+      errCode: 'Código',
+      errMeaning: 'Significado',
+      errFix: 'Qué hacer',
+      err401: 'Clave API inválida o revocada.',
+      err401Fix: 'Revisa la clave o crea una nueva.',
+      err403: 'La lista no es pública.',
+      err403Fix: 'Haz la lista pública desde sus ajustes.',
+      err404: 'No hay ninguna lista con ese nombre para esta clave.',
+      err404Fix: 'Revisa list_name: debe coincidir exactamente con el nombre de la lista.',
+      err429: 'Límite de peticiones superado (60 peticiones/min por clave).',
+      err429Fix: 'Reduce el ritmo o reintenta en un momento.',
+      rec1: 'Llama a la API desde tu backend y guarda la clave en una variable de entorno, no en código cliente.',
+      rec2: 'Usa una clave por entorno o integración: así puedes revocar una sin romper el resto.',
+      rec3: 'Controla el 429 con un pequeño reintento/backoff: el límite es por clave y por minuto.',
+    },
+    best: {
+      contentTitle: 'Escribir buenos elementos',
+      content1: 'Escribe los textos como buscan tus usuarios, no como nombra las cosas tu base de datos.',
+      content2:
+        'Dale a cada elemento una descripción con sinónimos y contexto: es la mejora semántica más barata que existe.',
+      content3:
+        'Prueba con consultas reales de usuario: una errata y un sinónimo te dicen más que una coincidencia perfecta.',
+      workflowTitle: 'Trabajar con eficiencia',
+      workflow1: 'Importa en bloque, edita por lotes y entrena una sola vez al final.',
+      workflow2: 'Prueba primero en la página Búsqueda de la consola; integra por API cuando los resultados encajen.',
+      workflow3: 'Prueba dos o tres modelos de embeddings con consultas reales antes de elegir el que queda en uso.',
+      securityTitle: 'Seguridad',
+      security1:
+        'Trata las claves API como contraseñas: solo en el servidor, una por integración, y borra las que no uses.',
+      security2: 'Mantén las listas privadas hasta que estén listas para exponerse a través de la API.',
+      security3: 'Eliminar una lista, una clave o tu cuenta es permanente: no se puede deshacer.',
+      faqTitle: 'Preguntas frecuentes',
+      q1: '¿Por qué mi lista no devuelve nada a través de la API?',
+      a1: 'Comprueba tres cosas: que la lista es pública, que la clave es válida y que list_name coincide exactamente con el nombre de la lista. Las listas privadas solo se pueden buscar desde la consola.',
+      q2: '¿Editar elementos rompe la búsqueda?',
+      a2: 'No. Las búsquedas siguen usando el último entrenamiento en uso. Los elementos añadidos después de ese entrenamiento coinciden solo por texto hasta que reentrenes; los borrados dejan de aparecer al momento.',
+      q3: '¿Cada cuánto debo reentrenar?',
+      a3: 'Cuando el contenido haya cambiado lo suficiente: después de añadir un lote de elementos o de reescribir textos y descripciones. No hace falta reentrenar tras cada pequeño cambio.',
+      q4: '¿Qué modelo de embeddings elijo?',
+      a4: 'Empieza con el modelo por defecto. Si a los resultados les faltan matices, entrena con un modelo más grande y compara con las mismas consultas desde la página Búsqueda; deja «en uso» el que gane.',
+      q5: '¿Puedo buscar listas privadas desde mi aplicación?',
+      a5: 'No. La API pública solo sirve listas públicas. La consola puede buscar en todas tus listas, lo que resulta útil para preparar una lista antes de hacerla pública.',
+      q6: '¿Qué pasa si borro una clave API?',
+      a6: 'Toda integración que la use deja de funcionar de inmediato con un error 401. Crea antes la clave nueva, cambia tus integraciones y borra después la antigua.',
+    },
   },
   notFound: {
     title: 'Página no encontrada',

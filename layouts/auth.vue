@@ -1,6 +1,9 @@
 <template>
   <div class="relative min-h-screen bg-bg lg:grid lg:grid-cols-2">
     <div class="absolute top-4 right-4 z-10 flex items-center gap-1">
+      <UiButton variant="ghost" size="sm" icon="book-open" to="/docs">
+        {{ $t('nav.docs') }}
+      </UiButton>
       <UiThemeToggle />
       <UiLangSwitcher />
     </div>

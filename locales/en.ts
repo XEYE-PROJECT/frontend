@@ -43,6 +43,7 @@ export const en = {
     lists: 'Lists',
     apiKeys: 'API keys',
     search: 'Search',
+    docs: 'Documentation',
     account: 'Account',
     logout: 'Sign out',
   },
@@ -308,6 +309,219 @@ export const en = {
     required: 'This field is required.',
     invalidEmail: 'Enter a valid email.',
     tooShort: 'Too short.',
+  },
+  docs: {
+    title: 'Documentation',
+    subtitle: 'Everything you need to build searchable lists and plug them into your app.',
+    stepLabel: 'Step {n}',
+    recTitle: 'Recommendations',
+    nextLabel: 'Next',
+    nav: {
+      intro: 'Introduction',
+      gettingStarted: 'Getting started',
+      lists: 'Lists & elements',
+      trainings: 'Trainings',
+      api: 'API integration',
+      bestPractices: 'Best practices & FAQ',
+    },
+    intro: {
+      whatTitle: 'What is XEYE?',
+      whatP1:
+        'XEYE turns your lists of data into a smart search engine. You create a list, add elements and train it — from then on you can query it with semantic and fuzzy search from this console or from your own applications using an API key.',
+      whatP2:
+        'Search is hybrid: it combines fuzzy text matching (tolerant of typos and partial words) with semantic matching (it understands meaning, so "wireless headphones" also finds "Bluetooth earbuds").',
+      conceptsTitle: 'Key concepts',
+      conceptList: 'List',
+      conceptListDesc:
+        'A collection of elements you search over (products, articles, FAQs…). Each list is trained and queried on its own.',
+      conceptElement: 'Element',
+      conceptElementDesc:
+        'One searchable entry: a text, optional context and an optional payload returned with every match.',
+      conceptTraining: 'Training',
+      conceptTrainingDesc:
+        'The process that computes the embeddings powering semantic search. You launch it when you decide.',
+      conceptKey: 'API key',
+      conceptKeyDesc:
+        'The credential your integrations use to query your public lists from outside the console.',
+      flowTitle: 'The flow at a glance',
+      flow1: 'Create a list',
+      flow2: 'Add elements',
+      flow3: 'Train it',
+      flow4: 'Create an API key',
+      flow5: 'Search',
+      waysTitle: 'Two ways to use XEYE',
+      wayConsoleTitle: 'The console',
+      wayConsoleDesc:
+        'This web app: manage lists, elements, trainings and keys, and test searches against any of your lists.',
+      wayApiTitle: 'The search API',
+      wayApiDesc:
+        'A single HTTP endpoint your applications call with an API key. It serves your public lists only.',
+    },
+    start: {
+      intro:
+        'This guide takes you from an empty account to your first search in about five minutes.',
+      s1Title: 'Create your account',
+      s1Step1: 'Register with your name, email and a password (minimum 8 characters).',
+      s1Step2: 'You can update your profile or credentials at any time from the Account page.',
+      s2Title: 'Create a list',
+      s2Step1: 'Go to Lists and click "New list".',
+      s2Step2:
+        'Give it a name and a description that explains what it contains — training uses the description as context.',
+      s2Step3: 'Mark it as public if you plan to query it with an API key.',
+      s3Title: 'Add elements',
+      s3Step1: 'Open the list and click "Add element".',
+      s3Step2: 'Fill in the text (what searches match against) and, ideally, a description.',
+      s3Step3: 'Already have the data? Use "Import from file" to load a JSON file in one go.',
+      s3Tip: 'See "Lists & elements" for the anatomy of a good element and the import format.',
+      s4Title: 'Train the list',
+      s4Step1: 'Open the Trainings tab — your edits have left a pending training there.',
+      s4Step2: 'Pick an embedding model and click "Train".',
+      s4Step3: 'Wait for Completed: the training becomes "In use" and semantic search is live.',
+      s4Tip: 'Searches work before training too, but text-only. Training adds understanding of meaning.',
+      s5Title: 'Create an API key',
+      s5Step1: 'Go to API keys and click "New key".',
+      s5Step2: 'Label it after where it will be used (e.g. "Production").',
+      s5Step3: 'Copy it and store it somewhere safe — treat it like a password.',
+      s6Title: 'Run your first search',
+      s6Step1: 'Open the Search page, pick your key and your list.',
+      s6Step2: 'Type a query — try a typo or a synonym to see fuzzy and semantic matching at work.',
+      s6Step3: 'Inspect each result: combined score, score breakdown and the element params.',
+      doneTitle: 'Ready to integrate?',
+      doneDesc:
+        'The same search you just ran is available to your applications through one HTTP endpoint.',
+      doneCta: 'API integration guide',
+    },
+    lists: {
+      listsTitle: 'Lists',
+      listsP1:
+        'A list groups the elements that are searched together. Keep one list per use case — one for products, one for help articles, one for FAQs — because searches never mix lists.',
+      fName: 'Name',
+      fNameDesc:
+        'How you and the API identify the list. The API searches by list name, so pick a stable, unique one.',
+      fDescription: 'Description',
+      fDescriptionDesc:
+        'What the list is about. It is passed to training as context, so an accurate description improves semantic results.',
+      fVisibility: 'Visibility',
+      fVisibilityDesc:
+        'Public lists can be queried with an API key. Private lists are only searchable from this console.',
+      elementsTitle: 'Elements',
+      elementsP1: 'An element is one searchable entry. It has three fields, each with a distinct job:',
+      fText: 'Text',
+      fTextDesc:
+        'The main content queries are matched against. Make it the phrase your users would actually search for.',
+      fDesc2: 'Description (optional)',
+      fDesc2Desc:
+        'Extra context: synonyms, features, alternative wording. It feeds semantic matching, not the visible result.',
+      fParams: 'Params (optional)',
+      fParamsDesc:
+        'JSON or plain text returned untouched with every match — ids, URLs, prices… whatever your app needs to render the result.',
+      exampleTitle: 'A well-formed element',
+      exampleNote:
+        'The text is what users search for; the description adds meaning; the params let your app link straight to the product.',
+      importTitle: 'Bulk import',
+      importP1:
+        'From the list, "Import from file" accepts a JSON file containing an array of objects. Only "text" is required; "description" and "params" are optional.',
+      importNote:
+        'Importing adds the elements and leaves a single pending training — launch it once at the end.',
+      rec1: 'Keep texts short and specific: one concept per element beats one giant element with everything.',
+      rec2: 'Use the description for synonyms and context your users might search with, not for repeating the text.',
+      rec3: 'Put everything your app needs to render a result in params — the API returns them as-is with each match.',
+      rec4: 'Avoid near-duplicate elements: they compete against each other and clutter results.',
+    },
+    trainings: {
+      p1:
+        'Training computes an embedding (a numeric representation of meaning) for every element in the list — that is what makes semantic search possible. Editing elements never launches anything by itself: it leaves one pending training and you decide when to launch it.',
+      lifecycleTitle: 'Lifecycle of a training',
+      lifecycleP1:
+        'Every list has at most one pending training. When you launch it, it moves through these states:',
+      stPendingDesc: 'The list changed since the last training. Waiting for you to launch it.',
+      stQueuedDesc: 'Launched: a dedicated worker is being started for this run.',
+      stTrainingDesc: 'The worker is computing embeddings and enriching elements. Usually a few minutes.',
+      stCompletedDesc: 'Done: the training becomes "In use" and searches use its model immediately.',
+      stFailedDesc: 'Something went wrong. The error is shown on the training and you can launch again.',
+      modelsTitle: 'Embedding models',
+      modelsP1:
+        'Each launch uses the embedding model you pick. Models trade quality for speed: larger ones understand nuance better but take longer to train and answer slightly slower.',
+      modelsP2:
+        'You can train the same list with several models and compare them from the Search page before deciding which one stays in use.',
+      inUseTitle: 'The training "in use"',
+      inUseP1:
+        'The training marked "In use" is the one answering searches for the list. Completing a training puts it in use automatically.',
+      inUseP2:
+        'You can switch back to a previous completed training with "Use" — as long as it covers exactly the elements the list has now. If elements changed since, retrain instead.',
+      limitsTitle: 'Limits',
+      limit1:
+        'One run per list: a list with a training in progress cannot launch another until it finishes or fails.',
+      limit2:
+        'Platform-wide cap: each run reserves real compute, so the number of simultaneous trainings is limited. If a launch is rejected, retry when a slot frees up.',
+      rec1: 'Batch your edits: finish adding and editing elements, then train once — not after every change.',
+      rec2: 'Elements added after a training score by text only until the next retrain; retrain after substantial changes.',
+      rec3: 'Compare models with real queries from the Search page before settling on one.',
+      rec4: 'A failed training frees its slot — check the error, fix the cause if any, and launch again.',
+    },
+    api: {
+      keysTitle: 'API keys',
+      keysP1:
+        'API keys authenticate calls to the search API. Create them from the API keys page, label them after where they are used, and rotate them by creating a new one and deleting the old.',
+      keysWarning:
+        'Anyone with a key can search all your public lists. Keep keys on your server — never ship them in frontend code or mobile apps.',
+      endpointTitle: 'The search endpoint',
+      endpointP1:
+        'Search is a single HTTP call, authenticated with the X-API-Key header. It only serves public lists.',
+      paramsTitle: 'Request body',
+      pListNameDesc: 'Name of the (public) list to search, exactly as it appears in the console.',
+      pSearchTermDesc:
+        'The user query. Typos and partial words are fine — matching is fuzzy and semantic.',
+      pLimitDesc: 'Optional. Maximum number of results to return.',
+      responseTitle: 'The response',
+      responseP1:
+        'Results come sorted by score (0–1, higher is better). Each one carries the element text ("item"), its params untouched, and optionally the text/semantic score breakdown.',
+      errorsTitle: 'Common errors',
+      errCode: 'Code',
+      errMeaning: 'Meaning',
+      errFix: 'What to do',
+      err401: 'Invalid or revoked API key.',
+      err401Fix: 'Check the key or create a new one.',
+      err403: 'The list is not public.',
+      err403Fix: 'Make the list public from its settings.',
+      err404: 'No list with that name for this key.',
+      err404Fix: 'Check list_name — it must match the list name exactly.',
+      err429: 'Rate limit exceeded (60 requests/min per key).',
+      err429Fix: 'Slow down or retry after a moment.',
+      rec1: 'Call the API from your backend and keep the key in an environment variable, not in client code.',
+      rec2: 'Use one key per environment or integration, so you can revoke one without breaking the rest.',
+      rec3: 'Handle 429 with a small retry/backoff — the limit is per key, per minute.',
+    },
+    best: {
+      contentTitle: 'Writing good elements',
+      content1: 'Write texts the way your users search, not the way your database names things.',
+      content2:
+        'Give every element a description with synonyms and context — it is the cheapest semantic boost available.',
+      content3:
+        'Test with real user queries: a typo and a synonym tell you more than a perfect match.',
+      workflowTitle: 'Working efficiently',
+      workflow1: 'Import in bulk, edit in batches, train once at the end.',
+      workflow2: 'Test in the console Search page first; integrate via API when results look right.',
+      workflow3: 'Try two or three embedding models on real queries before choosing the one in use.',
+      securityTitle: 'Security',
+      security1:
+        'Treat API keys like passwords: server-side only, one per integration, delete unused ones.',
+      security2: 'Keep lists private until they are ready to be exposed through the API.',
+      security3: 'Deleting a list, a key or your account is permanent — there is no undo.',
+      faqTitle: 'Frequently asked questions',
+      q1: 'Why does my list return nothing through the API?',
+      a1: 'Check three things: the list is public, the key is valid, and list_name matches the list name exactly. Private lists are only searchable from the console.',
+      q2: 'Does editing elements break search?',
+      a2: 'No. Searches keep using the last training in use. Elements added after that training match by text only until you retrain; deleted elements stop appearing immediately.',
+      q3: 'How often should I retrain?',
+      a3: 'Whenever the content has changed enough to matter — after adding a batch of elements or rewriting texts and descriptions. There is no need to retrain after every small edit.',
+      q4: 'Which embedding model should I pick?',
+      a4: 'Start with the default one. If results miss nuance, train with a larger model and compare using the same queries from the Search page; keep whichever wins as "in use".',
+      q5: 'Can I search private lists from my app?',
+      a5: 'No. The public API only serves public lists. The console can search all your lists, which is useful while preparing a list before making it public.',
+      q6: 'What happens if I delete an API key?',
+      a6: 'Every integration using it stops working immediately with a 401 error. Create the new key first, switch your integrations over, then delete the old one.',
+    },
   },
   notFound: {
     title: 'Page not found',

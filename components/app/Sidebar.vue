@@ -8,6 +8,7 @@ const nav = computed(() => [
   { to: '/lists', icon: 'list', label: t('nav.lists') },
   { to: '/api-keys', icon: 'key', label: t('nav.apiKeys') },
   { to: '/search', icon: 'search', label: t('nav.search') },
+  { to: '/docs', icon: 'book-open', label: t('nav.docs') },
   { to: '/account', icon: 'user', label: t('nav.account') },
 ])
 
