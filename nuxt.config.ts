@@ -33,6 +33,22 @@ export default defineNuxtConfig({
     },
   },
 
+  // URLs de producción: viajan dentro del wrangler.json que Nitro genera en el build de
+  // Cloudflare Workers, así cada deploy las re-aplica. No configurarlas a mano en el
+  // dashboard: `wrangler deploy` ELIMINA las variables de texto añadidas por dashboard
+  // en cada push (por eso el frontend volvió a apuntar a localhost el 2026-07-28).
+  // Solo afecta al deploy en Workers; `nuxt dev` y builds locales las ignoran.
+  nitro: {
+    cloudflare: {
+      wrangler: {
+        vars: {
+          NUXT_PUBLIC_BACKEND_URL: 'https://backend.xeye.es',
+          NUXT_PUBLIC_SEARCH_URL: 'https://search.xeye.es',
+        },
+      },
+    },
+  },
+
   app: {
     head: {
       title: 'XEYE',
