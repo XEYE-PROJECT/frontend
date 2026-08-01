@@ -23,11 +23,6 @@ const emit = defineEmits<{ edit: []; delete: [] }>()
           {{ element.description }}
         </p>
 
-        <div v-if="element.generatedDescription" class="space-y-0.5">
-          <p class="text-xs font-medium text-subtle">{{ $t('elements.generatedLabel') }}</p>
-          <p class="line-clamp-2 text-sm text-muted">{{ element.generatedDescription }}</p>
-        </div>
-
         <pre
           v-if="element.params"
           class="max-h-40 overflow-x-auto overflow-y-auto rounded-lg bg-surface-2 p-2 font-mono text-xs text-muted"

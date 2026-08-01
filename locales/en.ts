@@ -163,7 +163,6 @@ export const en = {
     fieldParamsInvalid: 'Params is not valid JSON (it will be stored as plain text).',
     fieldDescription: 'Description',
     fieldDescriptionPlaceholder: 'Optional context to improve matching',
-    generatedLabel: 'Generated description',
     trained: 'Trained',
     untrained: 'Pending training',
     deleteTitle: 'Delete element',

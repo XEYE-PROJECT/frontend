@@ -164,7 +164,6 @@ export const es: Messages = {
     fieldParamsInvalid: 'Los parámetros no son JSON válido (se guardarán como texto plano).',
     fieldDescription: 'Descripción',
     fieldDescriptionPlaceholder: 'Contexto opcional para mejorar la coincidencia',
-    generatedLabel: 'Descripción generada',
     trained: 'Entrenado',
     untrained: 'Pendiente de entrenar',
     deleteTitle: 'Eliminar elemento',
