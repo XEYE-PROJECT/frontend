@@ -40,6 +40,19 @@ const { data: embeddingModels } = useAsyncData(
   { lazy: true, default: () => ({ models: [] as string[], defaultModel: null }) },
 )
 
+// Regenerar todas las descripciones IA al entrenar (ignora la caché): lo marca el usuario
+// en la caja de lanzamiento y encarece la estimación (todas las descripciones cuentan).
+const regenerateDescriptions = ref(false)
+
+// Precio preestablecido de lanzar ahora; depende de qué elementos tienen ya descripción
+// cacheada, así que se recalcula cada vez que se recargan los elementos (el watch salta
+// con cada refreshElements: tras editar, importar o lanzar) o cambia el check de regenerar.
+const { data: costEstimate } = useAsyncData(
+  'list-training-estimate-' + id,
+  () => trainingsApi.estimate(id, regenerateDescriptions.value),
+  { lazy: true, watch: [elements, regenerateDescriptions] },
+)
+
 useHead({ title: () => `${list.value?.name ?? t('listDetail.tabElements')} · XEYE` })
 
 const tab = ref('elements')
@@ -67,13 +80,19 @@ const launching = ref(false)
 async function launchTraining(model: string | null) {
   launching.value = true
   try {
-    const result = await trainingsApi.retrain(id, { embeddingModel: model })
+    const result = await trainingsApi.retrain(id, {
+      embeddingModel: model,
+      regenerateDescriptions: regenerateDescriptions.value,
+    })
     if (result.status === 'failed') {
       toast.error(result.error ?? t('trainings.launchFailed'))
     } else {
       toast.success(t('trainings.launched'))
+      // Regenerar es una decisión por lanzamiento: se desmarca para el siguiente.
+      regenerateDescriptions.value = false
     }
-    // El lanzamiento marca todos los elementos como no entrenados: cambian ambas vistas.
+    // El lanzamiento marca todos los elementos como no entrenados: cambian ambas vistas
+    // (y el refresco de elementos re-dispara la estimación de precio vía su watch).
     await Promise.all([refreshTrainings(), refreshElements()])
   } catch (e) {
     toast.error(apiErrorMessage(e, t))
@@ -351,10 +370,12 @@ async function confirmDeleteList() {
         </div>
 
         <TrainingsLaunchCard
+          v-model:regenerate="regenerateDescriptions"
           :pending="!!pendingTraining"
           :models="embeddingModels.models"
           :default-model="embeddingModels.defaultModel"
           :launching="launching"
+          :estimate="costEstimate"
           @launch="launchTraining"
         />
 

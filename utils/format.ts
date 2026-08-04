@@ -54,12 +54,12 @@ export function formatNumber(value: number, locale: Locale): string {
   return new Intl.NumberFormat(localeTag[locale]).format(value)
 }
 
-/** Coste en USD con hasta 4 decimales; "—" si es null. */
+/** Coste en euros con hasta 4 decimales; "—" si es null. */
 export function formatCost(value: number | null | undefined, locale: Locale): string {
   if (value == null) return '—'
   return new Intl.NumberFormat(localeTag[locale], {
     style: 'currency',
-    currency: 'USD',
+    currency: 'EUR',
     maximumFractionDigits: 4,
   }).format(value)
 }

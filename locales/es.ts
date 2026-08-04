@@ -223,7 +223,16 @@ export const es: Messages = {
       'Solo se puede usar un entrenamiento con los mismos elementos que tiene ahora la lista.',
     model: 'Modelo',
     elements: 'Elementos',
+    describedCount: '{n} con descripción IA',
+    describedHint:
+      'La IA falló al describir algunos elementos: se entrenaron con su texto tal cual y el próximo entrenamiento lo reintentará (solo se cobra lo generado).',
     duration: 'Duración',
+    cost: 'Precio',
+    estimatedPrice: 'Precio estimado: {price}',
+    estimatedDescriptions: '{n} descripciones nuevas a generar',
+    regenerateLabel: 'Regenerar todas las descripciones',
+    regenerateHint:
+      'Vuelve a generar las descripciones IA de todos los elementos, no solo de los editados. Encarece el entrenamiento.',
     started: 'Iniciado {date}',
     pendingTitle: 'Entrenamiento pendiente',
     pendingDesc:

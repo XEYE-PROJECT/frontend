@@ -13,6 +13,14 @@ const notUsable = computed(
   () =>
     !props.training.inUse && props.training.status === 'completed' && props.training.usable === false,
 )
+
+// El LLM puede fallar en algún elemento (se entrena con su texto en crudo): avisar si pasó.
+const partialDescriptions = computed(
+  () =>
+    props.training.describedCount != null &&
+    props.training.elementCount != null &&
+    props.training.describedCount < props.training.elementCount,
+)
 </script>
 
 <template>
@@ -43,7 +51,7 @@ const notUsable = computed(
         </div>
       </div>
 
-      <dl class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <dl class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div class="min-w-0">
           <dt class="text-xs text-subtle">{{ $t('trainings.model') }}</dt>
           <dd class="mt-0.5 truncate text-sm font-medium text-fg">
@@ -54,6 +62,14 @@ const notUsable = computed(
           <dt class="text-xs text-subtle">{{ $t('trainings.elements') }}</dt>
           <dd class="mt-0.5 text-sm font-medium text-fg">
             {{ training.elementCount ?? '—' }}
+            <span
+              v-if="training.describedCount != null"
+              class="font-normal"
+              :class="partialDescriptions ? 'text-warning' : 'text-subtle'"
+              :title="partialDescriptions ? $t('trainings.describedHint') : undefined"
+            >
+              · {{ $t('trainings.describedCount', { n: training.describedCount }) }}
+            </span>
           </dd>
         </div>
         <div class="min-w-0">
@@ -64,6 +80,12 @@ const notUsable = computed(
                 ? $t('trainings.seconds', { n: training.time.totalSeconds })
                 : '—'
             }}
+          </dd>
+        </div>
+        <div class="min-w-0">
+          <dt class="text-xs text-subtle">{{ $t('trainings.cost') }}</dt>
+          <dd class="mt-0.5 text-sm font-medium text-fg">
+            {{ formatCost(training.cost?.total, locale) }}
           </dd>
         </div>
       </dl>

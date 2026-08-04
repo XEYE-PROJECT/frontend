@@ -133,7 +133,19 @@ export interface TrainingTime {
 
 export interface TrainingCost {
   runpod: number | null
+  /** Precio fijo por entrenamiento (null en entrenamientos anteriores al cambio). */
+  fixed: number | null
+  /** Precio por descripciones generadas: n.º planificado x tarifa del LLM. */
+  enrichment: number | null
   total: number | null
+}
+
+/** Precio preestablecido de lanzar un entrenamiento ahora: fijo + descripciones a generar. */
+export interface TrainingCostEstimate {
+  descriptionsToGenerate: number
+  fixed: number
+  enrichment: number
+  total: number
 }
 
 export interface Training {
@@ -144,6 +156,8 @@ export interface Training {
   status: TrainingStatus
   options: TrainingOption[] | null
   elementCount: number | null
+  /** Elementos con descripción IA al calcular los embeddings (null en entrenamientos antiguos). */
+  describedCount: number | null
   model: string | null
   time: TrainingTime | null
   cost: TrainingCost | null
@@ -162,6 +176,8 @@ export interface EmbeddingModels {
 
 export interface LaunchTrainingPayload {
   embeddingModel: string | null
+  /** true = el worker regenera las descripciones IA de todos los elementos, ignorando la caché. */
+  regenerateDescriptions?: boolean
 }
 
 // Backend: sobre de error

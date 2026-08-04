@@ -1,4 +1,9 @@
-import type { EmbeddingModels, LaunchTrainingPayload, Training } from '~/types/api'
+import type {
+  EmbeddingModels,
+  LaunchTrainingPayload,
+  Training,
+  TrainingCostEstimate,
+} from '~/types/api'
 
 /** Endpoints de entrenamientos: historial por lista, pendientes y lanzamiento manual. */
 export function useTrainingsApi() {
@@ -17,5 +22,10 @@ export function useTrainingsApi() {
     /** Reentrena la lista ya: reutiliza su entrenamiento pendiente o crea uno y lo lanza. */
     retrain: (listId: number, body: LaunchTrainingPayload) =>
       $api<Training>(`/lists/${listId}/trainings`, { method: 'POST', body }),
+    /** Precio preestablecido de lanzar un entrenamiento de la lista ahora mismo. */
+    estimate: (listId: number, regenerateDescriptions = false) =>
+      $api<TrainingCostEstimate>(`/lists/${listId}/trainings/estimate`, {
+        query: { regenerateDescriptions },
+      }),
   }
 }

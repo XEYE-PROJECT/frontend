@@ -220,7 +220,16 @@ export const en = {
     notUsableHint: 'Only a training with the same elements the list has now can be put in use.',
     model: 'Model',
     elements: 'Elements',
+    describedCount: '{n} with AI description',
+    describedHint:
+      'The AI failed to describe some elements: they were trained with their raw text and the next training will retry them (only what was generated is charged).',
     duration: 'Duration',
+    cost: 'Price',
+    estimatedPrice: 'Estimated price: {price}',
+    estimatedDescriptions: '{n} new descriptions to generate',
+    regenerateLabel: 'Regenerate all descriptions',
+    regenerateHint:
+      'Generates the AI descriptions of every element again, not just the edited ones. Increases the training price.',
     started: 'Started {date}',
     pendingTitle: 'Training pending',
     pendingDesc:
