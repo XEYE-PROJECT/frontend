@@ -233,6 +233,11 @@ export const es: Messages = {
     regenerateLabel: 'Regenerar todas las descripciones',
     regenerateHint:
       'Vuelve a generar las descripciones IA de todos los elementos, no solo de los editados. Encarece el entrenamiento.',
+    noDescriptionsLabel: 'No usar descripciones',
+    noDescriptionsHint:
+      'Entrena solo con el texto y la descripción escrita de cada elemento: no se generan ni se usan descripciones IA. Más rápido y barato.',
+    noAiDescriptionsHint:
+      'Este entrenamiento se lanzó sin descripciones IA: solo se embebió el texto y la descripción escrita de cada elemento.',
     started: 'Iniciado {date}',
     pendingTitle: 'Entrenamiento pendiente',
     pendingDesc:

@@ -14,9 +14,13 @@ const notUsable = computed(
     !props.training.inUse && props.training.status === 'completed' && props.training.usable === false,
 )
 
+// Lanzado con "No usar descripciones": el 0 con descripción IA es lo esperado, no un aviso.
+const embeddingsOnly = computed(() => isEmbeddingsOnly(props.training.options))
+
 // El LLM puede fallar en algún elemento (se entrena con su texto en crudo): avisar si pasó.
 const partialDescriptions = computed(
   () =>
+    !embeddingsOnly.value &&
     props.training.describedCount != null &&
     props.training.elementCount != null &&
     props.training.describedCount < props.training.elementCount,
@@ -66,7 +70,13 @@ const partialDescriptions = computed(
               v-if="training.describedCount != null"
               class="font-normal"
               :class="partialDescriptions ? 'text-warning' : 'text-subtle'"
-              :title="partialDescriptions ? $t('trainings.describedHint') : undefined"
+              :title="
+                partialDescriptions
+                  ? $t('trainings.describedHint')
+                  : embeddingsOnly
+                    ? $t('trainings.noAiDescriptionsHint')
+                    : undefined
+              "
             >
               · {{ $t('trainings.describedCount', { n: training.describedCount }) }}
             </span>

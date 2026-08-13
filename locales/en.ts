@@ -230,6 +230,11 @@ export const en = {
     regenerateLabel: 'Regenerate all descriptions',
     regenerateHint:
       'Generates the AI descriptions of every element again, not just the edited ones. Increases the training price.',
+    noDescriptionsLabel: "Don't use descriptions",
+    noDescriptionsHint:
+      "Trains only with each element's text and hand-written description: no AI descriptions are generated or used. Faster and cheaper.",
+    noAiDescriptionsHint:
+      "This training was launched without AI descriptions: only each element's text and hand-written description were embedded.",
     started: 'Started {date}',
     pendingTitle: 'Training pending',
     pendingDesc:

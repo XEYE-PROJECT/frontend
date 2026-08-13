@@ -44,13 +44,20 @@ const { data: embeddingModels } = useAsyncData(
 // en la caja de lanzamiento y encarece la estimación (todas las descripciones cuentan).
 const regenerateDescriptions = ref(false)
 
+// Entrenar sin descripciones IA: abarata la estimación a solo el fijo y desmarca
+// regenerar al activarse (no habría nada que regenerar).
+const noDescriptions = ref(false)
+watch(noDescriptions, (on) => {
+  if (on) regenerateDescriptions.value = false
+})
+
 // Precio preestablecido de lanzar ahora; depende de qué elementos tienen ya descripción
 // cacheada, así que se recalcula cada vez que se recargan los elementos (el watch salta
-// con cada refreshElements: tras editar, importar o lanzar) o cambia el check de regenerar.
+// con cada refreshElements: tras editar, importar o lanzar) o cambia algún check.
 const { data: costEstimate } = useAsyncData(
   'list-training-estimate-' + id,
-  () => trainingsApi.estimate(id, regenerateDescriptions.value),
-  { lazy: true, watch: [elements, regenerateDescriptions] },
+  () => trainingsApi.estimate(id, regenerateDescriptions.value, noDescriptions.value),
+  { lazy: true, watch: [elements, regenerateDescriptions, noDescriptions] },
 )
 
 useHead({ title: () => `${list.value?.name ?? t('listDetail.tabElements')} · XEYE` })
@@ -83,13 +90,15 @@ async function launchTraining(model: string | null) {
     const result = await trainingsApi.retrain(id, {
       embeddingModel: model,
       regenerateDescriptions: regenerateDescriptions.value,
+      noDescriptions: noDescriptions.value,
     })
     if (result.status === 'failed') {
       toast.error(result.error ?? t('trainings.launchFailed'))
     } else {
       toast.success(t('trainings.launched'))
-      // Regenerar es una decisión por lanzamiento: se desmarca para el siguiente.
+      // Los checks son decisiones por lanzamiento: se desmarcan para el siguiente.
       regenerateDescriptions.value = false
+      noDescriptions.value = false
     }
     // El lanzamiento marca todos los elementos como no entrenados: cambian ambas vistas
     // (y el refresco de elementos re-dispara la estimación de precio vía su watch).
@@ -371,6 +380,7 @@ async function confirmDeleteList() {
 
         <TrainingsLaunchCard
           v-model:regenerate="regenerateDescriptions"
+          v-model:no-descriptions="noDescriptions"
           :pending="!!pendingTraining"
           :models="embeddingModels.models"
           :default-model="embeddingModels.defaultModel"

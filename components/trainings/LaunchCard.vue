@@ -20,6 +20,10 @@ const emit = defineEmits<{ launch: [model: string | null] }>()
 // (v-model) porque cambiarlo re-pide la estimación de precio al backend.
 const regenerate = defineModel<boolean>('regenerate', { default: false })
 
+// Entrenar sin descripciones IA. También en el padre: re-pide la estimación, y al
+// activarse oculta todo lo relativo a descripciones IA.
+const noDescriptions = defineModel<boolean>('noDescriptions', { default: false })
+
 const model = ref<string | null>(props.defaultModel)
 watch(
   () => props.defaultModel,
@@ -50,7 +54,7 @@ const options = computed(() => props.models.map((m) => ({ value: m, label: m }))
           </p>
           <p v-if="estimate" class="mt-1.5 text-sm text-fg">
             {{ $t('trainings.estimatedPrice', { price: formatCost(estimate.total, locale) }) }}
-            <span class="text-subtle">
+            <span v-if="!noDescriptions" class="text-subtle">
               · {{ $t('trainings.estimatedDescriptions', { n: estimate.descriptionsToGenerate }) }}
             </span>
           </p>
@@ -58,6 +62,13 @@ const options = computed(() => props.models.map((m) => ({ value: m, label: m }))
       </div>
 
       <UiSwitch
+        v-model="noDescriptions"
+        :label="$t('trainings.noDescriptionsLabel')"
+        :description="$t('trainings.noDescriptionsHint')"
+      />
+
+      <UiSwitch
+        v-if="!noDescriptions"
         v-model="regenerate"
         :label="$t('trainings.regenerateLabel')"
         :description="$t('trainings.regenerateHint')"

@@ -23,9 +23,9 @@ export function useTrainingsApi() {
     retrain: (listId: number, body: LaunchTrainingPayload) =>
       $api<Training>(`/lists/${listId}/trainings`, { method: 'POST', body }),
     /** Precio preestablecido de lanzar un entrenamiento de la lista ahora mismo. */
-    estimate: (listId: number, regenerateDescriptions = false) =>
+    estimate: (listId: number, regenerateDescriptions = false, noDescriptions = false) =>
       $api<TrainingCostEstimate>(`/lists/${listId}/trainings/estimate`, {
-        query: { regenerateDescriptions },
+        query: { regenerateDescriptions, noDescriptions },
       }),
   }
 }

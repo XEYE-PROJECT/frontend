@@ -1,4 +1,5 @@
 import type { Locale } from '~/locales'
+import type { TrainingOption } from '~/types/api'
 
 const localeTag: Record<Locale, string> = { es: 'es-ES', en: 'en-US' }
 
@@ -80,6 +81,14 @@ export function embeddingModelName(model: string | null | undefined): string {
     // Los entrenamientos legacy/mock guardan un string plano.
   }
   return model
+}
+
+/**
+ * Entrenamiento lanzado sin descripciones IA ("No usar descripciones"): el backend le puso
+ * la estrategia embeddings_only, que salta el paso LLM.
+ */
+export function isEmbeddingsOnly(options: TrainingOption[] | null | undefined): boolean {
+  return !!options?.some((option) => option.key === 'strategy' && option.value === 'embeddings_only')
 }
 
 /** Formatea lo mejor posible el string opaco `params` de un elemento. */

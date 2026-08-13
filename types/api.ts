@@ -178,6 +178,8 @@ export interface LaunchTrainingPayload {
   embeddingModel: string | null
   /** true = el worker regenera las descripciones IA de todos los elementos, ignorando la caché. */
   regenerateDescriptions?: boolean
+  /** true = entrenar sin descripciones IA: solo texto + descripción escrita (gana a regenerar). */
+  noDescriptions?: boolean
 }
 
 // Backend: sobre de error
