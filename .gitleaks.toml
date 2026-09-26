@@ -1,0 +1,10 @@
+# Configuración de gitleaks (CI y pre-commit). Hereda las reglas por defecto y solo añade
+# allowlists de rutas que contienen ejemplos, nunca secretos reales.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Página de documentación de la API con ejemplos de cabeceras Authorization"
+paths = [
+  '''pages/docs/.*''',
+]

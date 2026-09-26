@@ -1,5 +1,9 @@
 import tailwindcss from '@tailwindcss/vite'
 
+// URLs públicas de producción: una sola fuente para las variables del Worker y para la CSP.
+const PROD_BACKEND_URL = 'https://backend.xeye.es'
+const PROD_SEARCH_URL = 'https://search.xeye.es'
+
 // Consola XEYE — SPA (sin SSR): el auth es JWT en localStorage y se habla con dos
 // servicios externos, así que el SSR no aporta nada y complica la autenticación.
 export default defineNuxtConfig({
@@ -16,7 +20,46 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', 'nuxt-security'],
+
+  // Cabeceras de seguridad del documento (lo genera Nitro en el Worker en cada petición).
+  // Los assets /_nuxt/* los sirve el binding de assets de Cloudflare: sus cabeceras van en
+  // public/_headers. Verificar tras cada deploy: `curl -sI https://xeye.es/`.
+  security: {
+    nonce: true,
+    headers: {
+      contentSecurityPolicy: {
+        'default-src': ["'self'"],
+        // Nuxt inyecta un script inline con la runtime config: nuxt-security le pone el nonce.
+        // Sin 'strict-dynamic' para que los chunks de /_nuxt/* (mismo origen) carguen sin más.
+        'script-src': ["'self'", "'nonce-{{nonce}}'"],
+        // Tailwind v4 y las transiciones de Vue inyectan estilos inline.
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", 'data:'],
+        'font-src': ["'self'"],
+        // Solo los dos servicios propios y el ingest de Sentry (en dev se añaden los localhost,
+        // ver $development más abajo).
+        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io'],
+        'frame-ancestors': ["'none'"],
+        'base-uri': ["'self'"],
+        'form-action': ["'self'"],
+        'object-src': ["'none'"],
+        'upgrade-insecure-requests': true,
+      },
+      strictTransportSecurity: { maxAge: 31536000, includeSubdomains: true },
+      xFrameOptions: 'DENY',
+      referrerPolicy: 'strict-origin-when-cross-origin',
+      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'same-origin',
+      crossOriginEmbedderPolicy: false,
+      permissionsPolicy: { camera: [], microphone: [], geolocation: [] },
+    },
+    // Sin API propia en Nitro: estos middlewares no aportan y usan estado en memoria del Worker.
+    rateLimiter: false,
+    requestSizeLimiter: false,
+    xssValidator: false,
+    corsHandler: false,
+  },
 
   css: ['~/assets/css/main.css'],
 
@@ -25,11 +68,27 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
+  // Solo `nuxt dev`: los servicios locales en la CSP y sin upgrade a https (rompería las
+  // llamadas a http://localhost). Nuxt fusiona esto sobre la config base (los arrays se concatenan).
+  $development: {
+    security: {
+      headers: {
+        contentSecurityPolicy: {
+          'connect-src': ['http://localhost:8000', 'http://localhost:8002', 'ws://localhost:*'],
+          'upgrade-insecure-requests': false,
+        },
+      },
+    },
+  },
+
   // Config pública, sobrescribible en runtime con variables NUXT_PUBLIC_*.
   runtimeConfig: {
     public: {
       backendUrl: 'http://localhost:8000',
       searchUrl: 'http://localhost:8002',
+      // Sentry (navegador). Vacío = desactivado. Un DSN es público: puede ir en el repo.
+      sentryDsn: '',
+      sentryEnvironment: '',
     },
   },
 
@@ -42,8 +101,11 @@ export default defineNuxtConfig({
     cloudflare: {
       wrangler: {
         vars: {
-          NUXT_PUBLIC_BACKEND_URL: 'https://backend.xeye.es',
-          NUXT_PUBLIC_SEARCH_URL: 'https://search.xeye.es',
+          NUXT_PUBLIC_BACKEND_URL: PROD_BACKEND_URL,
+          NUXT_PUBLIC_SEARCH_URL: PROD_SEARCH_URL,
+          // DSN del proyecto "xeye-frontend" de Sentry (rellenar; vacío = sin error tracking).
+          NUXT_PUBLIC_SENTRY_DSN: '',
+          NUXT_PUBLIC_SENTRY_ENVIRONMENT: 'production',
         },
       },
     },
@@ -63,14 +125,9 @@ export default defineNuxtConfig({
         { name: 'color-scheme', content: 'light dark' },
       ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-      // Aplica tema e idioma guardados antes del primer pintado para evitar parpadeo.
-      script: [
-        {
-          innerHTML:
-            "(function(){try{var t=localStorage.getItem('xeye_theme');var d=t?t==='dark':(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');var l=localStorage.getItem('xeye_locale');if(l==='es'||l==='en')document.documentElement.setAttribute('lang',l);}catch(e){}})();",
-          tagPosition: 'head',
-        },
-      ],
+      // Aplica tema e idioma guardados antes del primer pintado para evitar parpadeo. Fichero
+      // externo (public/theme-init.js) y no inline: así la CSP no necesita hashes.
+      script: [{ src: '/theme-init.js', tagPosition: 'head' }],
     },
   },
 

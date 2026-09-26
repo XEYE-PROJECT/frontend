@@ -1,0 +1,7 @@
+# Cabeceras de los assets estáticos servidos por el binding de assets de Cloudflare Workers
+# (no pasan por Nitro, así que las cabeceras del módulo nuxt-security no les llegan).
+/_nuxt/*
+  X-Content-Type-Options: nosniff
+  Cache-Control: public, max-age=31536000, immutable
+/theme-init.js
+  X-Content-Type-Options: nosniff
