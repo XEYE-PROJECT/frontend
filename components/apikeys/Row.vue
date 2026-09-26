@@ -5,7 +5,6 @@ const props = defineProps<{ apiKey: ApiKey }>()
 const emit = defineEmits<{ rename: [key: ApiKey]; delete: [key: ApiKey] }>()
 
 const { locale } = useI18n()
-const revealed = ref(false)
 </script>
 
 <template>
@@ -44,21 +43,11 @@ const revealed = ref(false)
           </UiDropdown>
         </div>
 
-        <div class="mt-2 flex items-center gap-2">
-          <div class="flex min-w-0 flex-1 items-center rounded-lg bg-surface-2 px-2.5 py-1.5">
-            <code class="min-w-0 flex-1 font-mono text-sm break-all text-fg">
-              {{ revealed ? apiKey.apiKey : '••••••••••••' }}
-            </code>
-          </div>
-          <UiButton
-            variant="ghost"
-            size="icon-sm"
-            :icon="revealed ? 'eye-off' : 'eye'"
-            :aria-label="revealed ? $t('apiKeys.hide') : $t('apiKeys.reveal')"
-            @click="revealed = !revealed"
-          />
-          <UiCopyButton :text="apiKey.apiKey" size="sm" variant="ghost" />
+        <!-- Solo el prefijo: el backend guarda el hash y el valor completo no puede recuperarse. -->
+        <div class="mt-2 flex items-center rounded-lg bg-surface-2 px-2.5 py-1.5">
+          <code class="min-w-0 flex-1 font-mono text-sm text-fg">{{ apiKey.prefix }}…</code>
         </div>
+        <p class="mt-1.5 text-xs text-subtle">{{ $t('apiKeys.prefixHint') }}</p>
 
         <p class="mt-2 text-xs text-subtle">
           {{ $t('common.createdAt', { date: formatDate(apiKey.createdAt, locale) }) }}

@@ -6,27 +6,28 @@ const route = useRoute()
 
 useHead({ title: () => `${t('search.title')} · XEYE` })
 
-const keysApi = useApiKeysApi()
 const listsApi = useListsApi()
 const searchApi = useSearchApi()
+// La clave la pega el usuario (o llega de "Usar en búsqueda" al crearla): el backend nunca
+// devuelve claves completas. Se recuerda solo en esta pestaña.
+const searchKey = useSearchKey()
+searchKey.init()
 
 const { data, pending } = useAsyncData(
   'search-setup',
   async () => {
-    const [keys, lists] = await Promise.all([keysApi.all(), listsApi.all()])
-    return { keys, lists }
+    const lists = await listsApi.all()
+    return { lists }
   },
   { lazy: true },
 )
 
-const keys = computed(() => data.value?.keys ?? [])
 const lists = computed(() => data.value?.lists ?? [])
 
-const hasKeys = computed(() => keys.value.length > 0)
+const hasKey = computed(() => searchKey.key.value.length > 0)
 const hasLists = computed(() => lists.value.length > 0)
-const canSearch = computed(() => hasKeys.value && hasLists.value)
+const canSearch = computed(() => hasLists.value)
 
-const keyOptions = computed(() => keys.value.map((k) => ({ value: k.apiKey, label: k.name })))
 const listOptions = computed(() => lists.value.map((l) => ({ value: l.name, label: l.name })))
 const limitOptions = [
   { value: 10, label: '10' },
@@ -35,22 +36,25 @@ const limitOptions = [
 ]
 
 const form = reactive({
-  key: '',
   list: '',
   term: '',
   limit: 10,
+})
+
+const apiKeyInput = computed({
+  get: () => searchKey.key.value,
+  set: (value: string) => searchKey.set(value),
 })
 
 const loading = ref(false)
 const errorMsg = ref('')
 const result = ref<SearchResponse | null>(null)
 
-// Preselecciona la primera clave y lista al cargar, respetando ?list=<nombre>.
+// Preselecciona la primera lista al cargar, respetando ?list=<nombre>.
 watch(
   data,
   (d) => {
     if (!d) return
-    if (!form.key && d.keys.length) form.key = d.keys[0].apiKey
     if (!form.list && d.lists.length) {
       const wanted = route.query.list as string | undefined
       const match = wanted ? d.lists.find((l) => l.name === wanted) : undefined
@@ -64,7 +68,7 @@ async function run() {
   loading.value = true
   errorMsg.value = ''
   try {
-    const res = await searchApi.search(form.key, {
+    const res = await searchApi.search(searchKey.key.value, {
       list_name: form.list,
       search_term: form.term,
       limit: form.limit,
@@ -110,8 +114,8 @@ async function run() {
 
     <template v-else>
       <!-- Avisos de requisitos previos -->
-      <UiAlert v-if="!hasKeys" variant="warning" class="mb-4">
-        {{ $t('search.noKeys') }}
+      <UiAlert v-if="!hasKey" variant="warning" class="mb-4">
+        {{ $t('search.noKey') }}
         <NuxtLink to="/api-keys" class="font-medium text-primary hover:underline">
           {{ $t('search.createKey') }}
         </NuxtLink>
@@ -127,14 +131,26 @@ async function run() {
       <UiCard>
         <form class="space-y-4" @submit.prevent="run">
           <div class="grid gap-4 sm:grid-cols-2">
-            <UiSelect
-              v-model="form.key"
-              :label="$t('search.keyLabel')"
-              :hint="$t('search.keyHint')"
-              icon="key"
-              :options="keyOptions"
-              :disabled="!canSearch"
-            />
+            <div class="flex flex-col gap-1.5">
+              <UiInput
+                v-model="apiKeyInput"
+                type="password"
+                autocomplete="off"
+                :label="$t('search.keyLabel')"
+                :hint="$t('search.keyHint')"
+                placeholder="xeye_…"
+                icon="key"
+                :disabled="!canSearch"
+              />
+              <button
+                v-if="hasKey"
+                type="button"
+                class="self-start text-xs text-muted hover:text-fg hover:underline"
+                @click="searchKey.clear()"
+              >
+                {{ $t('search.forgetKey') }}
+              </button>
+            </div>
             <UiSelect
               v-model="form.list"
               :label="$t('search.listLabel')"
@@ -165,7 +181,7 @@ async function run() {
               type="submit"
               icon="search"
               :loading="loading"
-              :disabled="!form.key || !form.list || !form.term"
+              :disabled="!hasKey || !form.list || !form.term"
             >
               {{ loading ? $t('search.running') : $t('search.run') }}
             </UiButton>

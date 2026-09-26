@@ -18,9 +18,11 @@ El panel para gestionar todo lo que expone el backend de XEYE y probar la búsqu
 - **Listas** — colecciones de elementos que se vuelven buscables al entrenarse.
 - **Elementos** — los ítems de cada lista (texto, *params* opcionales, descripción).
 - **Entrenamientos** — historial por lista (estado, modelo, duración, coste, el activo).
-- **Claves API** — para consultar tus listas públicas desde el servicio de búsqueda.
+- **Claves API** — para consultar tus listas públicas desde el servicio de búsqueda. El valor
+  completo se muestra **una sola vez** al crear la clave (el backend solo guarda su hash).
 - **Búsqueda** — un *playground* que llama **directamente al microservicio de búsqueda**
-  (no al backend), exactamente como lo haría una integración real.
+  (no al backend), exactamente como lo haría una integración real: pegas tu clave API (se
+  recuerda solo en la pestaña) y eliges la lista.
 - **Cuenta** — perfil, contraseña y borrado de cuenta.
 
 ## Arquitectura

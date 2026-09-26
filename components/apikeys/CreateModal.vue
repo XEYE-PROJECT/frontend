@@ -5,11 +5,14 @@ const emit = defineEmits<{ created: [] }>()
 const { t } = useI18n()
 const toast = useToast()
 const keysApi = useApiKeysApi()
+const searchKey = useSearchKey()
 
 const step = ref<1 | 2>(1)
 const name = ref('')
 const creating = ref(false)
 const createdKey = ref('')
+// El valor completo solo se muestra aquí, una vez: cerrar exige confirmar que se ha copiado.
+const acknowledged = ref(false)
 
 async function create() {
   creating.value = true
@@ -26,6 +29,12 @@ async function create() {
   }
 }
 
+function useInSearch() {
+  searchKey.set(createdKey.value)
+  open.value = false
+  navigateTo('/search')
+}
+
 // Vuelve al paso 1 al abrir el modal (así la transición de salida sigue
 // mostrando la clave creada sin un parpadeo de vuelta al paso 1).
 watch(open, (isOpen) => {
@@ -33,6 +42,7 @@ watch(open, (isOpen) => {
     step.value = 1
     name.value = ''
     createdKey.value = ''
+    acknowledged.value = false
   }
 })
 </script>
@@ -59,6 +69,10 @@ watch(open, (isOpen) => {
         </div>
         <UiCopyButton :text="createdKey" size="sm" variant="secondary" />
       </div>
+      <label class="flex cursor-pointer items-start gap-2 text-sm text-fg">
+        <input v-model="acknowledged" type="checkbox" class="mt-0.5 accent-primary" />
+        <span>{{ $t('apiKeys.createdAck') }}</span>
+      </label>
     </div>
 
     <template #footer>
@@ -68,7 +82,12 @@ watch(open, (isOpen) => {
           {{ creating ? $t('common.creating') : $t('common.create') }}
         </UiButton>
       </template>
-      <UiButton v-else @click="open = false">{{ $t('common.close') }}</UiButton>
+      <template v-else>
+        <UiButton variant="ghost" icon="search" :disabled="!acknowledged" @click="useInSearch">
+          {{ $t('apiKeys.useInSearchNow') }}
+        </UiButton>
+        <UiButton :disabled="!acknowledged" @click="open = false">{{ $t('common.close') }}</UiButton>
+      </template>
     </template>
   </UiModal>
 </template>

@@ -41,13 +41,18 @@ export interface UpdateUserPayload {
 }
 
 // Backend: api keys
+/** Clave existente: el backend solo guarda su hash; `prefix` identifica la clave sin revelarla. */
 export interface ApiKey {
   id: number
   name: string
-  /** El secreto en claro: se devuelve en cada lectura, trátalo como sensible. */
-  apiKey: string
+  prefix: string
   createdAt: string
   updatedAt: string
+}
+
+/** Respuesta de POST /api-keys: la ÚNICA vez que existe el valor completo (`apiKey`). */
+export interface CreatedApiKey extends ApiKey {
+  apiKey: string
 }
 
 // Backend: listas
