@@ -103,8 +103,9 @@ export default defineNuxtConfig({
         vars: {
           NUXT_PUBLIC_BACKEND_URL: PROD_BACKEND_URL,
           NUXT_PUBLIC_SEARCH_URL: PROD_SEARCH_URL,
-          // DSN del proyecto "xeye-frontend" de Sentry (rellenar; vacío = sin error tracking).
-          NUXT_PUBLIC_SENTRY_DSN: '',
+          // DSN del proyecto "xeye-frontend" de Sentry (público por naturaleza; vacío = sin error tracking).
+          NUXT_PUBLIC_SENTRY_DSN:
+            'https://a540a0c36582ce4ca6f47f7b1ab74b7b@o4512153980567552.ingest.de.sentry.io/4512154074415184',
           NUXT_PUBLIC_SENTRY_ENVIRONMENT: 'production',
         },
       },
