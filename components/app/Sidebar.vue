@@ -2,6 +2,7 @@
 const open = defineModel<boolean>('open', { default: false })
 const { t } = useI18n()
 const route = useRoute()
+const auth = useAuthStore()
 
 const nav = computed(() => [
   { to: '/dashboard', icon: 'grid', label: t('nav.dashboard') },
@@ -10,6 +11,8 @@ const nav = computed(() => [
   { to: '/search', icon: 'search', label: t('nav.search') },
   { to: '/docs', icon: 'book-open', label: t('nav.docs') },
   { to: '/account', icon: 'user', label: t('nav.account') },
+  // Solo admins (el backend responde 403 a los demás igualmente).
+  ...(auth.isAdmin ? [{ to: '/admin/users', icon: 'users', label: t('nav.admin') }] : []),
 ])
 
 // Cierra el cajón móvil al cambiar de ruta.

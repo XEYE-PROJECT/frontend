@@ -52,6 +52,20 @@ export function apiErrorMessage(e: unknown, t: Translate): string {
   return t('errors.generic')
 }
 
+/** Código estable del error del backend (`code`), si lo trae. */
+export function errorCode(e: unknown): string | undefined {
+  const code = errorData(e)?.code
+  return typeof code === 'string' ? code : undefined
+}
+
+/** Segundos del `Retry-After` de un 429 (o undefined). */
+export function retryAfterSeconds(e: unknown): number | undefined {
+  const err = e as { response?: { headers?: Headers } }
+  const raw = err?.response?.headers?.get?.('Retry-After')
+  const n = raw ? Number(raw) : NaN
+  return Number.isFinite(n) ? n : undefined
+}
+
 /** Errores de validación por campo del mapa `details` del backend (si los hay). */
 export function fieldErrors(e: unknown): Record<string, string> {
   const data = errorData(e)

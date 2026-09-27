@@ -10,10 +10,17 @@ export interface User {
   surname: string
   email: string
   permission: Permission
+  emailVerified: boolean
+  locale: 'es' | 'en'
+  mfaEnabled: boolean
+  /** Proveedor SSO enlazado ('google' | 'microsoft') o null si la cuenta es de contraseña. */
+  ssoProvider: string | null
+  lastLoginAt: string | null
   createdAt: string
   updatedAt: string
 }
 
+/** Sesión abierta (token bearer + usuario). */
 export interface AuthResponse {
   token: string
   tokenType: string
@@ -21,23 +28,94 @@ export interface AuthResponse {
   user: User
 }
 
+/**
+ * Respuesta de POST /auth/login, /auth/verify-email y /auth/sso/exchange: o bien la sesión, o bien
+ * `mfaRequired: true` con el `mfaToken` que hay que devolver en POST /auth/mfa junto al código.
+ */
+export interface LoginResponse {
+  mfaRequired: boolean
+  mfaToken?: string
+  token?: string
+  tokenType?: string
+  expiresInMinutes?: number
+  user?: User
+}
+
+/** GET /auth/config: qué mostrar en los formularios de acceso. */
+export interface AuthConfig {
+  emailVerificationRequired: boolean
+  ssoProviders: string[]
+  captchaProvider: 'none' | 'turnstile'
+  captchaSiteKey: string | null
+}
+
 export interface RegisterPayload {
   name: string
   surname: string
   email: string
   password: string
+  locale?: string
+  captchaToken?: string | null
 }
 
 export interface LoginPayload {
   email: string
   password: string
+  captchaToken?: string | null
 }
 
 export interface UpdateUserPayload {
   name?: string
   surname?: string
-  email?: string
-  password?: string
+  locale?: string
+}
+
+export interface ChangeEmailPayload {
+  email: string
+  currentPassword: string
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string
+  newPassword: string
+}
+
+export interface MfaSetup {
+  secret: string
+  otpauthUri: string
+}
+
+export interface MessageResponse {
+  message: string
+}
+
+// Backend: administración (solo admin)
+export interface AdminUser {
+  id: number
+  name: string
+  surname: string
+  email: string
+  permission: Permission
+  emailVerified: boolean
+  mfaEnabled: boolean
+  ssoProvider: string | null
+  failedLoginCount: number
+  lockedUntil: string | null
+  lastLoginAt: string | null
+  createdAt: string
+}
+
+export interface AdminUserPage {
+  items: AdminUser[]
+  total: number
+  offset: number
+  limit: number
+}
+
+export interface AdminUpdateUserPayload {
+  permission?: Permission
+  emailVerified?: boolean
+  unlock?: boolean
 }
 
 // Backend: api keys
@@ -192,6 +270,8 @@ export interface ApiError {
   status: number
   error: string
   message: string
+  /** Identificador estable (EMAIL_NOT_VERIFIED, ACCOUNT_LOCKED, INVALID_MFA_CODE, RATE_LIMITED…). */
+  code?: string
   details?: Record<string, string>
   timestamp: string
 }

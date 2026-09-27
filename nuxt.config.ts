@@ -32,14 +32,17 @@ export default defineNuxtConfig({
         'default-src': ["'self'"],
         // Nuxt inyecta un script inline con la runtime config: nuxt-security le pone el nonce.
         // Sin 'strict-dynamic' para que los chunks de /_nuxt/* (mismo origen) carguen sin más.
-        'script-src': ["'self'", "'nonce-{{nonce}}'"],
+        // challenges.cloudflare.com: widget de Turnstile (CAPTCHA opcional; solo se carga si el
+        // backend anuncia un site key en GET /auth/config).
+        'script-src': ["'self'", "'nonce-{{nonce}}'", 'https://challenges.cloudflare.com'],
+        'frame-src': ['https://challenges.cloudflare.com'],
         // Tailwind v4 y las transiciones de Vue inyectan estilos inline.
         'style-src': ["'self'", "'unsafe-inline'"],
         'img-src': ["'self'", 'data:'],
         'font-src': ["'self'"],
         // Solo los dos servicios propios y el ingest de Sentry (en dev se añaden los localhost,
         // ver $development más abajo).
-        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io'],
+        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
         'form-action': ["'self'"],

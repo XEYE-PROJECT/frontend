@@ -10,6 +10,19 @@ más cuidado e intuitivo que el frontend anterior.
 
 ---
 
+## Cuentas y sesión
+
+- El registro no abre sesión: el backend envía un email de verificación (`/verify-email?token=…`
+  abre sesión al confirmarlo). Recuperación en `/forgot-password` → `/reset-password?token=…`.
+- Solo el token JWT y su caducidad se guardan en `localStorage`; el perfil se pide a `/users/me`
+  al arrancar (`plugins/auth.client.ts`). Al caducar el token o recibir un 401 la sesión se cierra
+  y se vuelve a `/login?redirect=<ruta>`; el logout revoca el token en el servidor.
+- Login en dos pasos si la cuenta tiene 2FA (`mfaRequired` → `POST /auth/mfa`). La cuenta permite
+  activar/desactivar el 2FA (QR con `qrcode`), cambiar email/contraseña con la contraseña actual y
+  cerrar todas las sesiones. `/admin/users` solo aparece a los admins.
+- SSO (Google/Microsoft) y CAPTCHA (Turnstile) se muestran solo si el backend los anuncia en
+  `GET /auth/config`; el retorno del SSO es `/sso/callback?code=…`.
+
 ## ¿Qué es?
 
 El panel para gestionar todo lo que expone el backend de XEYE y probar la búsqueda:
