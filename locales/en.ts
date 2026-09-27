@@ -96,6 +96,7 @@ export const en = {
     mfaCodeLabel: 'Verification code',
     mfaCodeHint: 'Recovery codes look like XXXXX-XXXXX.',
     mfaVerify: 'Verify',
+    mfaRemember: 'Remember this device for 30 days (no code needed here)',
     mfaExpired: 'That took too long. Enter your password again.',
     mfaInvalidCode: 'Invalid code. Try again.',
     checkInboxTitle: 'Check your inbox',

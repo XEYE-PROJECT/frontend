@@ -26,6 +26,8 @@ export interface AuthResponse {
   tokenType: string
   expiresInMinutes: number
   user: User
+  /** Solo tras POST /auth/mfa con rememberDevice: token de "dispositivo de confianza" (30 días). */
+  mfaTrustToken?: string
 }
 
 /**
@@ -62,6 +64,8 @@ export interface LoginPayload {
   email: string
   password: string
   captchaToken?: string | null
+  /** Token de dispositivo de confianza guardado tras un 2FA anterior. */
+  mfaTrustToken?: string | null
 }
 
 export interface UpdateUserPayload {

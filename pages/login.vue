@@ -18,6 +18,7 @@ const unverified = ref(false)
 const resending = ref(false)
 const mfaToken = ref<string | null>(null)
 const mfaCode = ref('')
+const rememberDevice = ref(true)
 
 useHead({ title: () => `${t('auth.signIn')} · XEYE` })
 await loadAuthConfig()
@@ -77,7 +78,7 @@ async function submitMfa() {
   loading.value = true
   errorMsg.value = ''
   try {
-    await auth.verifyMfa(mfaToken.value, mfaCode.value)
+    await auth.verifyMfa(mfaToken.value, mfaCode.value, rememberDevice.value)
     await navigateTo(redirectTarget.value)
   } catch (e) {
     const code = errorCode(e)
@@ -206,6 +207,10 @@ async function resendVerification() {
           autocomplete="one-time-code"
           required
         />
+        <label class="flex cursor-pointer items-start gap-2 text-sm text-fg">
+          <input v-model="rememberDevice" type="checkbox" class="mt-0.5 accent-primary" />
+          <span>{{ $t('auth.mfaRemember') }}</span>
+        </label>
         <UiButton type="submit" block size="lg" :loading="loading">
           {{ $t('auth.mfaVerify') }}
         </UiButton>

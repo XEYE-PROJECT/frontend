@@ -97,6 +97,7 @@ export const es: Messages = {
     mfaCodeLabel: 'Código de verificación',
     mfaCodeHint: 'Los códigos de recuperación tienen la forma XXXXX-XXXXX.',
     mfaVerify: 'Verificar',
+    mfaRemember: 'Recordar este dispositivo 30 días (no volver a pedir el código aquí)',
     mfaExpired: 'Ha pasado demasiado tiempo. Vuelve a introducir tu contraseña.',
     mfaInvalidCode: 'Código incorrecto. Inténtalo de nuevo.',
     checkInboxTitle: 'Revisa tu correo',

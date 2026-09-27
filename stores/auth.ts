@@ -14,6 +14,8 @@ import type {
 // cada arranque (GET /users/me), así nunca queda un perfil obsoleto o manipulado en el navegador.
 const TOKEN_KEY = 'xeye_token'
 const EXPIRES_KEY = 'xeye_token_expires_at'
+// Dispositivo de confianza del 2FA (30 días): sobrevive al logout, se envía en cada login.
+const MFA_TRUST_KEY = 'xeye_mfa_trust'
 
 interface AuthState {
   token: string | null
@@ -125,16 +127,39 @@ export const useAuthStore = defineStore('auth', {
       }, delay)
     },
 
+    mfaTrustToken(): string | null {
+      if (!import.meta.client) return null
+      try {
+        return localStorage.getItem(MFA_TRUST_KEY)
+      } catch {
+        return null
+      }
+    },
+
     async login(payload: LoginPayload): Promise<LoginResponse> {
       const { $api } = useNuxtApp()
-      const res = await $api<LoginResponse>('/auth/login', { method: 'POST', body: payload })
+      const res = await $api<LoginResponse>('/auth/login', {
+        method: 'POST',
+        body: { ...payload, mfaTrustToken: payload.mfaTrustToken ?? this.mfaTrustToken() },
+      })
       this.applyLoginResponse(res)
       return res
     },
 
-    async verifyMfa(mfaToken: string, code: string): Promise<AuthResponse> {
+    async verifyMfa(mfaToken: string, code: string, rememberDevice = true): Promise<AuthResponse> {
       const { $api } = useNuxtApp()
-      const auth = await $api<AuthResponse>('/auth/mfa', { method: 'POST', body: { mfaToken, code } })
+      const auth = await $api<AuthResponse>('/auth/mfa', {
+        method: 'POST',
+        body: { mfaToken, code, rememberDevice },
+      })
+      if (import.meta.client) {
+        try {
+          if (auth.mfaTrustToken) localStorage.setItem(MFA_TRUST_KEY, auth.mfaTrustToken)
+          else localStorage.removeItem(MFA_TRUST_KEY)
+        } catch {
+          /* ignorar */
+        }
+      }
       this.setSession(auth)
       return auth
     },
