@@ -4,6 +4,16 @@ import tailwindcss from '@tailwindcss/vite'
 const PROD_BACKEND_URL = 'https://backend.xeye.es'
 const PROD_SEARCH_URL = 'https://search.xeye.es'
 
+// Fail fast en build: si alguien cambia las constantes a http:// o localhost, el build falla
+// antes de que el Worker despliegue una consola que no puede hablar con nadie. (En runtime lo
+// vuelve a comprobar plugins/00.config-guard.client.ts con los valores NUXT_PUBLIC_* reales.)
+for (const [name, value] of Object.entries({ PROD_BACKEND_URL, PROD_SEARCH_URL })) {
+  const url = new URL(value)
+  if (url.protocol !== 'https:' || url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+    throw new Error(`${name} must be a public https:// URL (found '${value}')`)
+  }
+}
+
 // Consola XEYE — SPA (sin SSR): el auth es JWT en localStorage y se habla con dos
 // servicios externos, así que el SSR no aporta nada y complica la autenticación.
 export default defineNuxtConfig({

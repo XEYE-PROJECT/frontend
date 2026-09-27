@@ -24,6 +24,11 @@ function goHome() {
     <p class="mt-6 font-mono text-5xl font-semibold text-gradient">{{ error.statusCode || 500 }}</p>
     <h1 class="mt-3 text-xl font-semibold text-fg">{{ $t('notFound.title') }}</h1>
     <p class="mt-2 max-w-sm text-sm text-muted">{{ $t('notFound.desc') }}</p>
+    <!-- Errores que no son 404 (p. ej. configuración inválida detectada al arrancar): el mensaje real. -->
+    <pre
+      v-if="error.statusCode !== 404 && error.message"
+      class="mt-4 max-w-lg whitespace-pre-wrap rounded-lg border border-line bg-surface p-3 text-left font-mono text-xs text-muted"
+    >{{ error.message }}</pre>
 
     <UiButton class="mt-6" icon="arrow-left" @click="goHome">{{ $t('notFound.home') }}</UiButton>
   </div>

@@ -83,7 +83,13 @@ npm run dev               # http://localhost:3000
 | `NUXT_PUBLIC_SEARCH_URL`  | URL del microservicio de búsqueda | `http://localhost:8002` |
 
 Al ser una SPA, estas URLs las usa el **navegador**: en producción apúntalas a tus dominios
-públicos (p. ej. vía Traefik), no a los nombres internos de Docker.
+públicos, no a los nombres internos de Docker. Referencia completa (incluido Sentry y qué es
+obligatorio en producción) en [CONFIG.md](CONFIG.md).
+
+**Fail fast.** Fuera de `nuxt dev`, `plugins/00.config-guard.client.ts` comprueba al arrancar que
+las dos URLs son `https://` y no `localhost`; si no, la consola muestra una pantalla de error que
+nombra la variable en vez de fallar llamada a llamada. Las constantes de producción de
+`nuxt.config.ts` (`PROD_*_URL`, que viajan al `wrangler.json` generado) se validan además en build.
 
 ## Scripts
 
