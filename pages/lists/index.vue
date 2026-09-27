@@ -6,10 +6,42 @@ const listsApi = useListsApi()
 const trainingsApi = useTrainingsApi()
 const toast = useToast()
 
-const { data: lists, pending, refresh } = useAsyncData('lists', () => listsApi.all(), {
-  lazy: true,
-  default: () => [] as ItemList[],
+// Paginación y filtros en el servidor: `q` (nombre/descripción) y `public`.
+const LISTS_PAGE_SIZE = 24
+const page = shallowRef(1)
+const filter = ref('all')
+const query = ref('')
+const debouncedQuery = ref('')
+let queryTimer: ReturnType<typeof setTimeout> | undefined
+watch(query, (value) => {
+  clearTimeout(queryTimer)
+  queryTimer = setTimeout(() => {
+    debouncedQuery.value = value.trim()
+  }, 300)
 })
+// Filtro nuevo → primera página.
+watch([filter, debouncedQuery], () => {
+  page.value = 1
+})
+
+const {
+  data: listsPage,
+  pending,
+  refresh,
+} = useAsyncData(
+  'lists',
+  () =>
+    listsApi.list({
+      offset: (page.value - 1) * LISTS_PAGE_SIZE,
+      limit: LISTS_PAGE_SIZE,
+      q: debouncedQuery.value || undefined,
+      public: filter.value === 'all' ? undefined : filter.value === 'public',
+    }),
+  { lazy: true, watch: [page, filter, debouncedQuery] },
+)
+const lists = computed(() => listsPage.value?.items ?? [])
+const total = computed(() => listsPage.value?.total ?? 0)
+const isFiltering = computed(() => filter.value !== 'all' || debouncedQuery.value !== '')
 
 // Las listas con entrenamiento pendiente muestran un aviso en su tarjeta.
 const { data: pendingTrainings, refresh: refreshPending } = useAsyncData(
@@ -21,24 +53,12 @@ const pendingListIds = computed(() => new Set(pendingTrainings.value.map((tr) =>
 
 useHead({ title: () => `${t('lists.title')} · XEYE` })
 
-const filter = ref('all')
-const query = ref('')
-
 const filterOptions = computed(() => [
   { value: 'all', label: t('lists.filterAll') },
   { value: 'public', label: t('lists.filterPublic') },
   { value: 'private', label: t('lists.filterPrivate') },
 ])
 
-const filtered = computed(() => {
-  const q = query.value.trim().toLowerCase()
-  return (lists.value ?? []).filter((l) => {
-    if (filter.value === 'public' && !l.public) return false
-    if (filter.value === 'private' && l.public) return false
-    if (q && !`${l.name} ${l.description ?? ''}`.toLowerCase().includes(q)) return false
-    return true
-  })
-})
 
 // Crear / editar
 const showForm = ref(false)
@@ -117,7 +137,7 @@ async function doDelete() {
 
     <!-- Sin listas -->
     <UiEmptyState
-      v-else-if="(lists ?? []).length === 0"
+      v-else-if="total === 0 && !isFiltering"
       icon="list"
       :title="$t('lists.emptyTitle')"
       :description="$t('lists.emptyDesc')"
@@ -126,21 +146,24 @@ async function doDelete() {
     </UiEmptyState>
 
     <!-- Hay listas pero el filtro no casa con ninguna -->
-    <p v-else-if="filtered.length === 0" class="py-16 text-center text-sm text-muted">
+    <p v-else-if="lists.length === 0" class="py-16 text-center text-sm text-muted">
       {{ $t('lists.noMatches') }}
     </p>
 
     <!-- Cuadrícula -->
-    <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <ListsCard
-        v-for="list in filtered"
-        :key="list.id"
-        :list="list"
-        :pending-training="pendingListIds.has(list.id)"
-        @edit="openEdit(list)"
-        @delete="openDelete(list)"
-      />
-    </div>
+    <template v-else>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ListsCard
+          v-for="list in lists"
+          :key="list.id"
+          :list="list"
+          :pending-training="pendingListIds.has(list.id)"
+          @edit="openEdit(list)"
+          @delete="openDelete(list)"
+        />
+      </div>
+      <UiPagination v-model="page" :total="total" :page-size="LISTS_PAGE_SIZE" class="mt-6" />
+    </template>
 
     <ListsFormModal v-model="showForm" :list="editing" @saved="onSaved" />
 

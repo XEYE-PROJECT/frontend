@@ -34,6 +34,9 @@ const partialDescriptions = computed(
         <div class="flex flex-wrap items-center gap-2">
           <TrainingsStatusBadge :status="training.status" />
           <UiBadge v-if="training.inUse" variant="primary" dot>{{ $t('trainings.inUse') }}</UiBadge>
+          <span v-if="training.status === 'queued' && training.queuePosition" class="text-xs text-subtle">
+            {{ $t('trainings.queuePosition', { n: training.queuePosition }) }}
+          </span>
         </div>
         <div class="flex flex-wrap items-center gap-3">
           <span class="text-xs text-subtle">

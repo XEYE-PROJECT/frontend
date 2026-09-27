@@ -1,6 +1,19 @@
 // Contratos de API: espejo de los DTO del backend (bearer JWT, JSON camelCase). La consola no
 // habla con el microservicio de búsqueda: el playground pasa por el backend.
 
+/** Listado paginado por offset ({items, total, offset, limit}); `limit` máximo 200. */
+export interface Page<T> {
+  items: T[]
+  total: number
+  offset: number
+  limit: number
+}
+
+export interface PageQuery {
+  offset?: number
+  limit?: number
+}
+
 // Backend: usuarios / auth
 export type Permission = 'user' | 'admin'
 
@@ -150,8 +163,21 @@ export interface ItemList {
   description: string | null
   public: boolean
   userId: number
+  /** Nº de elementos (lo calcula el backend en el mismo listado). */
+  elementCount: number
   createdAt: string
   updatedAt: string
+}
+
+/** GET /lists: `q` filtra por nombre/descripción, `public` por visibilidad. */
+export interface ListsQuery extends PageQuery {
+  q?: string
+  public?: boolean
+}
+
+/** GET /lists/{id}/elements: `q` filtra por texto/descripción. */
+export interface ElementsQuery extends PageQuery {
+  q?: string
 }
 
 export interface CreateListPayload {
@@ -258,6 +284,10 @@ export interface Training {
   inUse: boolean
   hasEmbeddings: boolean
   usable: boolean | null
+  /** Posición en la cola (1 = el siguiente) mientras `status === 'queued'`; null en otro caso. */
+  queuePosition: number | null
+  /** Último callback del worker (latido); null hasta que se lanza. */
+  lastHeartbeatAt: string | null
   createdAt: string
   updatedAt: string
 }

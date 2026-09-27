@@ -7,9 +7,24 @@ const keysApi = useApiKeysApi()
 
 useHead({ title: () => `${t('apiKeys.title')} · XEYE` })
 
-const { data: keys, pending, refresh } = useAsyncData('api-keys', () => keysApi.all(), {
-  lazy: true,
-  default: () => [] as ApiKey[],
+// Paginación en el servidor.
+const KEYS_PAGE_SIZE = 50
+const page = shallowRef(1)
+const {
+  data: keysPage,
+  pending,
+  refresh,
+} = useAsyncData(
+  'api-keys',
+  () => keysApi.list({ offset: (page.value - 1) * KEYS_PAGE_SIZE, limit: KEYS_PAGE_SIZE }),
+  { lazy: true, watch: [page] },
+)
+const keys = computed<ApiKey[]>(() => keysPage.value?.items ?? [])
+const total = computed(() => keysPage.value?.total ?? 0)
+// Menos páginas (tras borrar) → se acota.
+watch(total, (n) => {
+  const count = Math.max(1, Math.ceil(n / KEYS_PAGE_SIZE))
+  if (page.value > count) page.value = count
 })
 
 // Crear
@@ -106,6 +121,7 @@ async function confirmDelete() {
         @rename="onRename"
         @delete="onDelete"
       />
+      <UiPagination v-model="page" :total="total" :page-size="KEYS_PAGE_SIZE" class="pt-2" />
     </div>
 
     <ApikeysCreateModal v-model="showCreate" @created="refresh" />

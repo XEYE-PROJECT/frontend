@@ -309,6 +309,7 @@ export const en = {
     launchFailed: 'The training could not be launched',
     statusPending: 'Pending',
     statusQueued: 'Queued',
+    queuePosition: 'Queue position: {n}',
     statusInitialized: 'Initialized',
     statusOptimizing: 'Optimizing',
     statusTraining: 'Training',
@@ -583,7 +584,7 @@ export const en = {
       lifecycleP1:
         'Every list has at most one pending training. When you launch it, it moves through these states:',
       stPendingDesc: 'The list changed since the last training. Waiting for you to launch it.',
-      stQueuedDesc: 'Launched: a dedicated worker is being started for this run.',
+      stQueuedDesc: 'Queued: it starts as soon as there is a free slot (trainings are dispatched fairly across users).',
       stTrainingDesc: 'The worker is computing embeddings and enriching elements. Usually a few minutes.',
       stCompletedDesc: 'Done: the training becomes "In use" and searches use its model immediately.',
       stFailedDesc: 'Something went wrong. The error is shown on the training and you can launch again.',

@@ -4,29 +4,31 @@ const auth = useAuthStore()
 
 const listsApi = useListsApi()
 const keysApi = useApiKeysApi()
-const elementsApi = useElementsApi()
 
 useHead({ title: () => `${t('dashboard.title')} · XEYE` })
 
+// Dos peticiones: la primera página (grande) de listas trae el nº de elementos de cada una y el
+// total; de las claves solo hace falta el total.
 const { data, pending } = useAsyncData(
   'dashboard',
   async () => {
-    const [lists, keys] = await Promise.all([listsApi.all(), keysApi.all()])
-    const elementCounts = await Promise.all(
-      lists.map((l) =>
-        elementsApi
-          .listByList(l.id)
-          .then((e) => e.length)
-          .catch(() => 0),
-      ),
-    )
-    return { lists, keys, totalElements: elementCounts.reduce((a, b) => a + b, 0) }
+    const [listsPage, keysPage] = await Promise.all([
+      listsApi.list({ limit: 200 }),
+      keysApi.list({ limit: 1 }),
+    ])
+    return {
+      lists: listsPage.items,
+      totalLists: listsPage.total,
+      totalKeys: keysPage.total,
+      totalElements: listsPage.items.reduce((sum, l) => sum + l.elementCount, 0),
+    }
   },
   { lazy: true },
 )
 
 const lists = computed(() => data.value?.lists ?? [])
-const keys = computed(() => data.value?.keys ?? [])
+const totalLists = computed(() => data.value?.totalLists ?? 0)
+const totalKeys = computed(() => data.value?.totalKeys ?? 0)
 const totalElements = computed(() => data.value?.totalElements ?? 0)
 const publicCount = computed(() => lists.value.filter((l) => l.public).length)
 
@@ -35,7 +37,7 @@ const greeting = computed(() => t('dashboard.greeting', { name: auth.user?.name 
 const stats = computed(() => [
   {
     label: t('dashboard.statLists'),
-    value: formatNumber(lists.value.length, locale.value),
+    value: formatNumber(totalLists.value, locale.value),
     icon: 'list',
     tone: 'primary' as const,
   },
@@ -47,7 +49,7 @@ const stats = computed(() => [
   },
   {
     label: t('dashboard.statKeys'),
-    value: formatNumber(keys.value.length, locale.value),
+    value: formatNumber(totalKeys.value, locale.value),
     icon: 'key',
     tone: 'success' as const,
   },
@@ -65,7 +67,7 @@ const recentLists = computed(() =>
     .slice(0, 5),
 )
 
-const isEmpty = computed(() => !pending.value && lists.value.length === 0)
+const isEmpty = computed(() => !pending.value && totalLists.value === 0)
 </script>
 
 <template>

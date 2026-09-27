@@ -312,6 +312,7 @@ export const es: Messages = {
     launchFailed: 'No se pudo lanzar el entrenamiento',
     statusPending: 'Pendiente',
     statusQueued: 'En cola',
+    queuePosition: 'Posición en la cola: {n}',
     statusInitialized: 'Inicializado',
     statusOptimizing: 'Optimizando',
     statusTraining: 'Entrenando',
@@ -586,7 +587,7 @@ export const es: Messages = {
       lifecycleP1:
         'Cada lista tiene como mucho un entrenamiento pendiente. Al lanzarlo, pasa por estos estados:',
       stPendingDesc: 'La lista cambió desde el último entrenamiento. Espera a que lo lances.',
-      stQueuedDesc: 'Lanzado: se está arrancando un worker dedicado para esta ejecución.',
+      stQueuedDesc: 'En cola: arrancará en cuanto haya hueco (los entrenamientos se despachan por turnos entre usuarios).',
       stTrainingDesc: 'El worker está calculando embeddings y enriqueciendo elementos. Suele tardar unos minutos.',
       stCompletedDesc: 'Terminado: el entrenamiento queda «En uso» y las búsquedas usan su modelo de inmediato.',
       stFailedDesc: 'Algo salió mal. El error se muestra en el entrenamiento y puedes lanzarlo de nuevo.',

@@ -1,11 +1,12 @@
-import type { ApiKey, CreatedApiKey } from '~/types/api'
+import type { ApiKey, CreatedApiKey, Page, PageQuery } from '~/types/api'
 
 /** Endpoints de api keys del backend. Solo `create` devuelve el valor completo de la clave. */
 export function useApiKeysApi() {
   const { $api } = useNuxtApp()
 
   return {
-    all: () => $api<ApiKey[]>('/api-keys'),
+    /** Página de claves del usuario (`limit` máximo 200). */
+    list: (query: PageQuery = {}) => $api<Page<ApiKey>>('/api-keys', { query }),
     create: (name?: string) =>
       $api<CreatedApiKey>('/api-keys', { method: 'POST', body: { name } }),
     rename: (id: number, name: string) =>

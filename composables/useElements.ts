@@ -1,7 +1,9 @@
 import type {
   CreateElementPayload,
   Element,
+  ElementsQuery,
   ImportElementsPayload,
+  Page,
   UpdateElementPayload,
 } from '~/types/api'
 
@@ -10,7 +12,9 @@ export function useElementsApi() {
   const { $api } = useNuxtApp()
 
   return {
-    listByList: (listId: number) => $api<Element[]>(`/lists/${listId}/elements`),
+    /** Página de elementos de la lista (`limit` máximo 200; `q` filtra por texto/descripción). */
+    listByList: (listId: number, query: ElementsQuery = {}) =>
+      $api<Page<Element>>(`/lists/${listId}/elements`, { query }),
     create: (listId: number, body: CreateElementPayload) =>
       $api<Element>(`/lists/${listId}/elements`, { method: 'POST', body }),
     importElements: (listId: number, body: ImportElementsPayload) =>

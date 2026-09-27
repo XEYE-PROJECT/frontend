@@ -16,23 +16,66 @@ const {
   refresh: refreshList,
 } = useAsyncData('list-' + id, () => listsApi.get(id), { lazy: true })
 
-const {
-  data: elements,
-  pending: elementsPending,
-  refresh: refreshElements,
-} = useAsyncData('list-elements-' + id, () => elementsApi.listByList(id), {
-  lazy: true,
-  default: () => [] as Element[],
+// Elementos: filtro y paginación en el servidor (`q` sobre texto/descripción).
+const ELEMENTS_PAGE_SIZE = 25
+const elementsPage = shallowRef(1)
+const elementFilter = ref('')
+const debouncedFilter = ref('')
+let filterTimer: ReturnType<typeof setTimeout> | undefined
+watch(elementFilter, (value) => {
+  clearTimeout(filterTimer)
+  filterTimer = setTimeout(() => {
+    debouncedFilter.value = value.trim()
+  }, 300)
+})
+// Filtro nuevo → primera página.
+watch(debouncedFilter, () => {
+  elementsPage.value = 1
 })
 
 const {
-  data: trainings,
+  data: elementsData,
+  pending: elementsPending,
+  refresh: refreshElements,
+} = useAsyncData(
+  'list-elements-' + id,
+  () =>
+    elementsApi.listByList(id, {
+      offset: (elementsPage.value - 1) * ELEMENTS_PAGE_SIZE,
+      limit: ELEMENTS_PAGE_SIZE,
+      q: debouncedFilter.value || undefined,
+    }),
+  { lazy: true, watch: [elementsPage, debouncedFilter] },
+)
+const elements = computed<Element[]>(() => elementsData.value?.items ?? [])
+const elementsTotal = computed(() => elementsData.value?.total ?? 0)
+// Total sin filtro: lo trae la propia lista (elementCount) y se refresca con ella.
+const hasAnyElement = computed(() => (list.value?.elementCount ?? 0) > 0 || elementsTotal.value > 0)
+
+// Menos páginas (p. ej. tras borrar) → se acota.
+const elementsPageCount = computed(() => Math.max(1, Math.ceil(elementsTotal.value / ELEMENTS_PAGE_SIZE)))
+watch(elementsPageCount, (count) => {
+  if (elementsPage.value > count) elementsPage.value = count
+})
+
+// Entrenamientos: historial paginado, los más recientes primero.
+const TRAININGS_PAGE_SIZE = 20
+const trainingsPage = shallowRef(1)
+const {
+  data: trainingsData,
   pending: trainingsPending,
   refresh: refreshTrainings,
-} = useAsyncData('list-trainings-' + id, () => trainingsApi.listByList(id), {
-  lazy: true,
-  default: () => [] as Training[],
-})
+} = useAsyncData(
+  'list-trainings-' + id,
+  () =>
+    trainingsApi.listByList(id, {
+      offset: (trainingsPage.value - 1) * TRAININGS_PAGE_SIZE,
+      limit: TRAININGS_PAGE_SIZE,
+    }),
+  { lazy: true, watch: [trainingsPage] },
+)
+const trainings = computed<Training[]>(() => trainingsData.value?.items ?? [])
+const trainingsTotal = computed(() => trainingsData.value?.total ?? 0)
 
 const { data: embeddingModels } = useAsyncData(
   'embedding-models',
@@ -57,24 +100,31 @@ watch(noDescriptions, (on) => {
 const { data: costEstimate } = useAsyncData(
   'list-training-estimate-' + id,
   () => trainingsApi.estimate(id, regenerateDescriptions.value, noDescriptions.value),
-  { lazy: true, watch: [elements, regenerateDescriptions, noDescriptions] },
+  { lazy: true, watch: [elementsData, regenerateDescriptions, noDescriptions] },
 )
 
 useHead({ title: () => `${list.value?.name ?? t('listDetail.tabElements')} · XEYE` })
 
 const tab = ref('elements')
 
-// Una lista tiene como mucho un entrenamiento pendiente; se pinta como caja de lanzamiento, no como historial.
+// Una lista tiene como mucho un entrenamiento pendiente (siempre el más reciente, así que está
+// en la primera página); se pinta como caja de lanzamiento, no como historial.
 const pendingTraining = computed(() => trainings.value.find((tr) => tr.status === 'pending'))
 const historyTrainings = computed(() => trainings.value.filter((tr) => tr.status !== 'pending'))
+const historyTotal = computed(() => Math.max(0, trainingsTotal.value - (pendingTraining.value ? 1 : 0)))
 
 const tabs = computed(() => [
-  { key: 'elements', label: t('listDetail.tabElements'), icon: 'box', badge: elements.value.length },
+  {
+    key: 'elements',
+    label: t('listDetail.tabElements'),
+    icon: 'box',
+    badge: list.value?.elementCount ?? elementsTotal.value,
+  },
   {
     key: 'trainings',
     label: t('listDetail.tabTrainings'),
     icon: 'sparkles',
-    badge: trainings.value.length,
+    badge: trainingsTotal.value,
     dot: !!pendingTraining.value,
   },
   { key: 'settings', label: t('listDetail.tabSettings'), icon: 'settings' },
@@ -102,6 +152,7 @@ async function launchTraining(model: string | null) {
     }
     // El lanzamiento marca todos los elementos como no entrenados: cambian ambas vistas
     // (y el refresco de elementos re-dispara la estimación de precio vía su watch).
+    trainingsPage.value = 1
     await Promise.all([refreshTrainings(), refreshElements()])
   } catch (e) {
     toast.error(apiErrorMessage(e, t))
@@ -126,42 +177,13 @@ async function useTraining(trainingId: number) {
   }
 }
 
-// Elementos: filtro
-const elementFilter = ref('')
-const filteredElements = computed(() => {
-  const q = elementFilter.value.trim().toLowerCase()
-  if (!q) return elements.value
-  return elements.value.filter(
-    (el) =>
-      el.text.toLowerCase().includes(q) ||
-      (el.description ?? '').toLowerCase().includes(q),
-  )
-})
-
-// Elementos: paginación
-const ELEMENTS_PAGE_SIZE = 25
-const elementsPage = shallowRef(1)
-const elementsPageCount = computed(() =>
-  Math.max(1, Math.ceil(filteredElements.value.length / ELEMENTS_PAGE_SIZE)),
-)
-const pagedElements = computed(() =>
-  filteredElements.value.slice(
-    (elementsPage.value - 1) * ELEMENTS_PAGE_SIZE,
-    elementsPage.value * ELEMENTS_PAGE_SIZE,
-  ),
-)
-
-// Filtro nuevo → primera página; menos páginas (p. ej. tras borrar) → se acota.
-watch(elementFilter, () => {
-  elementsPage.value = 1
-})
-watch(elementsPageCount, (count) => {
-  if (elementsPage.value > count) elementsPage.value = count
-})
-
 // Elementos: modal de crear / editar
 const elModalOpen = ref(false)
 const editingEl = ref<Element | undefined>(undefined)
+
+async function onElementSaved() {
+  await Promise.all([refreshElements(), refreshList()])
+}
 
 function addElement() {
   editingEl.value = undefined
@@ -180,7 +202,7 @@ async function importElements(items: ImportElementItem[]) {
   try {
     await elementsApi.importElements(id, { elements: items })
     toast.success(t('elements.imported', { count: items.length }))
-    await Promise.all([refreshElements(), refreshTrainings()])
+    await Promise.all([refreshElements(), refreshTrainings(), refreshList()])
   } catch (e) {
     toast.error(apiErrorMessage(e, t))
   } finally {
@@ -204,7 +226,7 @@ async function confirmDeleteElement() {
     await elementsApi.remove(deletingEl.value.id)
     toast.success(t('elements.deleted'))
     deleteElOpen.value = false
-    await refreshElements()
+    await Promise.all([refreshElements(), refreshList()])
   } catch (e) {
     toast.error(apiErrorMessage(e, t))
   } finally {
@@ -330,7 +352,7 @@ async function confirmDeleteList() {
         </div>
 
         <UiEmptyState
-          v-else-if="!elements.length"
+          v-else-if="!hasAnyElement && !debouncedFilter"
           icon="box"
           :title="$t('elements.emptyTitle')"
           :description="$t('elements.emptyDesc')"
@@ -340,7 +362,7 @@ async function confirmDeleteList() {
         </UiEmptyState>
 
         <UiEmptyState
-          v-else-if="!filteredElements.length"
+          v-else-if="!elements.length"
           icon="search"
           :title="$t('elements.noMatches')"
           compact
@@ -348,7 +370,7 @@ async function confirmDeleteList() {
 
         <div v-else class="space-y-3">
           <ElementsRow
-            v-for="el in pagedElements"
+            v-for="el in elements"
             :key="el.id"
             :element="el"
             @edit="editElement(el)"
@@ -356,7 +378,7 @@ async function confirmDeleteList() {
           />
           <UiPagination
             v-model="elementsPage"
-            :total="filteredElements.length"
+            :total="elementsTotal"
             :page-size="ELEMENTS_PAGE_SIZE"
             class="pt-2"
           />
@@ -407,6 +429,12 @@ async function confirmDeleteList() {
             :training="tr"
             :switching="switchingTrainingId === tr.id"
             @use="useTraining(tr.id)"
+          />
+          <UiPagination
+            v-model="trainingsPage"
+            :total="historyTotal"
+            :page-size="TRAININGS_PAGE_SIZE"
+            class="pt-2"
           />
         </div>
       </section>
@@ -461,7 +489,7 @@ async function confirmDeleteList() {
       v-model="elModalOpen"
       :list-id="id"
       :element="editingEl"
-      @saved="refreshElements"
+      @saved="onElementSaved"
     />
 
     <!-- Borrar elemento -->
