@@ -64,6 +64,29 @@ const verify = (u: AdminUser) => act(u, () => api.update(u.id, { emailVerified: 
 const unlock = (u: AdminUser) => act(u, () => api.update(u.id, { unlock: true }), t('admin.unlocked'))
 const logoutAll = (u: AdminUser) => act(u, () => api.logoutAll(u.id), t('admin.sessionsClosed'))
 
+// Cupo de búsquedas/min de la cuenta (todas sus claves API lo comparten). Vacío = por defecto.
+const limitTarget = ref<AdminUser | null>(null)
+const limitValue = ref('')
+const limitOpen = computed({
+  get: () => limitTarget.value !== null,
+  set: (v: boolean) => {
+    if (!v) limitTarget.value = null
+  },
+})
+function editLimit(u: AdminUser) {
+  limitValue.value = u.searchRateLimitPerMinute ? String(u.searchRateLimitPerMinute) : ''
+  limitTarget.value = u
+}
+const limitNumber = computed(() => Number.parseInt(limitValue.value, 10))
+const limitValid = computed(() => Number.isInteger(limitNumber.value) && limitNumber.value >= 1)
+async function saveLimit(reset = false) {
+  const u = limitTarget.value
+  if (!u) return
+  limitTarget.value = null
+  const payload = reset ? { resetSearchRateLimit: true } : { searchRateLimitPerMinute: limitNumber.value }
+  await act(u, () => api.update(u.id, payload), t('admin.limitUpdated'))
+}
+
 const confirmTarget = ref<AdminUser | null>(null)
 const confirmOpen = computed({
   get: () => confirmTarget.value !== null,
@@ -117,6 +140,9 @@ async function remove() {
                   <UiBadge v-if="u.mfaEnabled" variant="success">2FA</UiBadge>
                   <UiBadge v-if="u.ssoProvider" variant="neutral">{{ u.ssoProvider }}</UiBadge>
                   <UiBadge v-if="isLocked(u)" variant="danger">{{ $t('admin.locked') }}</UiBadge>
+                  <UiBadge v-if="u.searchRateLimitPerMinute" variant="neutral">
+                    {{ $t('admin.limitBadge', { n: u.searchRateLimitPerMinute }) }}
+                  </UiBadge>
                 </div>
               </td>
               <td class="px-4 py-3 text-muted">{{ u.lastLoginAt ? formatDate(u.lastLoginAt, locale) : '—' }}</td>
@@ -130,6 +156,9 @@ async function remove() {
                   </UiButton>
                   <UiButton v-if="isLocked(u) || u.failedLoginCount > 0" size="sm" variant="ghost" icon="unlock" :disabled="busyId === u.id" @click="unlock(u)">
                     {{ $t('admin.unlock') }}
+                  </UiButton>
+                  <UiButton size="sm" variant="ghost" icon="zap" :disabled="busyId === u.id" @click="editLimit(u)">
+                    {{ $t('admin.limit') }}
                   </UiButton>
                   <UiButton size="sm" variant="ghost" icon="logout" :disabled="busyId === u.id" @click="logoutAll(u)">
                     {{ $t('admin.logoutAll') }}
@@ -145,6 +174,23 @@ async function remove() {
       </div>
       <UiPagination v-model="page" :total="total" :page-size="PAGE_SIZE" class="mt-4" />
     </UiCard>
+
+    <UiModal v-model="limitOpen" :title="$t('admin.limitTitle')">
+      <p class="mb-4 text-sm text-muted">{{ $t('admin.limitDesc', { email: limitTarget?.email ?? '' }) }}</p>
+      <UiInput
+        v-model="limitValue"
+        type="number"
+        min="1"
+        :label="$t('admin.limitLabel')"
+        :placeholder="$t('admin.limitPlaceholder')"
+        :hint="$t('admin.limitHint')"
+        @keyup.enter="limitValid && saveLimit()"
+      />
+      <template #footer>
+        <UiButton variant="ghost" @click="saveLimit(true)">{{ $t('admin.limitReset') }}</UiButton>
+        <UiButton :disabled="!limitValid" @click="saveLimit()">{{ $t('common.save') }}</UiButton>
+      </template>
+    </UiModal>
 
     <UiConfirmDialog
       v-model="confirmOpen"

@@ -5,7 +5,6 @@ const emit = defineEmits<{ created: [] }>()
 const { t } = useI18n()
 const toast = useToast()
 const keysApi = useApiKeysApi()
-const searchKey = useSearchKey()
 
 const step = ref<1 | 2>(1)
 const name = ref('')
@@ -27,12 +26,6 @@ async function create() {
   } finally {
     creating.value = false
   }
-}
-
-function useInSearch() {
-  searchKey.set(createdKey.value)
-  open.value = false
-  navigateTo('/search')
 }
 
 // Vuelve al paso 1 al abrir el modal (así la transición de salida sigue
@@ -83,9 +76,6 @@ watch(open, (isOpen) => {
         </UiButton>
       </template>
       <template v-else>
-        <UiButton variant="ghost" icon="search" :disabled="!acknowledged" @click="useInSearch">
-          {{ $t('apiKeys.useInSearchNow') }}
-        </UiButton>
         <UiButton :disabled="!acknowledged" @click="open = false">{{ $t('common.close') }}</UiButton>
       </template>
     </template>

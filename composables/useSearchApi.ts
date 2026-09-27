@@ -1,19 +1,16 @@
-import type { SearchPayload, SearchResponse } from '~/types/api'
+import type { ConsoleSearchPayload, ConsoleSearchResponse } from '~/types/api'
 
 /**
- * Llama al microservicio de búsqueda DIRECTAMENTE (sin pasar por el backend),
- * igual que una integración real: POST {searchUrl}/api/v1/search con X-API-Key.
+ * Playground de búsqueda: POST /lists/{id}/search en el backend (sesión JWT). El backend
+ * comprueba que la lista es tuya y reenvía la consulta al servicio de búsqueda por la red
+ * interna, así la clave API nunca vive en el navegador y las listas privadas también se pueden
+ * probar. Las integraciones reales llaman al servicio de búsqueda directamente con X-API-Key.
  */
 export function useSearchApi() {
-  const config = useRuntimeConfig()
+  const { $api } = useNuxtApp()
 
-  function search(apiKey: string, payload: SearchPayload): Promise<SearchResponse> {
-    return $fetch<SearchResponse>('/api/v1/search', {
-      baseURL: config.public.searchUrl,
-      method: 'POST',
-      headers: { 'X-API-Key': apiKey },
-      body: { register_log: false, allow_private: true, ...payload },
-    })
+  function search(listId: number, payload: ConsoleSearchPayload): Promise<ConsoleSearchResponse> {
+    return $api<ConsoleSearchResponse>(`/lists/${listId}/search`, { method: 'POST', body: payload })
   }
 
   return { search }

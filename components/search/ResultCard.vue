@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { SearchResultItem } from '~/types/api'
+import type { ConsoleSearchResult } from '~/types/api'
 
 const props = defineProps<{
-  result: SearchResultItem
+  result: ConsoleSearchResult
 }>()
 
 const hasBreakdown = computed(
-  () => props.result.text_score != null || props.result.semantic_score != null,
+  () => props.result.textScore != null || props.result.semanticScore != null,
 )
 
 const paramsPretty = computed(() =>
@@ -23,11 +23,11 @@ const paramsPretty = computed(() =>
           v-if="hasBreakdown"
           class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-muted"
         >
-          <span v-if="result.text_score != null">
-            {{ $t('search.textScore') }} · {{ Math.round(result.text_score * 100) }}%
+          <span v-if="result.textScore != null">
+            {{ $t('search.textScore') }} · {{ Math.round(result.textScore * 100) }}%
           </span>
-          <span v-if="result.semantic_score != null">
-            {{ $t('search.semanticScore') }} · {{ Math.round(result.semantic_score * 100) }}%
+          <span v-if="result.semanticScore != null">
+            {{ $t('search.semanticScore') }} · {{ Math.round(result.semanticScore * 100) }}%
           </span>
         </div>
       </div>

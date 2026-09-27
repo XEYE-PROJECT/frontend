@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SearchResponse } from '~/types/api'
+import type { ConsoleSearchResponse } from '~/types/api'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -8,11 +8,9 @@ useHead({ title: () => `${t('search.title')} · XEYE` })
 
 const listsApi = useListsApi()
 const searchApi = useSearchApi()
-// La clave la pega el usuario (o llega de "Usar en búsqueda" al crearla): el backend nunca
-// devuelve claves completas. Se recuerda solo en esta pestaña.
-const searchKey = useSearchKey()
-searchKey.init()
 
+// El playground busca a través del backend con tu sesión (POST /lists/{id}/search): no hace
+// falta clave API en el navegador y se pueden probar también las listas privadas.
 const { data, pending } = useAsyncData(
   'search-setup',
   async () => {
@@ -23,12 +21,14 @@ const { data, pending } = useAsyncData(
 )
 
 const lists = computed(() => data.value?.lists ?? [])
-
-const hasKey = computed(() => searchKey.key.value.length > 0)
 const hasLists = computed(() => lists.value.length > 0)
-const canSearch = computed(() => hasLists.value)
 
-const listOptions = computed(() => lists.value.map((l) => ({ value: l.name, label: l.name })))
+const listOptions = computed(() =>
+  lists.value.map((l) => ({
+    value: l.id,
+    label: l.public ? l.name : `${l.name} · ${t('search.privateTag')}`,
+  })),
+)
 const limitOptions = [
   { value: 10, label: '10' },
   { value: 20, label: '20' },
@@ -36,29 +36,25 @@ const limitOptions = [
 ]
 
 const form = reactive({
-  list: '',
+  listId: 0,
   term: '',
   limit: 10,
-})
-
-const apiKeyInput = computed({
-  get: () => searchKey.key.value,
-  set: (value: string) => searchKey.set(value),
+  breakdown: true,
 })
 
 const loading = ref(false)
 const errorMsg = ref('')
-const result = ref<SearchResponse | null>(null)
+const result = ref<ConsoleSearchResponse | null>(null)
 
 // Preselecciona la primera lista al cargar, respetando ?list=<nombre>.
 watch(
   data,
   (d) => {
     if (!d) return
-    if (!form.list && d.lists.length) {
+    if (!form.listId && d.lists.length) {
       const wanted = route.query.list as string | undefined
       const match = wanted ? d.lists.find((l) => l.name === wanted) : undefined
-      form.list = match ? match.name : d.lists[0].name
+      form.listId = match ? match.id : d.lists[0].id
     }
   },
   { immediate: true },
@@ -68,24 +64,21 @@ async function run() {
   loading.value = true
   errorMsg.value = ''
   try {
-    const res = await searchApi.search(searchKey.key.value, {
-      list_name: form.list,
-      search_term: form.term,
+    result.value = await searchApi.search(form.listId, {
+      searchTerm: form.term,
       limit: form.limit,
+      includeScoreBreakdown: form.breakdown,
     })
-    result.value = res
   } catch (e) {
     const s = errorStatus(e)
     errorMsg.value =
-      s === 401
-        ? t('search.errInvalidKey')
-        : s === 403
-          ? t('search.errNotPublic')
-          : s === 404
-            ? t('search.errNotFound')
-            : s === 429
-              ? t('search.errRateLimit')
-              : apiErrorMessage(e, t)
+      s === 404
+        ? t('search.errNotFound')
+        : s === 429
+          ? t('search.errRateLimit', { seconds: retryAfterSeconds(e) ?? 60 })
+          : s === 503
+            ? t('search.errUnavailable')
+            : apiErrorMessage(e, t)
   } finally {
     loading.value = false
   }
@@ -96,7 +89,7 @@ async function run() {
   <div>
     <AppPageHeader :title="$t('search.title')" :subtitle="$t('search.subtitle')">
       <template #actions>
-        <UiBadge variant="primary" icon="zap">{{ $t('search.directBadge') }}</UiBadge>
+        <UiBadge variant="primary" icon="zap">{{ $t('search.consoleBadge') }}</UiBadge>
       </template>
     </AppPageHeader>
 
@@ -113,14 +106,7 @@ async function run() {
     </UiCard>
 
     <template v-else>
-      <!-- Avisos de requisitos previos -->
-      <UiAlert v-if="!hasKey" variant="warning" class="mb-4">
-        {{ $t('search.noKey') }}
-        <NuxtLink to="/api-keys" class="font-medium text-primary hover:underline">
-          {{ $t('search.createKey') }}
-        </NuxtLink>
-      </UiAlert>
-      <UiAlert v-else-if="!hasLists" variant="info" class="mb-4">
+      <UiAlert v-if="!hasLists" variant="info" class="mb-4">
         {{ $t('search.noLists') }}
         <NuxtLink to="/lists" class="font-medium text-primary hover:underline">
           {{ $t('search.createList') }}
@@ -131,33 +117,19 @@ async function run() {
       <UiCard>
         <form class="space-y-4" @submit.prevent="run">
           <div class="grid gap-4 sm:grid-cols-2">
-            <div class="flex flex-col gap-1.5">
-              <UiInput
-                v-model="apiKeyInput"
-                type="password"
-                autocomplete="off"
-                :label="$t('search.keyLabel')"
-                :hint="$t('search.keyHint')"
-                placeholder="xeye_…"
-                icon="key"
-                :disabled="!canSearch"
-              />
-              <button
-                v-if="hasKey"
-                type="button"
-                class="self-start text-xs text-muted hover:text-fg hover:underline"
-                @click="searchKey.clear()"
-              >
-                {{ $t('search.forgetKey') }}
-              </button>
-            </div>
             <UiSelect
-              v-model="form.list"
+              v-model.number="form.listId"
               :label="$t('search.listLabel')"
               :hint="$t('search.listHint')"
               icon="list"
               :options="listOptions"
-              :disabled="!canSearch"
+              :disabled="!hasLists"
+            />
+            <UiSelect
+              v-model.number="form.limit"
+              :label="$t('search.limitLabel')"
+              :options="limitOptions"
+              :disabled="!hasLists"
             />
           </div>
 
@@ -166,22 +138,19 @@ async function run() {
             :label="$t('search.termLabel')"
             :placeholder="$t('search.termPlaceholder')"
             icon="search"
-            :disabled="!canSearch"
+            :disabled="!hasLists"
           />
 
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <UiSelect
-              v-model.number="form.limit"
-              :label="$t('search.limitLabel')"
-              :options="limitOptions"
-              :disabled="!canSearch"
-              class="sm:w-32"
-            />
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <label class="flex cursor-pointer items-center gap-2 text-sm text-fg">
+              <input v-model="form.breakdown" type="checkbox" class="accent-primary" :disabled="!hasLists" />
+              <span>{{ $t('search.breakdownToggle') }}</span>
+            </label>
             <UiButton
               type="submit"
               icon="search"
               :loading="loading"
-              :disabled="!hasKey || !form.list || !form.term"
+              :disabled="!hasLists || !form.listId || !form.term.trim()"
             >
               {{ loading ? $t('search.running') : $t('search.run') }}
             </UiButton>
@@ -197,7 +166,7 @@ async function run() {
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 class="text-lg font-semibold text-fg">{{ $t('search.resultsTitle') }}</h2>
             <p class="text-sm text-muted">
-              {{ $t('search.resultsMeta', { total: result.total_results, ms: result.duration_ms }) }}
+              {{ $t('search.resultsMeta', { total: result.totalResults, ms: result.durationMs }) }}
             </p>
           </div>
           <div class="space-y-3">
@@ -208,7 +177,7 @@ async function run() {
         <UiEmptyState
           v-else-if="result"
           icon="search"
-          :title="$t('search.noResults', { term: result.search_term })"
+          :title="$t('search.noResults', { term: result.searchTerm })"
         />
 
         <UiEmptyState
@@ -218,6 +187,11 @@ async function run() {
           :description="$t('search.emptyDesc')"
         />
       </div>
+
+      <p class="mt-6 text-xs text-subtle">
+        {{ $t('search.apiNote') }}
+        <NuxtLink to="/docs/api" class="text-primary hover:underline">{{ $t('search.apiNoteLink') }}</NuxtLink>
+      </p>
     </template>
   </div>
 </template>

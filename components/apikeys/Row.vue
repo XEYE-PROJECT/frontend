@@ -33,9 +33,6 @@ const { locale } = useI18n()
               <UiDropdownItem icon="edit" @click="emit('rename', props.apiKey); close()">
                 {{ $t('common.edit') }}
               </UiDropdownItem>
-              <UiDropdownItem icon="search" @click="navigateTo('/search'); close()">
-                {{ $t('apiKeys.useInSearch') }}
-              </UiDropdownItem>
               <UiDropdownItem icon="trash" danger @click="emit('delete', props.apiKey); close()">
                 {{ $t('common.delete') }}
               </UiDropdownItem>

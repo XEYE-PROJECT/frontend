@@ -42,13 +42,17 @@ El panel para gestionar todo lo que expone el backend de XEYE y probar la búsqu
 
 ```text
 Navegador (SPA Nuxt, :3000)
-   ├─ REST + JWT ─────────────►  Backend        (:8000)  auth, lists, elements, api-keys, trainings
-   └─ POST /api/v1/search ─────►  Search service (:8002)  X-API-Key, búsqueda directa
+   └─ REST + JWT ─────────────►  Backend (:8000)  auth, lists, elements, api-keys, trainings,
+                                                  POST /lists/{id}/search ──► Search service (red interna)
 ```
 
 - **SPA** (`ssr: false`): el token JWT vive en `localStorage`; las llamadas salen del navegador.
-- Las búsquedas **no pasan por el backend**: van directas al search service con la cabecera
-  `X-API-Key` sobre una lista **pública** del usuario.
+- La consola **solo habla con el backend**. El playground de búsqueda (`/search`) llama a
+  `POST /lists/{id}/search` con la sesión y el backend reenvía la consulta al search service por
+  la red interna: la clave API nunca vive en el navegador y se pueden probar también las listas
+  privadas. Las integraciones de los usuarios sí llaman al search service directamente con
+  `X-API-Key` (solo listas públicas); `NUXT_PUBLIC_SEARCH_URL` solo se usa en los ejemplos de la
+  documentación.
 
 ## Stack
 
@@ -80,7 +84,7 @@ npm run dev               # http://localhost:3000
 | Variable | Descripción | Por defecto |
 |----------|-------------|-------------|
 | `NUXT_PUBLIC_BACKEND_URL` | URL del backend (auth, listas, claves, …) | `http://localhost:8000` |
-| `NUXT_PUBLIC_SEARCH_URL`  | URL del microservicio de búsqueda | `http://localhost:8002` |
+| `NUXT_PUBLIC_SEARCH_URL`  | URL del microservicio de búsqueda (solo aparece en los ejemplos de la documentación; el playground busca a través del backend) | `http://localhost:8002` |
 
 Al ser una SPA, estas URLs las usa el **navegador**: en producción apúntalas a tus dominios
 públicos, no a los nombres internos de Docker. Referencia completa (incluido Sentry y qué es
@@ -138,7 +142,7 @@ frontend/
 ├─ pages/                   # login, register, dashboard, lists, api-keys, search, account
 ├─ plugins/                 # api (cliente + 401), auth, i18n, theme
 ├─ stores/                  # auth (Pinia)
-├─ types/api.ts             # contratos que reflejan el backend y el search service
+├─ types/api.ts             # contratos que reflejan el backend (incluido el playground de búsqueda)
 └─ utils/                   # apiError, format (fechas, números, params, …)
 ```
 
@@ -150,7 +154,7 @@ frontend/
 | `/dashboard` | Resumen (métricas, accesos rápidos) | Privado |
 | `/lists`, `/lists/:id` | Listas y su detalle (elementos · entrenamientos · ajustes) | Privado |
 | `/api-keys` | Gestión de claves API | Privado |
-| `/search` | Búsqueda directa al microservicio | Privado |
+| `/search` | Playground de búsqueda (vía backend, con la sesión) | Privado |
 | `/account` | Perfil y seguridad | Privado |
 
 ---

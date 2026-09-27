@@ -50,9 +50,11 @@ export default defineNuxtConfig({
         'style-src': ["'self'", "'unsafe-inline'"],
         'img-src': ["'self'", 'data:'],
         'font-src': ["'self'"],
-        // Solo los dos servicios propios y el ingest de Sentry (en dev se añaden los localhost,
-        // ver $development más abajo).
-        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
+        // Solo el backend y el ingest de Sentry (en dev se añade el localhost, ver $development
+        // más abajo). La consola NO llama al servicio de búsqueda: el playground pasa por el
+        // backend, así que search.xeye.es no está en la CSP (PROD_SEARCH_URL solo se usa en los
+        // ejemplos de la documentación).
+        'connect-src': ["'self'", PROD_BACKEND_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
         'form-action': ["'self'"],
@@ -87,7 +89,7 @@ export default defineNuxtConfig({
     security: {
       headers: {
         contentSecurityPolicy: {
-          'connect-src': ['http://localhost:8000', 'http://localhost:8002', 'ws://localhost:*'],
+          'connect-src': ['http://localhost:8000', 'ws://localhost:*'],
           'upgrade-insecure-requests': false,
         },
       },
@@ -98,6 +100,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       backendUrl: 'http://localhost:8000',
+      // Solo para los ejemplos de la página de documentación (la consola no lo llama).
       searchUrl: 'http://localhost:8002',
       // Sentry (navegador). Vacío = desactivado. Un DSN es público: puede ir en el repo.
       sentryDsn: '',

@@ -1,5 +1,5 @@
-// Normaliza los errores de ofetch ($fetch), tanto del backend
-// ({status,error,message,details}) como del servicio de búsqueda ({error,detail}).
+// Normaliza los errores de ofetch ($fetch). El backend y el servicio de búsqueda comparten el
+// sobre {status, error, code, message, details?}; se toleran cuerpos antiguos ({error, detail}).
 
 type Translate = (key: string, params?: Record<string, string | number>) => string
 
@@ -26,7 +26,7 @@ export function apiErrorMessage(e: unknown, t: Translate): string {
   const data = errorData(e)
   const status = errorStatus(e)
 
-  // El backend prioriza `message`; el servicio de búsqueda usa `detail` / `error`.
+  // `message` es el texto para humanos; `detail`/`error` solo por compatibilidad con cuerpos antiguos.
   if (data) {
     if (typeof data.message === 'string' && data.message) return data.message
     if (typeof data.detail === 'string' && data.detail) return data.detail
@@ -46,7 +46,9 @@ export function apiErrorMessage(e: unknown, t: Translate): string {
     case 422:
       return t('errors.validation')
     case 429:
-      return t('search.errRateLimit')
+      return t('errors.rateLimited', { seconds: retryAfterSeconds(e) ?? 60 })
+    case 503:
+      return t('errors.unavailable')
   }
   if (status === undefined) return t('errors.network')
   return t('errors.generic')

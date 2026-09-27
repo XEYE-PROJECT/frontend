@@ -15,7 +15,7 @@ La consola es una SPA (`ssr: false`) desplegada en Cloudflare Workers. Toda su c
 | Variable | Descripción | Default dev | Prod | Valida |
 |---|---|---|---|---|
 | `NUXT_PUBLIC_BACKEND_URL` | URL pública del backend (auth, listas, claves, entrenamientos) | `http://localhost:8000` | **`https://backend.xeye.es`** | `https://`, sin localhost |
-| `NUXT_PUBLIC_SEARCH_URL` | URL pública del search-service (las búsquedas van directas con `X-API-Key`) | `http://localhost:8002` | **`https://search.xeye.es`** | `https://`, sin localhost |
+| `NUXT_PUBLIC_SEARCH_URL` | URL pública del search-service, solo para los ejemplos de la documentación (el playground busca vía backend: `POST /lists/{id}/search`) | `http://localhost:8002` | **`https://search.xeye.es`** | `https://`, sin localhost |
 | `NUXT_PUBLIC_SENTRY_DSN` | DSN del proyecto `xeye-frontend` (público por naturaleza; vacío = desactivado) | vacío | recomendado | — |
 | `NUXT_PUBLIC_SENTRY_ENVIRONMENT` | Etiqueta de entorno en Sentry | `local` | `production` | — |
 | `NITRO_PORT` / `NITRO_HOST` | Solo al servir el build con Nitro en un contenedor | `3000` / — | — | — |

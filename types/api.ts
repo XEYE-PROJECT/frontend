@@ -1,5 +1,5 @@
-// Contratos de API: espejo de los DTO del backend y del microservicio de búsqueda.
-// Backend: bearer JWT, JSON camelCase. Búsqueda: X-API-Key, JSON snake_case.
+// Contratos de API: espejo de los DTO del backend (bearer JWT, JSON camelCase). La consola no
+// habla con el microservicio de búsqueda: el playground pasa por el backend.
 
 // Backend: usuarios / auth
 export type Permission = 'user' | 'admin'
@@ -103,6 +103,8 @@ export interface AdminUser {
   emailVerified: boolean
   mfaEnabled: boolean
   ssoProvider: string | null
+  /** Búsquedas/min de la cuenta fijadas por un admin; null = el valor por defecto del buscador. */
+  searchRateLimitPerMinute: number | null
   failedLoginCount: number
   lockedUntil: string | null
   lastLoginAt: string | null
@@ -120,6 +122,10 @@ export interface AdminUpdateUserPayload {
   permission?: Permission
   emailVerified?: boolean
   unlock?: boolean
+  /** Cupo de búsquedas/min de la cuenta (todas sus claves API lo comparten). */
+  searchRateLimitPerMinute?: number
+  /** Vuelve al valor por defecto del buscador. */
+  resetSearchRateLimit?: boolean
 }
 
 // Backend: api keys
@@ -281,35 +287,27 @@ export interface ApiError {
 }
 
 // Microservicio de búsqueda (directo, X-API-Key)
-export interface SearchPayload {
-  list_name: string
-  search_term: string
+// Backend: playground de búsqueda (POST /lists/{id}/search). El backend reenvía la consulta al
+// servicio de búsqueda por la red interna: la clave API nunca pasa por el navegador y también
+// se pueden buscar listas privadas propias.
+export interface ConsoleSearchPayload {
+  searchTerm: string
   limit?: number
-  session?: string | null
-  register_log?: boolean
-  allow_private?: boolean
+  includeScoreBreakdown?: boolean
 }
 
-export interface SearchResultItem {
+export interface ConsoleSearchResult {
   item: string
   score: number
   params: unknown | null
-  text_score?: number
-  semantic_score?: number
+  textScore?: number
+  semanticScore?: number
 }
 
-export interface SearchResponse {
-  success: boolean
-  results: SearchResultItem[]
-  total_results: number
-  search_term: string
-  list_name: string
-  duration_ms: number
-  error?: string | null
-}
-
-/** Sobre de error del servicio de búsqueda ({ error, detail }), distinto al del backend. */
-export interface SearchError {
-  error: string
-  detail?: string
+export interface ConsoleSearchResponse {
+  results: ConsoleSearchResult[]
+  totalResults: number
+  searchTerm: string
+  listName: string
+  durationMs: number
 }
