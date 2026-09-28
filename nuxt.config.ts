@@ -50,11 +50,11 @@ export default defineNuxtConfig({
         'style-src': ["'self'", "'unsafe-inline'"],
         'img-src': ["'self'", 'data:'],
         'font-src': ["'self'"],
-        // Solo el backend y el ingest de Sentry (en dev se añade el localhost, ver $development
-        // más abajo). La consola NO llama al servicio de búsqueda: el playground pasa por el
-        // backend, así que search.xeye.es no está en la CSP (PROD_SEARCH_URL solo se usa en los
-        // ejemplos de la documentación).
-        'connect-src': ["'self'", PROD_BACKEND_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
+        // El backend, el ingest de Sentry y el buscador (en dev se añade el localhost, ver
+        // $development más abajo). El playground NO llama al buscador (pasa por el backend); el
+        // buscador está aquí solo por la página pública de estado (/status), que consulta su
+        // sonda /ready desde el navegador.
+        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
         'form-action': ["'self'"],
@@ -89,7 +89,7 @@ export default defineNuxtConfig({
     security: {
       headers: {
         contentSecurityPolicy: {
-          'connect-src': ['http://localhost:8000', 'ws://localhost:*'],
+          'connect-src': ['http://localhost:8000', 'http://localhost:8002', 'ws://localhost:*'],
           'upgrade-insecure-requests': false,
         },
       },
@@ -100,8 +100,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       backendUrl: 'http://localhost:8000',
-      // Solo para los ejemplos de la página de documentación (la consola no lo llama).
+      // Ejemplos de la documentación y sonda /ready de la página de estado (el playground no lo llama).
       searchUrl: 'http://localhost:8002',
+      // Página de estado externa (historial de incidencias, p. ej. Better Stack / UptimeRobot);
+      // vacío = /status no la enlaza.
+      statusPageUrl: '',
       // Sentry (navegador). Vacío = desactivado. Un DSN es público: puede ir en el repo.
       sentryDsn: '',
       sentryEnvironment: '',

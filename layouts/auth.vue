@@ -4,6 +4,9 @@
       <UiButton variant="ghost" size="sm" icon="book-open" to="/docs">
         {{ $t('nav.docs') }}
       </UiButton>
+      <UiButton variant="ghost" size="sm" icon="zap" to="/status">
+        {{ $t('nav.status') }}
+      </UiButton>
       <UiThemeToggle />
       <UiLangSwitcher />
     </div>

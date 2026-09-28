@@ -12,6 +12,8 @@ services:
       - NUXT_PUBLIC_BACKEND_URL=${NUXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
       - NUXT_PUBLIC_SEARCH_URL=${NUXT_PUBLIC_SEARCH_URL:-http://localhost:8002}
     restart: unless-stopped
+    # Nitro sirviendo una SPA: poca RAM.
+    mem_limit: 256m
     networks:
       - xeye-network
 

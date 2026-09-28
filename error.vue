@@ -31,5 +31,9 @@ function goHome() {
     >{{ error.message }}</pre>
 
     <UiButton class="mt-6" icon="arrow-left" @click="goHome">{{ $t('notFound.home') }}</UiButton>
+    <!-- Un 5xx suele ser un servicio caído: la página de estado lo confirma sin adivinar. -->
+    <NuxtLink to="/status" class="mt-4 text-sm font-medium text-primary hover:underline">
+      {{ $t('notFound.status') }}
+    </NuxtLink>
   </div>
 </template>

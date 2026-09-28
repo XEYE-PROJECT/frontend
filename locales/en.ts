@@ -44,6 +44,7 @@ export const en = {
     apiKeys: 'API keys',
     search: 'Search',
     docs: 'Documentation',
+    status: 'Status',
     account: 'Account',
     logout: 'Sign out',
     admin: 'Users',
@@ -466,6 +467,33 @@ export const en = {
     invalidEmail: 'Enter a valid email.',
     tooShort: 'Too short.',
   },
+  status: {
+    title: 'Service status',
+    subtitle: 'Live check, from your browser, of each service’s public probe. It repeats every minute.',
+    refresh: 'Check again',
+    lastChecked: 'Last checked: {time}',
+    latency: '{ms} ms',
+    unreachable: 'Not responding (no connection or timed out).',
+    notReady: 'Starting or without data from the backend: searches answer 503 until it finishes.',
+    degradedHint: 'Responding, but with reduced functionality ({reasons}).',
+    note: 'This page probes the services right now; incident history and notices live on the external monitor.',
+    externalPage: 'See incident history',
+    overall: {
+      ok: 'All services operational',
+      degraded: 'Degraded service',
+      down: 'Some services are down',
+      checking: 'Checking…',
+    },
+    states: { ok: 'Operational', degraded: 'Degraded', down: 'Down', checking: 'Checking' },
+    services: {
+      console: 'Console',
+      consoleDesc: 'This web application.',
+      backend: 'Backend API',
+      backendDesc: 'Accounts, lists, keys and trainings.',
+      search: 'Search API',
+      searchDesc: 'API-key searches and the console playground.',
+    },
+  },
   docs: {
     title: 'Documentation',
     subtitle: 'Everything you need to build searchable lists and plug them into your app.',
@@ -674,7 +702,7 @@ export const en = {
       err429: 'Your account\'s (or your IP\'s) searches-per-minute quota is exhausted.',
       err429Fix: 'Wait the Retry-After seconds and retry; watch X-RateLimit-Remaining to stay under the limit.',
       err503: 'The search service is still loading its catalogs (SERVICE_NOT_READY) or could not load the list data (BACKEND_UNAVAILABLE).',
-      err503Fix: 'Retry after the Retry-After seconds; if it persists, check the service status.',
+      err503Fix: 'Retry after the Retry-After seconds; if it persists, check the status page (/status).',
       degradedTitle: 'Degraded responses',
       degradedP1:
         'Every response carries degraded and degradation_reasons. When degraded is true the search was served with lower quality and the reason says why: no_embeddings (the list has no training in use: text only), model_unavailable (the embedding model could not be loaded), model_mismatch (the vectors do not match the model: retrain) or stale_data (stale data that could not be refreshed). The X-Search-Degraded: true header signals it too.',
@@ -718,6 +746,7 @@ export const en = {
     title: 'Page not found',
     desc: 'The page you are looking for does not exist.',
     home: 'Back to overview',
+    status: 'Check the service status',
   },
 }
 

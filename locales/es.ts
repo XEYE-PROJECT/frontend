@@ -45,6 +45,7 @@ export const es: Messages = {
     apiKeys: 'Claves API',
     search: 'Búsqueda',
     docs: 'Documentación',
+    status: 'Estado',
     account: 'Cuenta',
     logout: 'Cerrar sesión',
     admin: 'Usuarios',
@@ -469,6 +470,34 @@ export const es: Messages = {
     invalidEmail: 'Introduce un correo válido.',
     tooShort: 'Demasiado corto.',
   },
+  status: {
+    title: 'Estado del servicio',
+    subtitle:
+      'Comprobación en vivo, desde tu navegador, de las sondas públicas de cada servicio. Se repite cada minuto.',
+    refresh: 'Volver a comprobar',
+    lastChecked: 'Última comprobación: {time}',
+    latency: '{ms} ms',
+    unreachable: 'No responde (sin conexión o tiempo de espera agotado).',
+    notReady: 'Arrancando o sin datos del backend: las búsquedas responden 503 hasta que termine.',
+    degradedHint: 'Responde, pero con funcionalidad reducida ({reasons}).',
+    note: 'Esta página consulta los servicios en el momento; el historial de incidencias y los avisos los lleva el monitor externo.',
+    externalPage: 'Ver historial de incidencias',
+    overall: {
+      ok: 'Todos los servicios operativos',
+      degraded: 'Servicio degradado',
+      down: 'Hay servicios caídos',
+      checking: 'Comprobando…',
+    },
+    states: { ok: 'Operativo', degraded: 'Degradado', down: 'Caído', checking: 'Comprobando' },
+    services: {
+      console: 'Consola',
+      consoleDesc: 'Esta aplicación web.',
+      backend: 'API del backend',
+      backendDesc: 'Cuentas, listas, claves y entrenamientos.',
+      search: 'API de búsqueda',
+      searchDesc: 'Búsquedas con API key y playground de la consola.',
+    },
+  },
   docs: {
     title: 'Documentación',
     subtitle: 'Todo lo que necesitas para crear listas buscables y conectarlas a tu aplicación.',
@@ -677,7 +706,7 @@ export const es: Messages = {
       err429: 'Cupo de búsquedas por minuto de tu cuenta (o de tu IP) agotado.',
       err429Fix: 'Espera los segundos de Retry-After y reintenta; usa X-RateLimit-Remaining para no llegar al límite.',
       err503: 'El buscador aún está cargando sus catálogos (SERVICE_NOT_READY) o no pudo cargar los datos de la lista (BACKEND_UNAVAILABLE).',
-      err503Fix: 'Reintenta pasados los segundos de Retry-After; si persiste, revisa el estado del servicio.',
+      err503Fix: 'Reintenta pasados los segundos de Retry-After; si persiste, consulta la página de estado (/status).',
       degradedTitle: 'Respuestas degradadas',
       degradedP1:
         'Toda respuesta lleva degraded y degradation_reasons. Si degraded es true, la búsqueda se ha servido con menos calidad y el motivo lo dice: no_embeddings (la lista no tiene entrenamiento en uso: solo texto), model_unavailable (el modelo de embeddings no pudo cargarse), model_mismatch (los vectores no cuadran con el modelo: reentrena) o stale_data (datos caducos que no se pudieron refrescar). La cabecera X-Search-Degraded: true lo indica también.',
@@ -721,5 +750,6 @@ export const es: Messages = {
     title: 'Página no encontrada',
     desc: 'La página que buscas no existe.',
     home: 'Volver al resumen',
+    status: 'Ver el estado del servicio',
   },
 }

@@ -1,6 +1,6 @@
 // Guard global: las páginas de acceso (`/login`, `/register`, verificación, recuperación, retorno
-// del SSO) y la documentación (`/docs*`) son públicas, el resto exige sesión; `/admin/*` exige
-// además el rol admin; `/` redirige según el estado de autenticación.
+// del SSO), la documentación (`/docs*`) y la página de estado (`/status`) son públicas, el resto
+// exige sesión; `/admin/*` exige además el rol admin; `/` redirige según el estado de autenticación.
 export default defineNuxtRouteMiddleware((to) => {
   const auth = useAuthStore()
   const authPages = new Set(['/login', '/register'])
@@ -10,6 +10,7 @@ export default defineNuxtRouteMiddleware((to) => {
     '/forgot-password',
     '/reset-password',
     '/sso/callback',
+    '/status',
   ])
   const isDocs = to.path === '/docs' || to.path.startsWith('/docs/')
   const isPublic = publicPages.has(to.path) || isDocs
