@@ -334,10 +334,20 @@ export interface ConsoleSearchResult {
   semanticScore?: number
 }
 
+/** Motivos con los que el buscador avisa de que sirvió con menos calidad. */
+export type SearchDegradationReason =
+  | 'no_embeddings'
+  | 'model_unavailable'
+  | 'model_mismatch'
+  | 'stale_data'
+
 export interface ConsoleSearchResponse {
   results: ConsoleSearchResult[]
   totalResults: number
   searchTerm: string
   listName: string
   durationMs: number
+  /** true si la búsqueda se sirvió degradada; `degradationReasons` dice por qué. */
+  degraded: boolean
+  degradationReasons: SearchDegradationReason[]
 }

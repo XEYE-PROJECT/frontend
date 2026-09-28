@@ -348,6 +348,13 @@ export const es: Messages = {
     breakdown: 'Desglose de puntuación',
     errNotFound: 'Lista no encontrada (¿la has borrado o aún no está sincronizada en el buscador?).',
     errRateLimit: 'Has alcanzado el cupo de búsquedas por minuto de tu cuenta. Reintenta en {seconds} s.',
+    degradedWarning: 'Resultado degradado: {reasons}.',
+    degradedReasons: {
+      no_embeddings: 'la lista no tiene un entrenamiento en uso, solo se ha buscado por texto',
+      model_unavailable: 'el modelo de embeddings no está disponible, solo se ha buscado por texto',
+      model_mismatch: 'los vectores no cuadran con el modelo actual (reentrena la lista)',
+      stale_data: 'los datos están caducos y no se han podido refrescar',
+    },
     errUnavailable: 'El servicio de búsqueda no está disponible ahora mismo. Inténtalo en un momento.',
     errGeneric: 'La búsqueda ha fallado.',
     apiNote: 'Tus integraciones llaman al servicio de búsqueda directamente con una clave API (solo listas públicas).',
@@ -636,7 +643,7 @@ export const es: Messages = {
       pBreakdownDesc:
         'Si es true, cada resultado incluye text_score y semantic_score además de score. Por defecto false.',
       pRegisterLogDesc:
-        'Si es false, la búsqueda no se guarda en el historial de la lista (útil en pruebas automáticas). Por defecto true.',
+        'Obsoleto e ignorado: toda búsqueda se guarda en el historial de la lista. Se acepta solo para no romper integraciones antiguas.',
       responseTitle: 'La respuesta',
       responseP1:
         'Los resultados vienen ordenados por puntuación (0–1, cuanto más alta mejor). Cada uno incluye el texto del elemento («item»), sus parámetros intactos y, si lo pediste, el desglose texto/semántica. duration_ms es el tiempo de búsqueda en el servidor.',
@@ -669,8 +676,11 @@ export const es: Messages = {
       err422Fix: 'Mira details: indica el campo y el motivo.',
       err429: 'Cupo de búsquedas por minuto de tu cuenta (o de tu IP) agotado.',
       err429Fix: 'Espera los segundos de Retry-After y reintenta; usa X-RateLimit-Remaining para no llegar al límite.',
-      err503: 'El buscador no pudo cargar los datos de la lista (backend no disponible).',
-      err503Fix: 'Reintenta en unos segundos; si persiste, revisa el estado del servicio.',
+      err503: 'El buscador aún está cargando sus catálogos (SERVICE_NOT_READY) o no pudo cargar los datos de la lista (BACKEND_UNAVAILABLE).',
+      err503Fix: 'Reintenta pasados los segundos de Retry-After; si persiste, revisa el estado del servicio.',
+      degradedTitle: 'Respuestas degradadas',
+      degradedP1:
+        'Toda respuesta lleva degraded y degradation_reasons. Si degraded es true, la búsqueda se ha servido con menos calidad y el motivo lo dice: no_embeddings (la lista no tiene entrenamiento en uso: solo texto), model_unavailable (el modelo de embeddings no pudo cargarse), model_mismatch (los vectores no cuadran con el modelo: reentrena) o stale_data (datos caducos que no se pudieron refrescar). La cabecera X-Search-Degraded: true lo indica también.',
       rec1: 'Llama a la API desde tu backend y guarda la clave en una variable de entorno, no en código cliente.',
       rec2: 'Usa una clave por entorno o integración: así puedes revocar una sin romper el resto.',
       rec3: 'Controla el 429 con un pequeño reintento/backoff respetando Retry-After: el cupo es por cuenta y por minuto.',

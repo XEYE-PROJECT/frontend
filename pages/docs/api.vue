@@ -24,7 +24,7 @@ const errors = computed(() => [
   { status: '413', code: 'REQUEST_TOO_LARGE', meaning: t('docs.api.err413'), fix: t('docs.api.err413Fix') },
   { status: '422', code: 'VALIDATION_FAILED', meaning: t('docs.api.err422'), fix: t('docs.api.err422Fix') },
   { status: '429', code: 'RATE_LIMITED', meaning: t('docs.api.err429'), fix: t('docs.api.err429Fix') },
-  { status: '503', code: 'BACKEND_UNAVAILABLE', meaning: t('docs.api.err503'), fix: t('docs.api.err503Fix') },
+  { status: '503', code: 'SERVICE_NOT_READY · BACKEND_UNAVAILABLE', meaning: t('docs.api.err503'), fix: t('docs.api.err503Fix') },
 ])
 
 const recommendations = computed(() => [
@@ -78,7 +78,9 @@ const responseExample = `{
   "total_results": 1,
   "search_term": "wireless headphones",
   "list_name": "products",
-  "duration_ms": 42
+  "duration_ms": 42,
+  "degraded": false,
+  "degradation_reasons": []
 }`
 
 const targetExample = `curl -X POST ${searchUrl}/api/v1/target \\
@@ -140,6 +142,10 @@ X-RateLimit-Reset: 23
     <DocsBlock :title="$t('docs.api.responseTitle')" icon="arrow-left">
       <p>{{ $t('docs.api.responseP1') }}</p>
       <DocsCodeBlock :code="responseExample" label="200 OK" />
+    </DocsBlock>
+
+    <DocsBlock :title="$t('docs.api.degradedTitle')" icon="alert-triangle">
+      <p>{{ $t('docs.api.degradedP1') }}</p>
     </DocsBlock>
 
     <DocsBlock :title="$t('docs.api.targetTitle')" icon="check">

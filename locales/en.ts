@@ -345,6 +345,13 @@ export const en = {
     breakdown: 'Score breakdown',
     errNotFound: 'List not found (deleted, or not synced to the search service yet?).',
     errRateLimit: 'You have reached your account\'s searches-per-minute quota. Retry in {seconds} s.',
+    degradedWarning: 'Degraded result: {reasons}.',
+    degradedReasons: {
+      no_embeddings: 'the list has no training in use, text-only search',
+      model_unavailable: 'the embedding model is unavailable, text-only search',
+      model_mismatch: 'the vectors do not match the current model (retrain the list)',
+      stale_data: 'the data is stale and could not be refreshed',
+    },
     errUnavailable: 'The search service is unavailable right now. Try again shortly.',
     errGeneric: 'The search request failed.',
     apiNote: 'Your integrations call the search service directly with an API key (public lists only).',
@@ -633,7 +640,7 @@ export const en = {
       pBreakdownDesc:
         'If true, every result also carries text_score and semantic_score next to score. Default false.',
       pRegisterLogDesc:
-        'If false, the search is not stored in the list history (handy for automated tests). Default true.',
+        'Deprecated and ignored: every search is stored in the list history. Still accepted so older integrations keep working.',
       responseTitle: 'The response',
       responseP1:
         'Results come sorted by score (0–1, higher is better). Each one carries the element text ("item"), its params untouched and, if requested, the text/semantic breakdown. duration_ms is the server-side search time.',
@@ -666,8 +673,11 @@ export const en = {
       err422Fix: 'Look at details: it names the field and the reason.',
       err429: 'Your account\'s (or your IP\'s) searches-per-minute quota is exhausted.',
       err429Fix: 'Wait the Retry-After seconds and retry; watch X-RateLimit-Remaining to stay under the limit.',
-      err503: 'The search service could not load the list data (backend unavailable).',
-      err503Fix: 'Retry in a few seconds; if it persists, check the service status.',
+      err503: 'The search service is still loading its catalogs (SERVICE_NOT_READY) or could not load the list data (BACKEND_UNAVAILABLE).',
+      err503Fix: 'Retry after the Retry-After seconds; if it persists, check the service status.',
+      degradedTitle: 'Degraded responses',
+      degradedP1:
+        'Every response carries degraded and degradation_reasons. When degraded is true the search was served with lower quality and the reason says why: no_embeddings (the list has no training in use: text only), model_unavailable (the embedding model could not be loaded), model_mismatch (the vectors do not match the model: retrain) or stale_data (stale data that could not be refreshed). The X-Search-Degraded: true header signals it too.',
       rec1: 'Call the API from your backend and keep the key in an environment variable, not in client code.',
       rec2: 'Use one key per environment or integration, so you can revoke one without breaking the rest.',
       rec3: 'Handle 429 with a small retry/backoff honouring Retry-After — the quota is per account, per minute.',

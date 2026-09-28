@@ -46,6 +46,14 @@ const loading = ref(false)
 const errorMsg = ref('')
 const result = ref<ConsoleSearchResponse | null>(null)
 
+// El buscador avisa cuando ha servido con menos calidad (sin embeddings, modelo caído, datos
+// caducos…): se muestra el motivo para que el usuario sepa si fiarse del ranking.
+const degradedMsg = computed(() => {
+  if (!result.value?.degraded) return ''
+  const reasons = (result.value.degradationReasons ?? []).map((r) => t(`search.degradedReasons.${r}`))
+  return t('search.degradedWarning', { reasons: reasons.join('; ') })
+})
+
 // Preselecciona la primera lista al cargar, respetando ?list=<nombre>.
 watch(
   data,
@@ -161,6 +169,7 @@ async function run() {
       <!-- Resultados -->
       <div class="mt-8 space-y-4">
         <UiAlert v-if="errorMsg" variant="danger">{{ errorMsg }}</UiAlert>
+        <UiAlert v-else-if="degradedMsg" variant="warning">{{ degradedMsg }}</UiAlert>
 
         <template v-if="result && result.results.length">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
