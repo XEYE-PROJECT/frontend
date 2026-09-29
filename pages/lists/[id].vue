@@ -239,7 +239,7 @@ async function confirmDeleteElement() {
 }
 
 // Ajustes: editar lista
-const settingsForm = reactive({ name: '', description: '', public: false })
+const settingsForm = reactive({ name: '', description: '', public: false, llmEnrichment: true })
 const savingSettings = ref(false)
 
 watch(
@@ -249,6 +249,7 @@ watch(
       settingsForm.name = l.name
       settingsForm.description = l.description ?? ''
       settingsForm.public = l.public
+      settingsForm.llmEnrichment = l.llmEnrichment
     }
   },
   { immediate: true },
@@ -262,6 +263,7 @@ async function saveSettings() {
       name: settingsForm.name.trim(),
       description: settingsForm.description.trim() ? settingsForm.description.trim() : null,
       public: settingsForm.public,
+      llmEnrichment: settingsForm.llmEnrichment,
     })
     toast.success(t('lists.updated'))
     await refreshList()
@@ -463,6 +465,11 @@ async function confirmDeleteList() {
               v-model="settingsForm.public"
               :label="$t('lists.fieldPublic')"
               :description="$t('lists.fieldPublicHint')"
+            />
+            <UiSwitch
+              v-model="settingsForm.llmEnrichment"
+              :label="$t('lists.fieldLlm')"
+              :description="$t('lists.fieldLlmHint')"
             />
             <div class="flex justify-end">
               <UiButton

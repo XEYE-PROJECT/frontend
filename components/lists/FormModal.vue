@@ -10,7 +10,7 @@ const listsApi = useListsApi()
 const elementsApi = useElementsApi()
 const toast = useToast()
 
-const form = reactive({ name: '', description: '', public: false })
+const form = reactive({ name: '', description: '', public: false, llmEnrichment: true })
 const saving = ref(false)
 
 // Elementos elegidos de un JSON (solo en modo crear); se importan justo tras crear la lista.
@@ -24,6 +24,7 @@ watch(
     form.name = props.list?.name ?? ''
     form.description = props.list?.description ?? ''
     form.public = props.list?.public ?? false
+    form.llmEnrichment = props.list?.llmEnrichment ?? true
     clearImport()
   },
   { immediate: true },
@@ -47,6 +48,7 @@ async function save() {
       name: form.name.trim(),
       description: form.description.trim() ? form.description.trim() : null,
       public: form.public,
+      llmEnrichment: form.llmEnrichment,
     }
     const result = props.list
       ? await listsApi.update(props.list.id, payload)
@@ -90,6 +92,11 @@ async function save() {
         v-model="form.public"
         :label="$t('lists.fieldPublic')"
         :description="$t('lists.fieldPublicHint')"
+      />
+      <UiSwitch
+        v-model="form.llmEnrichment"
+        :label="$t('lists.fieldLlm')"
+        :description="$t('lists.fieldLlmHint')"
       />
 
       <div v-if="!list" class="space-y-2">

@@ -15,5 +15,7 @@ crea el tag que publica la GitHub Release (la consola se despliega desde master 
 - Seguridad: CSP con nonce, cabeceras estrictas, guard de configuración pública, Sentry.
 - Calidad: ESLint + Prettier, Vitest (utils, store, composables y componentes), typecheck en el
   build, CI con gitleaks y Trivy, Dockerfile con pnpm para probar el build en local.
+- Ajustes de lista: interruptor "Descripciones con IA" (opt-out del LLM por lista; el backend
+  entrena esas listas sin paso de IA y el worker no envía sus textos a ningún modelo).
 
 [Unreleased]: https://github.com/XEYE-PROJECT/frontend/compare/master...HEAD

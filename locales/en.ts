@@ -192,6 +192,9 @@ export const en = {
     fieldDescriptionPlaceholder: 'What is this list about?',
     fieldPublic: 'Public',
     fieldPublicHint: 'Public lists can be queried with an API key.',
+    fieldLlm: 'AI descriptions',
+    fieldLlmHint:
+      'When training, a language model generates descriptions and queries for each element to improve search. Turn it off if you do not want the texts of this list sent to any model: it will be trained on its own texts only.',
     deleteTitle: 'Delete list',
     deleteDesc: 'This permanently deletes “{name}” and all its elements. This cannot be undone.',
     created: 'List created',

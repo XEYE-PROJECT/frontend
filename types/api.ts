@@ -162,6 +162,8 @@ export interface ItemList {
   name: string
   description: string | null
   public: boolean
+  /** false = sin descripciones generadas por IA: los textos no se envían a ningún LLM (opt-out). */
+  llmEnrichment: boolean
   userId: number
   /** Nº de elementos (lo calcula el backend en el mismo listado). */
   elementCount: number
@@ -184,12 +186,14 @@ export interface CreateListPayload {
   name: string
   description?: string | null
   public?: boolean
+  llmEnrichment?: boolean
 }
 
 export interface UpdateListPayload {
   name?: string
   description?: string | null
   public?: boolean
+  llmEnrichment?: boolean
 }
 
 // Backend: elementos
@@ -246,11 +250,15 @@ export interface TrainingTime {
 
 export interface TrainingCost {
   runpod: number | null
+  /** Coste real del LLM reportado por el worker (tokens x tarifa); informativo, no entra en el precio. */
+  llm?: number | null
   /** Precio fijo por entrenamiento (null en entrenamientos anteriores al cambio). */
   fixed: number | null
   /** Precio por descripciones generadas: n.º planificado x tarifa del LLM. */
   enrichment: number | null
   total: number | null
+  llmInputTokens?: number | null
+  llmOutputTokens?: number | null
 }
 
 /** Precio preestablecido de lanzar un entrenamiento ahora: fijo + descripciones a generar. */

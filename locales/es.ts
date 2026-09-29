@@ -196,6 +196,9 @@ export const es: Messages = {
     fieldDescriptionPlaceholder: '¿De qué trata esta lista?',
     fieldPublic: 'Pública',
     fieldPublicHint: 'Las listas públicas se pueden consultar con una clave API.',
+    fieldLlm: 'Descripciones con IA',
+    fieldLlmHint:
+      'Al entrenar, un modelo de lenguaje genera descripciones y consultas de cada elemento para mejorar la búsqueda. Desactívalo si no quieres que los textos de esta lista se envíen a ningún modelo: se entrenará solo con sus textos.',
     deleteTitle: 'Eliminar lista',
     deleteDesc:
       'Esto elimina permanentemente «{name}» y todos sus elementos. No se puede deshacer.',
