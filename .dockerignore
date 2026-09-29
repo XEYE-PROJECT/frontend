@@ -4,9 +4,22 @@ node_modules
 .output
 .cache
 dist
+coverage
 .git
+.github
+.claude
 .env
 .env.*
 !.env.example
 *.log
 .DS_Store
+# Tests y tooling que el build no necesita
+tests
+vitest.config.ts
+eslint.config.mjs
+.prettierrc
+.prettierignore
+.pre-commit-config.yaml
+.gitleaks.toml
+docker-compose.yml
+Dockerfile

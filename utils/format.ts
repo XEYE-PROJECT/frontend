@@ -4,7 +4,10 @@ import type { TrainingOption } from '~/types/api'
 const localeTag: Record<Locale, string> = { es: 'es-ES', en: 'en-US' }
 
 /** Fecha absoluta tipo "7 jul 2026". */
-export function formatDate(value: string | number | Date | null | undefined, locale: Locale): string {
+export function formatDate(
+  value: string | number | Date | null | undefined,
+  locale: Locale,
+): string {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return '—'
@@ -16,7 +19,10 @@ export function formatDate(value: string | number | Date | null | undefined, loc
 }
 
 /** Fecha y hora, para vistas de detalle. */
-export function formatDateTime(value: string | number | Date | null | undefined, locale: Locale): string {
+export function formatDateTime(
+  value: string | number | Date | null | undefined,
+  locale: Locale,
+): string {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return '—'
@@ -30,7 +36,10 @@ export function formatDateTime(value: string | number | Date | null | undefined,
 }
 
 /** Tiempo relativo compacto tipo "hace 3 h". */
-export function formatRelative(value: string | number | Date | null | undefined, locale: Locale): string {
+export function formatRelative(
+  value: string | number | Date | null | undefined,
+  locale: Locale,
+): string {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return '—'
@@ -88,7 +97,9 @@ export function embeddingModelName(model: string | null | undefined): string {
  * la estrategia embeddings_only, que salta el paso LLM.
  */
 export function isEmbeddingsOnly(options: TrainingOption[] | null | undefined): boolean {
-  return !!options?.some((option) => option.key === 'strategy' && option.value === 'embeddings_only')
+  return !!options?.some(
+    (option) => option.key === 'strategy' && option.value === 'embeddings_only',
+  )
 }
 
 /** Formatea lo mejor posible el string opaco `params` de un elemento. */

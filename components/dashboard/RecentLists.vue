@@ -51,12 +51,7 @@ const { locale } = useI18n()
 
     <!-- Filas de listas -->
     <div v-else class="space-y-2">
-      <NuxtLink
-        v-for="list in lists"
-        :key="list.id"
-        :to="`/lists/${list.id}`"
-        class="group block"
-      >
+      <NuxtLink v-for="list in lists" :key="list.id" :to="`/lists/${list.id}`" class="group block">
         <UiCard :padded="false" hover>
           <div class="flex items-center justify-between gap-3 p-4">
             <div class="flex min-w-0 items-center gap-3">

@@ -1,5 +1,5 @@
 // Fail fast de la configuración pública en producción. Se ejecuta antes que el resto de
-// plugins (prefijo 00.) y solo fuera de `nuxt dev`.
+// plugins (prefijo 00.) y solo fuera de `nuxt dev` y de los tests (vitest, entorno `nuxt`).
 //
 // Motivo: la SPA habla con dos servicios externos cuyas URLs vienen de NUXT_PUBLIC_*; si un
 // deploy las pierde (pasó el 2026-07-28: `wrangler deploy` borró las variables del dashboard
@@ -16,7 +16,8 @@ export function publicUrlProblem(name: string, value: unknown): string | null {
   } catch {
     return `${name} is not a valid URL (found '${value}')`
   }
-  if (url.protocol !== 'https:') return `${name} must be an https:// URL in production (found '${value}')`
+  if (url.protocol !== 'https:')
+    return `${name} must be an https:// URL in production (found '${value}')`
   if (LOCAL_HOSTS.has(url.hostname) || url.hostname.endsWith('.localhost')) {
     return `${name} must not point to localhost in production (found '${value}')`
   }
@@ -24,7 +25,8 @@ export function publicUrlProblem(name: string, value: unknown): string | null {
 }
 
 export default defineNuxtPlugin(() => {
-  if (import.meta.dev) return
+  // En vitest (entorno nuxt) tampoco: MODE es 'test'.
+  if (import.meta.dev || import.meta.env.MODE === 'test') return
 
   const config = useRuntimeConfig()
   const problems = [

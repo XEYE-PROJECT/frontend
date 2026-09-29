@@ -21,7 +21,9 @@ const open = defineModel<boolean>({ default: false })
     <div class="flex gap-3">
       <div
         class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-        :class="variant === 'danger' ? 'bg-danger-soft text-danger' : 'bg-primary-soft text-primary'"
+        :class="
+          variant === 'danger' ? 'bg-danger-soft text-danger' : 'bg-primary-soft text-primary'
+        "
       >
         <UiIcon :name="icon" :size="20" />
       </div>

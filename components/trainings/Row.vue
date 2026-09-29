@@ -11,7 +11,9 @@ const { locale } = useI18n()
 const canUse = computed(() => !props.training.inUse && props.training.usable === true)
 const notUsable = computed(
   () =>
-    !props.training.inUse && props.training.status === 'completed' && props.training.usable === false,
+    !props.training.inUse &&
+    props.training.status === 'completed' &&
+    props.training.usable === false,
 )
 
 // Lanzado con "No usar descripciones": el 0 con descripción IA es lo esperado, no un aviso.
@@ -34,7 +36,10 @@ const partialDescriptions = computed(
         <div class="flex flex-wrap items-center gap-2">
           <TrainingsStatusBadge :status="training.status" />
           <UiBadge v-if="training.inUse" variant="primary" dot>{{ $t('trainings.inUse') }}</UiBadge>
-          <span v-if="training.status === 'queued' && training.queuePosition" class="text-xs text-subtle">
+          <span
+            v-if="training.status === 'queued' && training.queuePosition"
+            class="text-xs text-subtle"
+          >
             {{ $t('trainings.queuePosition', { n: training.queuePosition }) }}
           </span>
         </div>
@@ -52,7 +57,11 @@ const partialDescriptions = computed(
           >
             {{ $t('trainings.use') }}
           </UiButton>
-          <span v-else-if="notUsable" class="text-xs text-subtle" :title="$t('trainings.notUsableHint')">
+          <span
+            v-else-if="notUsable"
+            class="text-xs text-subtle"
+            :title="$t('trainings.notUsableHint')"
+          >
             {{ $t('trainings.notUsable') }}
           </span>
         </div>

@@ -81,20 +81,23 @@ export const es: Messages = {
     passwordBreached: 'Esta contraseña aparece en filtraciones conocidas. Elige otra.',
     forgotPassword: '¿Has olvidado tu contraseña?',
     invalidCredentials: 'Email o contraseña incorrectos.',
-    emailNotVerified: 'Verifica tu email antes de entrar. Revisa tu bandeja de entrada (y el spam).',
+    emailNotVerified:
+      'Verifica tu email antes de entrar. Revisa tu bandeja de entrada (y el spam).',
     resendVerification: 'Reenviar email de verificación',
     verificationResent: 'Si la dirección es válida, te llegará un nuevo email de verificación.',
     accountLocked: 'Demasiados intentos fallidos. Vuelve a intentarlo en {seconds} segundos.',
     rateLimited: 'Demasiadas peticiones. Vuelve a intentarlo en {seconds} segundos.',
     sessionExpired: 'Tu sesión ha caducado. Vuelve a iniciar sesión.',
-    mfaJustEnabled: 'La verificación en dos pasos está activa. Vuelve a entrar con tu contraseña y un código.',
+    mfaJustEnabled:
+      'La verificación en dos pasos está activa. Vuelve a entrar con tu contraseña y un código.',
     mfaSsoHint: 'Tu cuenta tiene verificación en dos pasos: entra con tu contraseña y un código.',
     passwordResetDone: 'Contraseña actualizada. Entra con la nueva contraseña.',
     emailChangedRelogin: 'Email confirmado. Vuelve a entrar con tu nueva dirección.',
     registeredNoVerify: 'Cuenta creada. Ya puedes iniciar sesión.',
     orContinueWith: 'o continúa con',
     mfaTitle: 'Código de verificación',
-    mfaSubtitle: 'Introduce el código de 6 dígitos de tu app de autenticación, o un código de recuperación.',
+    mfaSubtitle:
+      'Introduce el código de 6 dígitos de tu app de autenticación, o un código de recuperación.',
     mfaCodeLabel: 'Código de verificación',
     mfaCodeHint: 'Los códigos de recuperación tienen la forma XXXXX-XXXXX.',
     mfaVerify: 'Verificar',
@@ -102,8 +105,10 @@ export const es: Messages = {
     mfaExpired: 'Ha pasado demasiado tiempo. Vuelve a introducir tu contraseña.',
     mfaInvalidCode: 'Código incorrecto. Inténtalo de nuevo.',
     checkInboxTitle: 'Revisa tu correo',
-    checkInboxDesc: 'Hemos enviado un enlace de verificación a {email}. Ábrelo para activar tu cuenta.',
-    checkInboxHint: 'El enlace caduca en 24 horas. Si ya tenías cuenta, te hemos enviado un recordatorio.',
+    checkInboxDesc:
+      'Hemos enviado un enlace de verificación a {email}. Ábrelo para activar tu cuenta.',
+    checkInboxHint:
+      'El enlace caduca en 24 horas. Si ya tenías cuenta, te hemos enviado un recordatorio.',
     verifyTitle: 'Verificación de email',
     verifyWorking: 'Verificando tu email…',
     verifyDoneTitle: 'Email verificado',
@@ -112,7 +117,8 @@ export const es: Messages = {
     verifyRetryHint: 'Inicia sesión para pedir un nuevo email de verificación.',
     forgotTitle: 'Recuperar contraseña',
     forgotSubtitle: 'Escribe tu email y te enviaremos un enlace para crear una contraseña nueva.',
-    forgotSent: 'Si la dirección es válida recibirás un email en breve. El enlace caduca en 1 hora.',
+    forgotSent:
+      'Si la dirección es válida recibirás un email en breve. El enlace caduca en 1 hora.',
     forgotCta: 'Enviar enlace',
     backToLogin: 'Volver a iniciar sesión',
     resetTitle: 'Nueva contraseña',
@@ -191,7 +197,8 @@ export const es: Messages = {
     fieldPublic: 'Pública',
     fieldPublicHint: 'Las listas públicas se pueden consultar con una clave API.',
     deleteTitle: 'Eliminar lista',
-    deleteDesc: 'Esto elimina permanentemente «{name}» y todos sus elementos. No se puede deshacer.',
+    deleteDesc:
+      'Esto elimina permanentemente «{name}» y todos sus elementos. No se puede deshacer.',
     created: 'Lista creada',
     updated: 'Lista actualizada',
     deleted: 'Lista eliminada',
@@ -256,9 +263,11 @@ export const es: Messages = {
     emptyCta: 'Crear mi primera clave',
     createTitle: 'Crear clave API',
     createdTitle: 'Clave API creada',
-    createdWarning: 'Copia la clave ahora: es la única vez que se muestra completa. Después solo verás su prefijo, y no puede recuperarse.',
+    createdWarning:
+      'Copia la clave ahora: es la única vez que se muestra completa. Después solo verás su prefijo, y no puede recuperarse.',
     createdAck: 'La he copiado y guardada en un lugar seguro',
-    prefixHint: 'Solo se guarda un hash de la clave; el valor completo no puede volver a mostrarse.',
+    prefixHint:
+      'Solo se guarda un hash de la clave; el valor completo no puede volver a mostrarse.',
     fieldName: 'Etiqueta',
     fieldNamePlaceholder: 'p. ej. Producción',
     renameTitle: 'Renombrar clave',
@@ -324,11 +333,13 @@ export const es: Messages = {
   },
   search: {
     title: 'Búsqueda',
-    subtitle: 'Prueba cualquiera de tus listas con tu sesión: la misma búsqueda híbrida que reciben tus integraciones por la API.',
+    subtitle:
+      'Prueba cualquiera de tus listas con tu sesión: la misma búsqueda híbrida que reciben tus integraciones por la API.',
     consoleBadge: 'Con tu sesión, sin clave API',
     privateTag: 'privada',
     listLabel: 'Lista',
-    listHint: 'Desde aquí puedes buscar en cualquiera de tus listas; la API pública solo sirve las públicas.',
+    listHint:
+      'Desde aquí puedes buscar en cualquiera de tus listas; la API pública solo sirve las públicas.',
     breakdownToggle: 'Mostrar el desglose de puntuación (texto / semántica)',
     noLists: 'Aún no tienes listas.',
     createList: 'Crea una lista',
@@ -347,8 +358,10 @@ export const es: Messages = {
     semanticScore: 'Semántica',
     params: 'Parámetros',
     breakdown: 'Desglose de puntuación',
-    errNotFound: 'Lista no encontrada (¿la has borrado o aún no está sincronizada en el buscador?).',
-    errRateLimit: 'Has alcanzado el cupo de búsquedas por minuto de tu cuenta. Reintenta en {seconds} s.',
+    errNotFound:
+      'Lista no encontrada (¿la has borrado o aún no está sincronizada en el buscador?).',
+    errRateLimit:
+      'Has alcanzado el cupo de búsquedas por minuto de tu cuenta. Reintenta en {seconds} s.',
     degradedWarning: 'Resultado degradado: {reasons}.',
     degradedReasons: {
       no_embeddings: 'la lista no tiene un entrenamiento en uso, solo se ha buscado por texto',
@@ -356,9 +369,11 @@ export const es: Messages = {
       model_mismatch: 'los vectores no cuadran con el modelo actual (reentrena la lista)',
       stale_data: 'los datos están caducos y no se han podido refrescar',
     },
-    errUnavailable: 'El servicio de búsqueda no está disponible ahora mismo. Inténtalo en un momento.',
+    errUnavailable:
+      'El servicio de búsqueda no está disponible ahora mismo. Inténtalo en un momento.',
     errGeneric: 'La búsqueda ha fallado.',
-    apiNote: 'Tus integraciones llaman al servicio de búsqueda directamente con una clave API (solo listas públicas).',
+    apiNote:
+      'Tus integraciones llaman al servicio de búsqueda directamente con una clave API (solo listas públicas).',
     apiNoteLink: 'Ver la integración por API',
   },
   account: {
@@ -369,16 +384,20 @@ export const es: Messages = {
     fieldSurname: 'Apellidos',
     fieldEmail: 'Correo',
     fieldLocale: 'Idioma de los emails',
-    fieldLocaleHint: 'Idioma de los emails de la cuenta (verificación, recuperación de contraseña).',
+    fieldLocaleHint:
+      'Idioma de los emails de la cuenta (verificación, recuperación de contraseña).',
     emailTitle: 'Dirección de email',
     emailCurrent: 'Dirección actual: {email}',
     verified: 'Verificado',
-    ssoManaged: 'Entras con {provider}. Crea una contraseña desde "¿Has olvidado tu contraseña?" para usar estas opciones.',
-    emailChangeSent: 'Hemos enviado un enlace de confirmación a {email}. El cambio se aplica al abrirlo; se cerrarán todas las sesiones.',
+    ssoManaged:
+      'Entras con {provider}. Crea una contraseña desde "¿Has olvidado tu contraseña?" para usar estas opciones.',
+    emailChangeSent:
+      'Hemos enviado un enlace de confirmación a {email}. El cambio se aplica al abrirlo; se cerrarán todas las sesiones.',
     fieldNewEmail: 'Nuevo email',
     fieldCurrentPassword: 'Contraseña actual',
     reauthHint: 'Necesaria para confirmar que eres tú.',
-    ssoPasswordHint: 'Las cuentas SSO no tienen contraseña: usa "¿Has olvidado tu contraseña?" para crear una.',
+    ssoPasswordHint:
+      'Las cuentas SSO no tienen contraseña: usa "¿Has olvidado tu contraseña?" para crear una.',
     emailChangeCta: 'Enviar confirmación',
     securityTitle: 'Contraseña',
     passwordDesc: 'Cambiarla cierra todas tus demás sesiones.',
@@ -386,7 +405,8 @@ export const es: Messages = {
     passwordChanged: 'Contraseña actualizada. Se han cerrado las demás sesiones.',
     wrongPassword: 'La contraseña actual no es correcta.',
     sessionsTitle: 'Sesiones',
-    sessionsDesc: 'Cierra la sesión en todas partes: todos los dispositivos y navegadores, incluido este.',
+    sessionsDesc:
+      'Cierra la sesión en todas partes: todos los dispositivos y navegadores, incluido este.',
     sessionsCta: 'Cerrar todas las sesiones',
     sessionsConfirm: 'Se cerrarán todas las sesiones y tendrás que volver a entrar. ¿Continuar?',
     lastLogin: 'Último acceso {date}',
@@ -399,13 +419,16 @@ export const es: Messages = {
       disable: 'Desactivar 2FA',
       setupTitle: 'Activar la verificación en dos pasos',
       step1: 'Confirma tu contraseña para empezar.',
-      step2: 'Escanea el QR con tu app de autenticación e introduce el código de 6 dígitos que muestra.',
+      step2:
+        'Escanea el QR con tu app de autenticación e introduce el código de 6 dígitos que muestra.',
       manualEntry: '¿No puedes escanear? Introduce esta clave a mano',
       codeLabel: 'Código de la app',
       activate: 'Activar',
-      recoveryWarning: 'Guarda estos códigos de recuperación en un lugar seguro. Cada uno sirve para entrar una vez si pierdes el dispositivo. No se volverán a mostrar.',
+      recoveryWarning:
+        'Guarda estos códigos de recuperación en un lugar seguro. Cada uno sirve para entrar una vez si pierdes el dispositivo. No se volverán a mostrar.',
       recoveryAck: 'He guardado mis códigos de recuperación',
-      relogin: 'Por seguridad, activar el 2FA cierra todas tus sesiones: tendrás que volver a entrar.',
+      relogin:
+        'Por seguridad, activar el 2FA cierra todas tus sesiones: tendrás que volver a entrar.',
       enabled: 'Verificación en dos pasos activada',
       disabled: 'Verificación en dos pasos desactivada',
       disableTitle: 'Desactivar la verificación en dos pasos',
@@ -449,7 +472,8 @@ export const es: Messages = {
     limit: 'Límite',
     limitBadge: '{n} búsq./min',
     limitTitle: 'Límite de búsquedas',
-    limitDesc: 'Búsquedas por minuto de {email}. Todas sus claves API y el playground comparten este cupo.',
+    limitDesc:
+      'Búsquedas por minuto de {email}. Todas sus claves API y el playground comparten este cupo.',
     limitLabel: 'Búsquedas por minuto',
     limitPlaceholder: 'Por defecto del buscador',
     limitHint: 'Vacío = el valor por defecto del servicio de búsqueda (RATE_LIMIT_PER_MINUTE).',
@@ -546,8 +570,7 @@ export const es: Messages = {
         'Un único endpoint HTTP al que tus aplicaciones llaman con una clave API. Solo sirve tus listas públicas.',
     },
     start: {
-      intro:
-        'Esta guía te lleva de una cuenta vacía a tu primera búsqueda en unos cinco minutos.',
+      intro: 'Esta guía te lleva de una cuenta vacía a tu primera búsqueda en unos cinco minutos.',
       s1Title: 'Crea tu cuenta',
       s1Step1: 'Regístrate con tu nombre, correo y una contraseña (mínimo 8 caracteres).',
       s1Step2: 'Puedes actualizar tu perfil o credenciales cuando quieras desde la página Cuenta.',
@@ -558,22 +581,30 @@ export const es: Messages = {
       s2Step3: 'Márcala como pública si piensas consultarla con una clave API.',
       s3Title: 'Añade elementos',
       s3Step1: 'Abre la lista y pulsa «Añadir elemento».',
-      s3Step2: 'Rellena el texto (contra lo que se compara cada búsqueda) y, a ser posible, una descripción.',
+      s3Step2:
+        'Rellena el texto (contra lo que se compara cada búsqueda) y, a ser posible, una descripción.',
       s3Step3: '¿Ya tienes los datos? Usa «Importar desde archivo» para cargar un JSON de una vez.',
-      s3Tip: 'En «Listas y elementos» tienes la anatomía de un buen elemento y el formato de importación.',
+      s3Tip:
+        'En «Listas y elementos» tienes la anatomía de un buen elemento y el formato de importación.',
       s4Title: 'Entrena la lista',
-      s4Step1: 'Abre la pestaña Entrenamientos: tus cambios han dejado ahí un entrenamiento pendiente.',
+      s4Step1:
+        'Abre la pestaña Entrenamientos: tus cambios han dejado ahí un entrenamiento pendiente.',
       s4Step2: 'Elige un modelo de embeddings y pulsa «Entrenar».',
-      s4Step3: 'Espera a Completado: el entrenamiento queda «En uso» y la búsqueda semántica está activa.',
-      s4Tip: 'La búsqueda también funciona antes de entrenar, pero solo por texto. Entrenar añade comprensión del significado.',
+      s4Step3:
+        'Espera a Completado: el entrenamiento queda «En uso» y la búsqueda semántica está activa.',
+      s4Tip:
+        'La búsqueda también funciona antes de entrenar, pero solo por texto. Entrenar añade comprensión del significado.',
       s5Title: 'Crea una clave API',
       s5Step1: 'Ve a Claves API y pulsa «Nueva clave».',
       s5Step2: 'Etiquétala según dónde se vaya a usar (p. ej. «Producción»).',
-      s5Step3: 'Cópiala en ese momento: es la única vez que se muestra completa (después solo verás su prefijo). Trátala como una contraseña.',
+      s5Step3:
+        'Cópiala en ese momento: es la única vez que se muestra completa (después solo verás su prefijo). Trátala como una contraseña.',
       s6Title: 'Haz tu primera búsqueda',
       s6Step1: 'Abre la página Búsqueda, pega tu clave y elige tu lista.',
-      s6Step2: 'Escribe una consulta: prueba una errata o un sinónimo para ver la coincidencia difusa y semántica en acción.',
-      s6Step3: 'Examina cada resultado: puntuación combinada, desglose y los parámetros del elemento.',
+      s6Step2:
+        'Escribe una consulta: prueba una errata o un sinónimo para ver la coincidencia difusa y semántica en acción.',
+      s6Step3:
+        'Examina cada resultado: puntuación combinada, desglose y los parámetros del elemento.',
       doneTitle: '¿Listo para integrar?',
       doneDesc:
         'La misma búsqueda que acabas de hacer está disponible para tus aplicaciones a través de un único endpoint HTTP.',
@@ -593,7 +624,8 @@ export const es: Messages = {
       fVisibilityDesc:
         'Las listas públicas se pueden consultar con una clave API. Las privadas solo se pueden buscar desde esta consola.',
       elementsTitle: 'Elementos',
-      elementsP1: 'Un elemento es una entrada buscable. Tiene tres campos, cada uno con su función:',
+      elementsP1:
+        'Un elemento es una entrada buscable. Tiene tres campos, cada uno con su función:',
       fText: 'Texto',
       fTextDesc:
         'El contenido principal contra el que se comparan las consultas. Que sea la frase que tus usuarios buscarían de verdad.',
@@ -617,16 +649,19 @@ export const es: Messages = {
       rec4: 'Evita elementos casi duplicados: compiten entre sí y ensucian los resultados.',
     },
     trainings: {
-      p1:
-        'Entrenar calcula un embedding (una representación numérica del significado) para cada elemento de la lista: eso es lo que hace posible la búsqueda semántica. Editar elementos nunca lanza nada por sí solo: deja un entrenamiento pendiente y tú decides cuándo lanzarlo.',
+      p1: 'Entrenar calcula un embedding (una representación numérica del significado) para cada elemento de la lista: eso es lo que hace posible la búsqueda semántica. Editar elementos nunca lanza nada por sí solo: deja un entrenamiento pendiente y tú decides cuándo lanzarlo.',
       lifecycleTitle: 'Ciclo de vida de un entrenamiento',
       lifecycleP1:
         'Cada lista tiene como mucho un entrenamiento pendiente. Al lanzarlo, pasa por estos estados:',
       stPendingDesc: 'La lista cambió desde el último entrenamiento. Espera a que lo lances.',
-      stQueuedDesc: 'En cola: arrancará en cuanto haya hueco (los entrenamientos se despachan por turnos entre usuarios).',
-      stTrainingDesc: 'El worker está calculando embeddings y enriqueciendo elementos. Suele tardar unos minutos.',
-      stCompletedDesc: 'Terminado: el entrenamiento queda «En uso» y las búsquedas usan su modelo de inmediato.',
-      stFailedDesc: 'Algo salió mal. El error se muestra en el entrenamiento y puedes lanzarlo de nuevo.',
+      stQueuedDesc:
+        'En cola: arrancará en cuanto haya hueco (los entrenamientos se despachan por turnos entre usuarios).',
+      stTrainingDesc:
+        'El worker está calculando embeddings y enriqueciendo elementos. Suele tardar unos minutos.',
+      stCompletedDesc:
+        'Terminado: el entrenamiento queda «En uso» y las búsquedas usan su modelo de inmediato.',
+      stFailedDesc:
+        'Algo salió mal. El error se muestra en el entrenamiento y puedes lanzarlo de nuevo.',
       modelsTitle: 'Modelos de embeddings',
       modelsP1:
         'Cada lanzamiento usa el modelo de embeddings que elijas. Los modelos intercambian calidad por velocidad: los grandes captan mejor los matices, pero tardan más en entrenar y responden algo más lento.',
@@ -663,7 +698,8 @@ export const es: Messages = {
         'El cuerpo es estricto: un campo desconocido, un término en blanco o un valor fuera de rango responden 422 con el detalle por campo.',
       required: 'obligatorio',
       optional: 'opcional',
-      pListNameDesc: 'Nombre de la lista (pública) donde buscar, exactamente como aparece en la consola (máx. 100 caracteres).',
+      pListNameDesc:
+        'Nombre de la lista (pública) donde buscar, exactamente como aparece en la consola (máx. 100 caracteres).',
       pSearchTermDesc:
         'La consulta del usuario (1–500 caracteres, se recortan los espacios). Las erratas y palabras parciales no son problema: la coincidencia es difusa y semántica.',
       pLimitDesc: 'Número máximo de resultados a devolver, de 1 a 1000. Por defecto 50.',
@@ -692,11 +728,13 @@ export const es: Messages = {
       errMeaning: 'Significado',
       errFix: 'Qué hacer',
       err400: 'La cabecera Host no es la del servicio.',
-      err400Fix: 'Llama a la URL pública del servicio de búsqueda, sin proxies que reescriban Host.',
+      err400Fix:
+        'Llama a la URL pública del servicio de búsqueda, sin proxies que reescriban Host.',
       err401: 'Falta la cabecera X-API-Key, o la clave no existe o fue revocada.',
       err401Fix: 'Revisa la clave o crea una nueva.',
       err403: 'La lista es privada.',
-      err403Fix: 'Haz la lista pública desde sus ajustes; las privadas solo se prueban desde la consola.',
+      err403Fix:
+        'Haz la lista pública desde sus ajustes; las privadas solo se prueban desde la consola.',
       err404: 'No hay ninguna lista con ese nombre en tu cuenta.',
       err404Fix: 'Revisa list_name: debe coincidir exactamente con el nombre de la lista.',
       err413: 'El cuerpo de la petición supera el tamaño máximo (16 KB).',
@@ -704,9 +742,12 @@ export const es: Messages = {
       err422: 'Cuerpo inválido: campo desconocido, término en blanco o valor fuera de rango.',
       err422Fix: 'Mira details: indica el campo y el motivo.',
       err429: 'Cupo de búsquedas por minuto de tu cuenta (o de tu IP) agotado.',
-      err429Fix: 'Espera los segundos de Retry-After y reintenta; usa X-RateLimit-Remaining para no llegar al límite.',
-      err503: 'El buscador aún está cargando sus catálogos (SERVICE_NOT_READY) o no pudo cargar los datos de la lista (BACKEND_UNAVAILABLE).',
-      err503Fix: 'Reintenta pasados los segundos de Retry-After; si persiste, consulta la página de estado (/status).',
+      err429Fix:
+        'Espera los segundos de Retry-After y reintenta; usa X-RateLimit-Remaining para no llegar al límite.',
+      err503:
+        'El buscador aún está cargando sus catálogos (SERVICE_NOT_READY) o no pudo cargar los datos de la lista (BACKEND_UNAVAILABLE).',
+      err503Fix:
+        'Reintenta pasados los segundos de Retry-After; si persiste, consulta la página de estado (/status).',
       degradedTitle: 'Respuestas degradadas',
       degradedP1:
         'Toda respuesta lleva degraded y degradation_reasons. Si degraded es true, la búsqueda se ha servido con menos calidad y el motivo lo dice: no_embeddings (la lista no tiene entrenamiento en uso: solo texto), model_unavailable (el modelo de embeddings no pudo cargarse), model_mismatch (los vectores no cuadran con el modelo: reentrena) o stale_data (datos caducos que no se pudieron refrescar). La cabecera X-Search-Degraded: true lo indica también.',
@@ -717,19 +758,23 @@ export const es: Messages = {
     },
     best: {
       contentTitle: 'Escribir buenos elementos',
-      content1: 'Escribe los textos como buscan tus usuarios, no como nombra las cosas tu base de datos.',
+      content1:
+        'Escribe los textos como buscan tus usuarios, no como nombra las cosas tu base de datos.',
       content2:
         'Dale a cada elemento una descripción con sinónimos y contexto: es la mejora semántica más barata que existe.',
       content3:
         'Prueba con consultas reales de usuario: una errata y un sinónimo te dicen más que una coincidencia perfecta.',
       workflowTitle: 'Trabajar con eficiencia',
       workflow1: 'Importa en bloque, edita por lotes y entrena una sola vez al final.',
-      workflow2: 'Prueba primero en la página Búsqueda de la consola; integra por API cuando los resultados encajen.',
-      workflow3: 'Prueba dos o tres modelos de embeddings con consultas reales antes de elegir el que queda en uso.',
+      workflow2:
+        'Prueba primero en la página Búsqueda de la consola; integra por API cuando los resultados encajen.',
+      workflow3:
+        'Prueba dos o tres modelos de embeddings con consultas reales antes de elegir el que queda en uso.',
       securityTitle: 'Seguridad',
       security1:
         'Trata las claves API como contraseñas: solo en el servidor, una por integración, y borra las que no uses.',
-      security2: 'Mantén las listas privadas hasta que estén listas para exponerse a través de la API.',
+      security2:
+        'Mantén las listas privadas hasta que estén listas para exponerse a través de la API.',
       security3: 'Eliminar una lista, una clave o tu cuenta es permanente: no se puede deshacer.',
       faqTitle: 'Preguntas frecuentes',
       q1: '¿Por qué mi lista no devuelve nada a través de la API?',

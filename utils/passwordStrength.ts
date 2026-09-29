@@ -11,8 +11,19 @@ export interface PasswordStrength {
 }
 
 const COMMON = new Set([
-  'password', 'password1', 'password123', 'contraseña', '12345678', '123456789', 'qwertyuiop',
-  'qwerty123', 'iloveyou', 'admin123', 'welcome1', 'abcd1234', '11111111',
+  'password',
+  'password1',
+  'password123',
+  'contraseña',
+  '12345678',
+  '123456789',
+  'qwertyuiop',
+  'qwerty123',
+  'iloveyou',
+  'admin123',
+  'welcome1',
+  'abcd1234',
+  '11111111',
 ])
 
 export function passwordBytes(value: string): number {

@@ -43,7 +43,9 @@ function set(key: Check['key'], patch: Partial<Check>) {
   if (target) Object.assign(target, patch)
 }
 
-async function probe(url: string): Promise<{ status: number; body: Record<string, unknown> | null; ms: number }> {
+async function probe(
+  url: string,
+): Promise<{ status: number; body: Record<string, unknown> | null; ms: number }> {
   const started = performance.now()
   const controller = new AbortController()
   const timer = window.setTimeout(() => controller.abort(), 6000)
@@ -107,7 +109,14 @@ async function runChecks() {
   }
 }
 
-const badge: Record<State, { alert: 'success' | 'warning' | 'danger' | 'info'; badge: 'success' | 'warning' | 'danger' | 'neutral'; icon: string }> = {
+const badge: Record<
+  State,
+  {
+    alert: 'success' | 'warning' | 'danger' | 'info'
+    badge: 'success' | 'warning' | 'danger' | 'neutral'
+    icon: string
+  }
+> = {
   ok: { alert: 'success', badge: 'success', icon: 'check' },
   degraded: { alert: 'warning', badge: 'warning', icon: 'info' },
   down: { alert: 'danger', badge: 'danger', icon: 'x' },
@@ -160,7 +169,11 @@ function timeLabel(d: Date) {
         </div>
         <div class="shrink-0 text-right">
           <UiBadge :variant="badge[check.state].badge">
-            <UiIcon :name="badge[check.state].icon" :size="14" :class="check.state === 'checking' ? 'animate-spin' : ''" />
+            <UiIcon
+              :name="badge[check.state].icon"
+              :size="14"
+              :class="check.state === 'checking' ? 'animate-spin' : ''"
+            />
             {{ $t(`status.states.${check.state}`) }}
           </UiBadge>
           <p v-if="check.latencyMs !== null" class="mt-1 font-mono text-xs text-muted">
@@ -172,7 +185,13 @@ function timeLabel(d: Date) {
 
     <p class="mt-6 text-sm text-muted">
       {{ $t('status.note') }}
-      <a v-if="externalUrl" :href="externalUrl" target="_blank" rel="noopener" class="font-medium text-primary hover:underline">
+      <a
+        v-if="externalUrl"
+        :href="externalUrl"
+        target="_blank"
+        rel="noopener"
+        class="font-medium text-primary hover:underline"
+      >
         {{ $t('status.externalPage') }}
       </a>
     </p>

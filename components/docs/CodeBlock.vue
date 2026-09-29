@@ -12,6 +12,8 @@ defineProps<{
       <span class="font-mono text-xs text-subtle">{{ label }}</span>
       <UiCopyButton :text="code" variant="ghost" size="sm" />
     </div>
-    <pre class="overflow-x-auto p-4 font-mono text-xs leading-relaxed text-fg"><code>{{ code }}</code></pre>
+    <pre
+      class="overflow-x-auto p-4 font-mono text-xs leading-relaxed text-fg"
+    ><code>{{ code }}</code></pre>
   </div>
 </template>

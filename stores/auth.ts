@@ -172,7 +172,10 @@ export const useAuthStore = defineStore('auth', {
 
     async verifyEmail(token: string): Promise<LoginResponse> {
       const { $api } = useNuxtApp()
-      const res = await $api<LoginResponse>('/auth/verify-email', { method: 'POST', body: { token } })
+      const res = await $api<LoginResponse>('/auth/verify-email', {
+        method: 'POST',
+        body: { token },
+      })
       this.applyLoginResponse(res)
       return res
     },

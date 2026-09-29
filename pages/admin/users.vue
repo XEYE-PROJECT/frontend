@@ -59,9 +59,15 @@ async function act(u: AdminUser, fn: () => Promise<unknown>, okMsg: string) {
 }
 
 const toggleRole = (u: AdminUser) =>
-  act(u, () => api.update(u.id, { permission: u.permission === 'admin' ? 'user' : 'admin' }), t('admin.roleUpdated'))
-const verify = (u: AdminUser) => act(u, () => api.update(u.id, { emailVerified: true }), t('admin.verified'))
-const unlock = (u: AdminUser) => act(u, () => api.update(u.id, { unlock: true }), t('admin.unlocked'))
+  act(
+    u,
+    () => api.update(u.id, { permission: u.permission === 'admin' ? 'user' : 'admin' }),
+    t('admin.roleUpdated'),
+  )
+const verify = (u: AdminUser) =>
+  act(u, () => api.update(u.id, { emailVerified: true }), t('admin.verified'))
+const unlock = (u: AdminUser) =>
+  act(u, () => api.update(u.id, { unlock: true }), t('admin.unlocked'))
 const logoutAll = (u: AdminUser) => act(u, () => api.logoutAll(u.id), t('admin.sessionsClosed'))
 
 // Cupo de búsquedas/min de la cuenta (todas sus claves API lo comparten). Vacío = por defecto.
@@ -83,7 +89,9 @@ async function saveLimit(reset = false) {
   const u = limitTarget.value
   if (!u) return
   limitTarget.value = null
-  const payload = reset ? { resetSearchRateLimit: true } : { searchRateLimitPerMinute: limitNumber.value }
+  const payload = reset
+    ? { resetSearchRateLimit: true }
+    : { searchRateLimitPerMinute: limitNumber.value }
   await act(u, () => api.update(u.id, payload), t('admin.limitUpdated'))
 }
 
@@ -111,7 +119,9 @@ async function remove() {
     </UiCard>
 
     <UiCard>
-      <div v-if="loading" class="flex items-center gap-3 py-8 text-sm text-muted"><UiSpinner /> {{ $t('common.loading') }}</div>
+      <div v-if="loading" class="flex items-center gap-3 py-8 text-sm text-muted">
+        <UiSpinner /> {{ $t('common.loading') }}
+      </div>
       <UiEmptyState v-else-if="!filtered.length" icon="users" :title="$t('admin.empty')" />
       <div v-else class="-mx-4 overflow-x-auto sm:mx-0">
         <table class="w-full text-sm">
@@ -126,17 +136,24 @@ async function remove() {
           <tbody class="divide-y divide-line">
             <tr v-for="u in filtered" :key="u.id" class="align-top">
               <td class="px-4 py-3">
-                <p class="font-medium text-fg">{{ u.name }} {{ u.surname }}
-                  <span v-if="u.id === auth.user?.id" class="text-xs text-subtle">({{ $t('admin.you') }})</span>
+                <p class="font-medium text-fg">
+                  {{ u.name }} {{ u.surname }}
+                  <span v-if="u.id === auth.user?.id" class="text-xs text-subtle"
+                    >({{ $t('admin.you') }})</span
+                  >
                 </p>
                 <p class="text-xs text-muted">{{ u.email }}</p>
               </td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap gap-1">
                   <UiBadge :variant="u.permission === 'admin' ? 'primary' : 'neutral'" dot>
-                    {{ u.permission === 'admin' ? $t('account.roleAdmin') : $t('account.roleUser') }}
+                    {{
+                      u.permission === 'admin' ? $t('account.roleAdmin') : $t('account.roleUser')
+                    }}
                   </UiBadge>
-                  <UiBadge v-if="!u.emailVerified" variant="warning">{{ $t('admin.unverified') }}</UiBadge>
+                  <UiBadge v-if="!u.emailVerified" variant="warning">{{
+                    $t('admin.unverified')
+                  }}</UiBadge>
                   <UiBadge v-if="u.mfaEnabled" variant="success">2FA</UiBadge>
                   <UiBadge v-if="u.ssoProvider" variant="neutral">{{ u.ssoProvider }}</UiBadge>
                   <UiBadge v-if="isLocked(u)" variant="danger">{{ $t('admin.locked') }}</UiBadge>
@@ -145,25 +162,65 @@ async function remove() {
                   </UiBadge>
                 </div>
               </td>
-              <td class="px-4 py-3 text-muted">{{ u.lastLoginAt ? formatDate(u.lastLoginAt, locale) : '—' }}</td>
+              <td class="px-4 py-3 text-muted">
+                {{ u.lastLoginAt ? formatDate(u.lastLoginAt, locale) : '—' }}
+              </td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap justify-end gap-1">
-                  <UiButton size="sm" variant="ghost" :disabled="busyId === u.id || u.id === auth.user?.id" @click="toggleRole(u)">
+                  <UiButton
+                    size="sm"
+                    variant="ghost"
+                    :disabled="busyId === u.id || u.id === auth.user?.id"
+                    @click="toggleRole(u)"
+                  >
                     {{ u.permission === 'admin' ? $t('admin.makeUser') : $t('admin.makeAdmin') }}
                   </UiButton>
-                  <UiButton v-if="!u.emailVerified" size="sm" variant="ghost" icon="check" :disabled="busyId === u.id" @click="verify(u)">
+                  <UiButton
+                    v-if="!u.emailVerified"
+                    size="sm"
+                    variant="ghost"
+                    icon="check"
+                    :disabled="busyId === u.id"
+                    @click="verify(u)"
+                  >
                     {{ $t('admin.verify') }}
                   </UiButton>
-                  <UiButton v-if="isLocked(u) || u.failedLoginCount > 0" size="sm" variant="ghost" icon="unlock" :disabled="busyId === u.id" @click="unlock(u)">
+                  <UiButton
+                    v-if="isLocked(u) || u.failedLoginCount > 0"
+                    size="sm"
+                    variant="ghost"
+                    icon="unlock"
+                    :disabled="busyId === u.id"
+                    @click="unlock(u)"
+                  >
                     {{ $t('admin.unlock') }}
                   </UiButton>
-                  <UiButton size="sm" variant="ghost" icon="zap" :disabled="busyId === u.id" @click="editLimit(u)">
+                  <UiButton
+                    size="sm"
+                    variant="ghost"
+                    icon="zap"
+                    :disabled="busyId === u.id"
+                    @click="editLimit(u)"
+                  >
                     {{ $t('admin.limit') }}
                   </UiButton>
-                  <UiButton size="sm" variant="ghost" icon="logout" :disabled="busyId === u.id" @click="logoutAll(u)">
+                  <UiButton
+                    size="sm"
+                    variant="ghost"
+                    icon="logout"
+                    :disabled="busyId === u.id"
+                    @click="logoutAll(u)"
+                  >
                     {{ $t('admin.logoutAll') }}
                   </UiButton>
-                  <UiButton size="sm" variant="ghost" icon="trash" class="text-danger" :disabled="busyId === u.id || u.id === auth.user?.id" @click="confirmTarget = u">
+                  <UiButton
+                    size="sm"
+                    variant="ghost"
+                    icon="trash"
+                    class="text-danger"
+                    :disabled="busyId === u.id || u.id === auth.user?.id"
+                    @click="confirmTarget = u"
+                  >
                     {{ $t('common.delete') }}
                   </UiButton>
                 </div>
@@ -176,7 +233,9 @@ async function remove() {
     </UiCard>
 
     <UiModal v-model="limitOpen" :title="$t('admin.limitTitle')">
-      <p class="mb-4 text-sm text-muted">{{ $t('admin.limitDesc', { email: limitTarget?.email ?? '' }) }}</p>
+      <p class="mb-4 text-sm text-muted">
+        {{ $t('admin.limitDesc', { email: limitTarget?.email ?? '' }) }}
+      </p>
       <UiInput
         v-model="limitValue"
         type="number"

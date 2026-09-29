@@ -87,7 +87,8 @@ export const en = {
     rateLimited: 'Too many requests. Try again in {seconds} seconds.',
     sessionExpired: 'Your session has expired. Sign in again.',
     mfaJustEnabled: 'Two-factor authentication is on. Sign in again with your password and a code.',
-    mfaSsoHint: 'Your account has two-factor authentication: sign in with your password and a code.',
+    mfaSsoHint:
+      'Your account has two-factor authentication: sign in with your password and a code.',
     passwordResetDone: 'Password updated. Sign in with your new password.',
     emailChangedRelogin: 'Email confirmed. Sign in again with your new address.',
     registeredNoVerify: 'Account created. You can sign in now.',
@@ -102,7 +103,8 @@ export const en = {
     mfaInvalidCode: 'Invalid code. Try again.',
     checkInboxTitle: 'Check your inbox',
     checkInboxDesc: 'We sent a verification link to {email}. Open it to activate your account.',
-    checkInboxHint: 'The link expires in 24 hours. If you already had an account, we sent a reminder instead.',
+    checkInboxHint:
+      'The link expires in 24 hours. If you already had an account, we sent a reminder instead.',
     verifyTitle: 'Email verification',
     verifyWorking: 'Verifying your email…',
     verifyDoneTitle: 'Email verified',
@@ -111,7 +113,8 @@ export const en = {
     verifyRetryHint: 'Sign in to request a new verification email.',
     forgotTitle: 'Reset your password',
     forgotSubtitle: 'Enter your email and we will send you a link to set a new password.',
-    forgotSent: 'If the address is valid you will receive an email shortly. The link expires in 1 hour.',
+    forgotSent:
+      'If the address is valid you will receive an email shortly. The link expires in 1 hour.',
     forgotCta: 'Send reset link',
     backToLogin: 'Back to sign in',
     resetTitle: 'New password',
@@ -124,7 +127,8 @@ export const en = {
     ssoTitle: 'Single sign-on',
     ssoWorking: 'Completing sign-in…',
     ssoCancelled: 'Sign-in was cancelled.',
-    ssoEmailUnverified: 'The identity provider has not verified your email. Sign in with your password instead.',
+    ssoEmailUnverified:
+      'The identity provider has not verified your email. Sign in with your password instead.',
     ssoNoEmail: 'The identity provider did not share an email address.',
     ssoLocked: 'This account is temporarily locked. Try again later.',
     ssoFailed: 'Sign-in with the identity provider failed.',
@@ -138,8 +142,7 @@ export const en = {
       strong: 'Strong password.',
     },
     heroTitle: 'Semantic + fuzzy search for your own lists.',
-    heroSubtitle:
-      'Curate lists, train them, and query them from anywhere with a single API key.',
+    heroSubtitle: 'Curate lists, train them, and query them from anywhere with a single API key.',
   },
   dashboard: {
     title: 'Overview',
@@ -237,7 +240,8 @@ export const en = {
       'Adding or editing elements leaves a training pending; launch it from the Trainings tab.',
     importCta: 'Import from file',
     importLabel: 'Import elements (optional)',
-    importHint: 'JSON file: an array of objects with “text” and optional “description” and “params”.',
+    importHint:
+      'JSON file: an array of objects with “text” and optional “description” and “params”.',
     importReady: '{count} elements from “{file}”',
     imported: '{count} elements imported',
     importErrorInvalidJson: 'The file is not valid JSON.',
@@ -254,7 +258,8 @@ export const en = {
     emptyCta: 'Create your first key',
     createTitle: 'Create API key',
     createdTitle: 'API key created',
-    createdWarning: 'Copy the key now: this is the only time it is shown in full. Afterwards only its prefix is visible, and it cannot be recovered.',
+    createdWarning:
+      'Copy the key now: this is the only time it is shown in full. Afterwards only its prefix is visible, and it cannot be recovered.',
     createdAck: 'I have copied it and stored it somewhere safe',
     prefixHint: 'Only a hash of the key is stored; the full value can never be shown again.',
     fieldName: 'Label',
@@ -321,7 +326,8 @@ export const en = {
   },
   search: {
     title: 'Search',
-    subtitle: 'Try any of your lists with your session: the same hybrid search your integrations get through the API.',
+    subtitle:
+      'Try any of your lists with your session: the same hybrid search your integrations get through the API.',
     consoleBadge: 'With your session, no API key',
     privateTag: 'private',
     listLabel: 'List',
@@ -345,7 +351,8 @@ export const en = {
     params: 'Params',
     breakdown: 'Score breakdown',
     errNotFound: 'List not found (deleted, or not synced to the search service yet?).',
-    errRateLimit: 'You have reached your account\'s searches-per-minute quota. Retry in {seconds} s.',
+    errRateLimit:
+      "You have reached your account's searches-per-minute quota. Retry in {seconds} s.",
     degradedWarning: 'Degraded result: {reasons}.',
     degradedReasons: {
       no_embeddings: 'the list has no training in use, text-only search',
@@ -355,7 +362,8 @@ export const en = {
     },
     errUnavailable: 'The search service is unavailable right now. Try again shortly.',
     errGeneric: 'The search request failed.',
-    apiNote: 'Your integrations call the search service directly with an API key (public lists only).',
+    apiNote:
+      'Your integrations call the search service directly with an API key (public lists only).',
     apiNoteLink: 'See the API integration',
   },
   account: {
@@ -370,8 +378,10 @@ export const en = {
     emailTitle: 'Email address',
     emailCurrent: 'Current address: {email}',
     verified: 'Verified',
-    ssoManaged: 'You sign in with {provider}. Set a password via "Forgot your password?" to use these options.',
-    emailChangeSent: 'We sent a confirmation link to {email}. The change applies when you open it; all sessions will be closed.',
+    ssoManaged:
+      'You sign in with {provider}. Set a password via "Forgot your password?" to use these options.',
+    emailChangeSent:
+      'We sent a confirmation link to {email}. The change applies when you open it; all sessions will be closed.',
     fieldNewEmail: 'New email',
     fieldCurrentPassword: 'Current password',
     reauthHint: 'Required to confirm it is you.',
@@ -400,7 +410,8 @@ export const en = {
       manualEntry: 'Cannot scan? Enter this key manually',
       codeLabel: 'Code from the app',
       activate: 'Activate',
-      recoveryWarning: 'Save these recovery codes somewhere safe. Each one signs you in once if you lose your device. They will not be shown again.',
+      recoveryWarning:
+        'Save these recovery codes somewhere safe. Each one signs you in once if you lose your device. They will not be shown again.',
       recoveryAck: 'I have saved my recovery codes',
       relogin: 'For security, enabling 2FA closes all your sessions: you will sign in again.',
       enabled: 'Two-factor authentication enabled',
@@ -446,7 +457,8 @@ export const en = {
     limit: 'Limit',
     limitBadge: '{n} searches/min',
     limitTitle: 'Search limit',
-    limitDesc: 'Searches per minute for {email}. All of their API keys and the playground share this quota.',
+    limitDesc:
+      'Searches per minute for {email}. All of their API keys and the playground share this quota.',
     limitLabel: 'Searches per minute',
     limitPlaceholder: 'Search service default',
     limitHint: 'Empty = the search service default (RATE_LIMIT_PER_MINUTE).',
@@ -469,7 +481,8 @@ export const en = {
   },
   status: {
     title: 'Service status',
-    subtitle: 'Live check, from your browser, of each service’s public probe. It repeats every minute.',
+    subtitle:
+      'Live check, from your browser, of each service’s public probe. It repeats every minute.',
     refresh: 'Check again',
     lastChecked: 'Last checked: {time}',
     latency: '{ms} ms',
@@ -561,11 +574,13 @@ export const en = {
       s4Step1: 'Open the Trainings tab — your edits have left a pending training there.',
       s4Step2: 'Pick an embedding model and click "Train".',
       s4Step3: 'Wait for Completed: the training becomes "In use" and semantic search is live.',
-      s4Tip: 'Searches work before training too, but text-only. Training adds understanding of meaning.',
+      s4Tip:
+        'Searches work before training too, but text-only. Training adds understanding of meaning.',
       s5Title: 'Create an API key',
       s5Step1: 'Go to API keys and click "New key".',
       s5Step2: 'Label it after where it will be used (e.g. "Production").',
-      s5Step3: 'Copy it right then: it is the only time it is shown in full (afterwards only its prefix is visible). Treat it like a password.',
+      s5Step3:
+        'Copy it right then: it is the only time it is shown in full (afterwards only its prefix is visible). Treat it like a password.',
       s6Title: 'Run your first search',
       s6Step1: 'Open the Search page, paste your key and pick your list.',
       s6Step2: 'Type a query — try a typo or a synonym to see fuzzy and semantic matching at work.',
@@ -589,7 +604,8 @@ export const en = {
       fVisibilityDesc:
         'Public lists can be queried with an API key. Private lists are only searchable from this console.',
       elementsTitle: 'Elements',
-      elementsP1: 'An element is one searchable entry. It has three fields, each with a distinct job:',
+      elementsP1:
+        'An element is one searchable entry. It has three fields, each with a distinct job:',
       fText: 'Text',
       fTextDesc:
         'The main content queries are matched against. Make it the phrase your users would actually search for.',
@@ -613,16 +629,19 @@ export const en = {
       rec4: 'Avoid near-duplicate elements: they compete against each other and clutter results.',
     },
     trainings: {
-      p1:
-        'Training computes an embedding (a numeric representation of meaning) for every element in the list — that is what makes semantic search possible. Editing elements never launches anything by itself: it leaves one pending training and you decide when to launch it.',
+      p1: 'Training computes an embedding (a numeric representation of meaning) for every element in the list — that is what makes semantic search possible. Editing elements never launches anything by itself: it leaves one pending training and you decide when to launch it.',
       lifecycleTitle: 'Lifecycle of a training',
       lifecycleP1:
         'Every list has at most one pending training. When you launch it, it moves through these states:',
       stPendingDesc: 'The list changed since the last training. Waiting for you to launch it.',
-      stQueuedDesc: 'Queued: it starts as soon as there is a free slot (trainings are dispatched fairly across users).',
-      stTrainingDesc: 'The worker is computing embeddings and enriching elements. Usually a few minutes.',
-      stCompletedDesc: 'Done: the training becomes "In use" and searches use its model immediately.',
-      stFailedDesc: 'Something went wrong. The error is shown on the training and you can launch again.',
+      stQueuedDesc:
+        'Queued: it starts as soon as there is a free slot (trainings are dispatched fairly across users).',
+      stTrainingDesc:
+        'The worker is computing embeddings and enriching elements. Usually a few minutes.',
+      stCompletedDesc:
+        'Done: the training becomes "In use" and searches use its model immediately.',
+      stFailedDesc:
+        'Something went wrong. The error is shown on the training and you can launch again.',
       modelsTitle: 'Embedding models',
       modelsP1:
         'Each launch uses the embedding model you pick. Models trade quality for speed: larger ones understand nuance better but take longer to train and answer slightly slower.',
@@ -648,7 +667,7 @@ export const en = {
       keysP1:
         'API keys authenticate calls to the search API. Create them from the API keys page, label them after where they are used, and rotate them by creating a new one and deleting the old.',
       keysP2:
-        'A key gives access to the public lists of your account, and only those. Private lists are tried from the console\'s Search page (which uses your session, not a key). To let an integration query a list, mark it public.',
+        "A key gives access to the public lists of your account, and only those. Private lists are tried from the console's Search page (which uses your session, not a key). To let an integration query a list, mark it public.",
       keysWarning:
         'Anyone with a key can search all your public lists. Keep keys on your server — never ship them in frontend code or mobile apps.',
       endpointTitle: 'The search endpoint',
@@ -659,12 +678,13 @@ export const en = {
         'The body is strict: an unknown field, a blank term or an out-of-range value returns 422 with per-field details.',
       required: 'required',
       optional: 'optional',
-      pListNameDesc: 'Name of the (public) list to search, exactly as it appears in the console (max 100 characters).',
+      pListNameDesc:
+        'Name of the (public) list to search, exactly as it appears in the console (max 100 characters).',
       pSearchTermDesc:
         'The user query (1–500 characters, whitespace is trimmed). Typos and partial words are fine — matching is fuzzy and semantic.',
       pLimitDesc: 'Maximum number of results to return, 1 to 1000. Default 50.',
       pSessionDesc:
-        'Free-form identifier of the end user\'s session (max 255). Groups their searches in the list history and links them to /target.',
+        "Free-form identifier of the end user's session (max 255). Groups their searches in the list history and links them to /target.",
       pBreakdownDesc:
         'If true, every result also carries text_score and semantic_score next to score. Default false.',
       pRegisterLogDesc:
@@ -687,22 +707,26 @@ export const en = {
       errMachineCode: 'code',
       errMeaning: 'Meaning',
       errFix: 'What to do',
-      err400: 'The Host header is not the service\'s.',
+      err400: "The Host header is not the service's.",
       err400Fix: 'Call the public URL of the search service, without proxies rewriting Host.',
       err401: 'Missing X-API-Key header, or the key does not exist or was revoked.',
       err401Fix: 'Check the key or create a new one.',
       err403: 'The list is private.',
-      err403Fix: 'Make the list public from its settings; private lists are only tried from the console.',
+      err403Fix:
+        'Make the list public from its settings; private lists are only tried from the console.',
       err404: 'No list with that name in your account.',
       err404Fix: 'Check list_name — it must match the list name exactly.',
       err413: 'The request body exceeds the maximum size (16 KB).',
       err413Fix: 'Send only the documented fields; search_term allows up to 500 characters.',
       err422: 'Invalid body: unknown field, blank term or out-of-range value.',
       err422Fix: 'Look at details: it names the field and the reason.',
-      err429: 'Your account\'s (or your IP\'s) searches-per-minute quota is exhausted.',
-      err429Fix: 'Wait the Retry-After seconds and retry; watch X-RateLimit-Remaining to stay under the limit.',
-      err503: 'The search service is still loading its catalogs (SERVICE_NOT_READY) or could not load the list data (BACKEND_UNAVAILABLE).',
-      err503Fix: 'Retry after the Retry-After seconds; if it persists, check the status page (/status).',
+      err429: "Your account's (or your IP's) searches-per-minute quota is exhausted.",
+      err429Fix:
+        'Wait the Retry-After seconds and retry; watch X-RateLimit-Remaining to stay under the limit.',
+      err503:
+        'The search service is still loading its catalogs (SERVICE_NOT_READY) or could not load the list data (BACKEND_UNAVAILABLE).',
+      err503Fix:
+        'Retry after the Retry-After seconds; if it persists, check the status page (/status).',
       degradedTitle: 'Degraded responses',
       degradedP1:
         'Every response carries degraded and degradation_reasons. When degraded is true the search was served with lower quality and the reason says why: no_embeddings (the list has no training in use: text only), model_unavailable (the embedding model could not be loaded), model_mismatch (the vectors do not match the model: retrain) or stale_data (stale data that could not be refreshed). The X-Search-Degraded: true header signals it too.',
@@ -720,8 +744,10 @@ export const en = {
         'Test with real user queries: a typo and a synonym tell you more than a perfect match.',
       workflowTitle: 'Working efficiently',
       workflow1: 'Import in bulk, edit in batches, train once at the end.',
-      workflow2: 'Test in the console Search page first; integrate via API when results look right.',
-      workflow3: 'Try two or three embedding models on real queries before choosing the one in use.',
+      workflow2:
+        'Test in the console Search page first; integrate via API when results look right.',
+      workflow3:
+        'Try two or three embedding models on real queries before choosing the one in use.',
       securityTitle: 'Security',
       security1:
         'Treat API keys like passwords: server-side only, one per integration, delete unused ones.',

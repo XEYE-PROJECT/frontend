@@ -36,7 +36,8 @@ onMounted(async () => {
     await navigateTo('/dashboard')
   } catch (e) {
     working.value = false
-    errorMsg.value = errorCode(e) === 'SSO_CODE_INVALID' ? t('auth.ssoCodeInvalid') : apiErrorMessage(e, t)
+    errorMsg.value =
+      errorCode(e) === 'SSO_CODE_INVALID' ? t('auth.ssoCodeInvalid') : apiErrorMessage(e, t)
   }
 })
 </script>
@@ -52,7 +53,9 @@ onMounted(async () => {
     <template v-else>
       <h1 class="text-2xl font-semibold tracking-tight text-fg">{{ $t('auth.ssoTitle') }}</h1>
       <UiAlert class="mt-6" variant="danger">{{ errorMsg }}</UiAlert>
-      <UiButton class="mt-6" block variant="secondary" to="/login">{{ $t('auth.backToLogin') }}</UiButton>
+      <UiButton class="mt-6" block variant="secondary" to="/login">{{
+        $t('auth.backToLogin')
+      }}</UiButton>
     </template>
   </div>
 </template>

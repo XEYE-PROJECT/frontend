@@ -1,10 +1,4 @@
-import type {
-  CreateListPayload,
-  ItemList,
-  ListsQuery,
-  Page,
-  UpdateListPayload,
-} from '~/types/api'
+import type { CreateListPayload, ItemList, ListsQuery, Page, UpdateListPayload } from '~/types/api'
 
 /** Endpoints de listas del backend. Llamar dentro de `setup` (captura el cliente API). */
 export function useListsApi() {
@@ -19,6 +13,6 @@ export function useListsApi() {
     create: (body: CreateListPayload) => $api<ItemList>('/lists', { method: 'POST', body }),
     update: (id: number, body: UpdateListPayload) =>
       $api<ItemList>(`/lists/${id}`, { method: 'PUT', body }),
-    remove: (id: number) => $api<void>(`/lists/${id}`, { method: 'DELETE' }),
+    remove: (id: number) => $api<unknown>(`/lists/${id}`, { method: 'DELETE' }),
   }
 }

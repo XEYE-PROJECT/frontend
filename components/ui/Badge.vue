@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type Variant = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     variant?: Variant
     size?: 'sm' | 'md'

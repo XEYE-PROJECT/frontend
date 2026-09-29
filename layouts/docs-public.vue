@@ -1,5 +1,5 @@
+<!-- Chrome público de la documentación (visitantes sin sesión). -->
 <template>
-  <!-- Chrome público de la documentación (visitantes sin sesión). -->
   <div class="min-h-screen bg-bg">
     <header
       class="glass sticky top-0 z-20 flex h-16 items-center justify-between gap-2 border-b border-line px-4 sm:px-6"

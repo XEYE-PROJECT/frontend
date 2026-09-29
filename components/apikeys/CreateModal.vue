@@ -76,7 +76,9 @@ watch(open, (isOpen) => {
         </UiButton>
       </template>
       <template v-else>
-        <UiButton :disabled="!acknowledged" @click="open = false">{{ $t('common.close') }}</UiButton>
+        <UiButton :disabled="!acknowledged" @click="open = false">{{
+          $t('common.close')
+        }}</UiButton>
       </template>
     </template>
   </UiModal>

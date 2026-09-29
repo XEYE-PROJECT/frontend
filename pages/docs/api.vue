@@ -17,14 +17,54 @@ const bodyParams = computed(() => [
 ])
 
 const errors = computed(() => [
-  { status: '400', code: 'INVALID_HOST', meaning: t('docs.api.err400'), fix: t('docs.api.err400Fix') },
-  { status: '401', code: 'API_KEY_MISSING · API_KEY_INVALID', meaning: t('docs.api.err401'), fix: t('docs.api.err401Fix') },
-  { status: '403', code: 'LIST_NOT_PUBLIC', meaning: t('docs.api.err403'), fix: t('docs.api.err403Fix') },
-  { status: '404', code: 'LIST_NOT_FOUND', meaning: t('docs.api.err404'), fix: t('docs.api.err404Fix') },
-  { status: '413', code: 'REQUEST_TOO_LARGE', meaning: t('docs.api.err413'), fix: t('docs.api.err413Fix') },
-  { status: '422', code: 'VALIDATION_FAILED', meaning: t('docs.api.err422'), fix: t('docs.api.err422Fix') },
-  { status: '429', code: 'RATE_LIMITED', meaning: t('docs.api.err429'), fix: t('docs.api.err429Fix') },
-  { status: '503', code: 'SERVICE_NOT_READY · BACKEND_UNAVAILABLE', meaning: t('docs.api.err503'), fix: t('docs.api.err503Fix') },
+  {
+    status: '400',
+    code: 'INVALID_HOST',
+    meaning: t('docs.api.err400'),
+    fix: t('docs.api.err400Fix'),
+  },
+  {
+    status: '401',
+    code: 'API_KEY_MISSING · API_KEY_INVALID',
+    meaning: t('docs.api.err401'),
+    fix: t('docs.api.err401Fix'),
+  },
+  {
+    status: '403',
+    code: 'LIST_NOT_PUBLIC',
+    meaning: t('docs.api.err403'),
+    fix: t('docs.api.err403Fix'),
+  },
+  {
+    status: '404',
+    code: 'LIST_NOT_FOUND',
+    meaning: t('docs.api.err404'),
+    fix: t('docs.api.err404Fix'),
+  },
+  {
+    status: '413',
+    code: 'REQUEST_TOO_LARGE',
+    meaning: t('docs.api.err413'),
+    fix: t('docs.api.err413Fix'),
+  },
+  {
+    status: '422',
+    code: 'VALIDATION_FAILED',
+    meaning: t('docs.api.err422'),
+    fix: t('docs.api.err422Fix'),
+  },
+  {
+    status: '429',
+    code: 'RATE_LIMITED',
+    meaning: t('docs.api.err429'),
+    fix: t('docs.api.err429Fix'),
+  },
+  {
+    status: '503',
+    code: 'SERVICE_NOT_READY · BACKEND_UNAVAILABLE',
+    meaning: t('docs.api.err503'),
+    fix: t('docs.api.err503Fix'),
+  },
 ])
 
 const recommendations = computed(() => [
@@ -172,7 +212,11 @@ X-RateLimit-Reset: 23
             </tr>
           </thead>
           <tbody>
-            <tr v-for="error in errors" :key="error.status" class="border-b border-line last:border-0">
+            <tr
+              v-for="error in errors"
+              :key="error.status"
+              class="border-b border-line last:border-0"
+            >
               <td class="py-3 pr-4 align-top">
                 <UiBadge variant="danger">{{ error.status }}</UiBadge>
               </td>

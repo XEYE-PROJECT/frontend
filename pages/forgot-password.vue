@@ -18,9 +18,10 @@ async function submit() {
     await $api('/auth/forgot-password', { method: 'POST', body: { email: email.value } })
     sent.value = true
   } catch (e) {
-    errorMsg.value = errorCode(e) === 'RATE_LIMITED'
-      ? t('auth.rateLimited', { seconds: retryAfterSeconds(e) ?? 60 })
-      : apiErrorMessage(e, t)
+    errorMsg.value =
+      errorCode(e) === 'RATE_LIMITED'
+        ? t('auth.rateLimited', { seconds: retryAfterSeconds(e) ?? 60 })
+        : apiErrorMessage(e, t)
   } finally {
     loading.value = false
   }
@@ -48,11 +49,15 @@ async function submit() {
         autocomplete="email"
         required
       />
-      <UiButton type="submit" block size="lg" :loading="loading">{{ $t('auth.forgotCta') }}</UiButton>
+      <UiButton type="submit" block size="lg" :loading="loading">{{
+        $t('auth.forgotCta')
+      }}</UiButton>
     </form>
 
     <p class="mt-6 text-center text-sm text-muted">
-      <NuxtLink to="/login" class="font-medium text-primary hover:underline">{{ $t('auth.backToLogin') }}</NuxtLink>
+      <NuxtLink to="/login" class="font-medium text-primary hover:underline">{{
+        $t('auth.backToLogin')
+      }}</NuxtLink>
     </p>
   </div>
 </template>

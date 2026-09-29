@@ -36,9 +36,9 @@ const paramsPretty = computed(() =>
 
     <div v-if="paramsPretty" class="mt-3">
       <p class="text-xs font-medium text-subtle">{{ $t('search.params') }}</p>
-      <pre
-        class="font-mono text-xs bg-surface-2 rounded-lg p-2 mt-2 overflow-x-auto max-h-40"
-      >{{ paramsPretty }}</pre>
+      <pre class="font-mono text-xs bg-surface-2 rounded-lg p-2 mt-2 overflow-x-auto max-h-40">{{
+        paramsPretty
+      }}</pre>
     </div>
   </UiCard>
 </template>

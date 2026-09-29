@@ -231,13 +231,7 @@ export interface ImportElementsPayload {
 
 // Backend: entrenamientos
 export type TrainingStatus =
-  | 'pending'
-  | 'queued'
-  | 'initialized'
-  | 'optimizing'
-  | 'training'
-  | 'completed'
-  | 'failed'
+  'pending' | 'queued' | 'initialized' | 'optimizing' | 'training' | 'completed' | 'failed'
 
 export interface TrainingOption {
   key: string
@@ -336,10 +330,7 @@ export interface ConsoleSearchResult {
 
 /** Motivos con los que el buscador avisa de que sirvió con menos calidad. */
 export type SearchDegradationReason =
-  | 'no_embeddings'
-  | 'model_unavailable'
-  | 'model_mismatch'
-  | 'stale_data'
+  'no_embeddings' | 'model_unavailable' | 'model_mismatch' | 'stale_data'
 
 export interface ConsoleSearchResponse {
   results: ConsoleSearchResult[]

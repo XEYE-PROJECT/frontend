@@ -4,7 +4,7 @@ import type { Element, ImportElementItem, Training } from '~/types/api'
 const route = useRoute()
 const id = Number(route.params.id)
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const toast = useToast()
 const listsApi = useListsApi()
 const elementsApi = useElementsApi()
@@ -53,7 +53,9 @@ const elementsTotal = computed(() => elementsData.value?.total ?? 0)
 const hasAnyElement = computed(() => (list.value?.elementCount ?? 0) > 0 || elementsTotal.value > 0)
 
 // Menos páginas (p. ej. tras borrar) → se acota.
-const elementsPageCount = computed(() => Math.max(1, Math.ceil(elementsTotal.value / ELEMENTS_PAGE_SIZE)))
+const elementsPageCount = computed(() =>
+  Math.max(1, Math.ceil(elementsTotal.value / ELEMENTS_PAGE_SIZE)),
+)
 watch(elementsPageCount, (count) => {
   if (elementsPage.value > count) elementsPage.value = count
 })
@@ -111,7 +113,9 @@ const tab = ref('elements')
 // en la primera página); se pinta como caja de lanzamiento, no como historial.
 const pendingTraining = computed(() => trainings.value.find((tr) => tr.status === 'pending'))
 const historyTrainings = computed(() => trainings.value.filter((tr) => tr.status !== 'pending'))
-const historyTotal = computed(() => Math.max(0, trainingsTotal.value - (pendingTraining.value ? 1 : 0)))
+const historyTotal = computed(() =>
+  Math.max(0, trainingsTotal.value - (pendingTraining.value ? 1 : 0)),
+)
 
 const tabs = computed(() => [
   {
@@ -291,8 +295,8 @@ async function confirmDeleteList() {
     <template v-if="listError">
       <AppPageHeader
         :title="$t('notFound.title')"
-        backTo="/lists"
-        :backLabel="$t('listDetail.backToLists')"
+        back-to="/lists"
+        :back-label="$t('listDetail.backToLists')"
       />
       <UiEmptyState
         icon="alert-triangle"
@@ -308,8 +312,8 @@ async function confirmDeleteList() {
     <template v-else>
       <AppPageHeader
         :title="list?.name ?? ''"
-        backTo="/lists"
-        :backLabel="$t('listDetail.backToLists')"
+        back-to="/lists"
+        :back-label="$t('listDetail.backToLists')"
       >
         <template #actions>
           <UiBadge

@@ -18,12 +18,7 @@ const buttonLabel = computed(() =>
 </script>
 
 <template>
-  <UiButton
-    :variant="variant"
-    :size="size"
-    :icon="copied ? 'check' : 'copy'"
-    @click="copy(text)"
-  >
+  <UiButton :variant="variant" :size="size" :icon="copied ? 'check' : 'copy'" @click="copy(text)">
     <slot>{{ buttonLabel }}</slot>
   </UiButton>
 </template>

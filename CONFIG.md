@@ -5,21 +5,21 @@ La consola es una SPA (`ssr: false`) desplegada en Cloudflare Workers. Toda su c
 
 ## Dónde se configura
 
-| Entorno | Fuente | Notas |
-|---|---|---|
-| `nuxt dev` / build local | `.env` (`NUXT_PUBLIC_*`) | copia de `.env.example` |
-| Producción (Workers) | `nuxt.config.ts` → `nitro.cloudflare.wrangler.vars` | **no** el dashboard de Cloudflare: `wrangler deploy` borra las variables añadidas a mano (incidente del 2026-07-28) |
+| Entorno                  | Fuente                                              | Notas                                                                                                               |
+| ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `nuxt dev` / build local | `.env` (`NUXT_PUBLIC_*`)                            | copia de `.env.example`                                                                                             |
+| Producción (Workers)     | `nuxt.config.ts` → `nitro.cloudflare.wrangler.vars` | **no** el dashboard de Cloudflare: `wrangler deploy` borra las variables añadidas a mano (incidente del 2026-07-28) |
 
 ## Variables
 
-| Variable | Descripción | Default dev | Prod | Valida |
-|---|---|---|---|---|
-| `NUXT_PUBLIC_BACKEND_URL` | URL pública del backend (auth, listas, claves, entrenamientos) | `http://localhost:8000` | **`https://backend.xeye.es`** | `https://`, sin localhost |
-| `NUXT_PUBLIC_SEARCH_URL` | URL pública del search-service: ejemplos de la documentación y sonda `/ready` de la página de estado (el playground busca vía backend: `POST /lists/{id}/search`) | `http://localhost:8002` | **`https://search.xeye.es`** | `https://`, sin localhost |
-| `NUXT_PUBLIC_STATUS_PAGE_URL` | Página de estado externa (historial de incidencias del monitor, p. ej. Better Stack); `/status` la enlaza si está definida | vacío | recomendado | — |
-| `NUXT_PUBLIC_SENTRY_DSN` | DSN del proyecto `xeye-frontend` (público por naturaleza; vacío = desactivado) | vacío | recomendado | — |
-| `NUXT_PUBLIC_SENTRY_ENVIRONMENT` | Etiqueta de entorno en Sentry | `local` | `production` | — |
-| `NITRO_PORT` / `NITRO_HOST` | Solo al servir el build con Nitro en un contenedor | `3000` / — | — | — |
+| Variable                         | Descripción                                                                                                                                                       | Default dev             | Prod                          | Valida                    |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------- | ------------------------- |
+| `NUXT_PUBLIC_BACKEND_URL`        | URL pública del backend (auth, listas, claves, entrenamientos)                                                                                                    | `http://localhost:8000` | **`https://backend.xeye.es`** | `https://`, sin localhost |
+| `NUXT_PUBLIC_SEARCH_URL`         | URL pública del search-service: ejemplos de la documentación y sonda `/ready` de la página de estado (el playground busca vía backend: `POST /lists/{id}/search`) | `http://localhost:8002` | **`https://search.xeye.es`**  | `https://`, sin localhost |
+| `NUXT_PUBLIC_STATUS_PAGE_URL`    | Página de estado externa (historial de incidencias del monitor, p. ej. Better Stack); `/status` la enlaza si está definida                                        | vacío                   | recomendado                   | —                         |
+| `NUXT_PUBLIC_SENTRY_DSN`         | DSN del proyecto `xeye-frontend` (público por naturaleza; vacío = desactivado)                                                                                    | vacío                   | recomendado                   | —                         |
+| `NUXT_PUBLIC_SENTRY_ENVIRONMENT` | Etiqueta de entorno en Sentry                                                                                                                                     | `local`                 | `production`                  | —                         |
+| `NITRO_PORT` / `NITRO_HOST`      | Solo al servir el build con Nitro en un contenedor                                                                                                                | `3000` / —              | —                             | —                         |
 
 Lo que la consola necesita del backend en runtime (CAPTCHA site key, proveedores SSO
 disponibles, duración de sesión) lo lee de `GET /auth/config`, no de variables propias.

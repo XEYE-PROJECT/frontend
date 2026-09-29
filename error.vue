@@ -9,7 +9,9 @@ function goHome() {
 </script>
 
 <template>
-  <div class="bg-grid flex min-h-screen flex-col items-center justify-center bg-bg px-6 text-center">
+  <div
+    class="bg-grid flex min-h-screen flex-col items-center justify-center bg-bg px-6 text-center"
+  >
     <div class="absolute top-4 right-4 flex items-center gap-1">
       <UiThemeToggle />
       <UiLangSwitcher />
@@ -28,7 +30,7 @@ function goHome() {
     <pre
       v-if="error.statusCode !== 404 && error.message"
       class="mt-4 max-w-lg whitespace-pre-wrap rounded-lg border border-line bg-surface p-3 text-left font-mono text-xs text-muted"
-    >{{ error.message }}</pre>
+      >{{ error.message }}</pre>
 
     <UiButton class="mt-6" icon="arrow-left" @click="goHome">{{ $t('notFound.home') }}</UiButton>
     <!-- Un 5xx suele ser un servicio caído: la página de estado lo confirma sin adivinar. -->

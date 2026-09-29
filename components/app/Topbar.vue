@@ -18,7 +18,13 @@ const emit = defineEmits<{ menu: [] }>()
 
     <div class="flex-1" />
 
-    <UiButton variant="secondary" size="sm" icon="search" to="/search" class="hidden sm:inline-flex">
+    <UiButton
+      variant="secondary"
+      size="sm"
+      icon="search"
+      to="/search"
+      class="hidden sm:inline-flex"
+    >
       {{ $t('nav.search') }}
     </UiButton>
     <UiThemeToggle />

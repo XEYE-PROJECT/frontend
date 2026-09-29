@@ -51,7 +51,10 @@ async function requestEmailChange() {
     emailSent.value = true
     emailForm.currentPassword = ''
   } catch (e) {
-    emailError.value = errorCode(e) === 'INVALID_CURRENT_PASSWORD' ? t('account.wrongPassword') : apiErrorMessage(e, t)
+    emailError.value =
+      errorCode(e) === 'INVALID_CURRENT_PASSWORD'
+        ? t('account.wrongPassword')
+        : apiErrorMessage(e, t)
   } finally {
     savingEmail.value = false
   }
@@ -68,9 +71,15 @@ const pwProblem = computed(() => {
   if (pwStrength.value.bytes > 72) return t('auth.strength.tooLong')
   return undefined
 })
-const pwMismatch = computed(() => pwForm.confirm.length > 0 && pwForm.confirm !== pwForm.newPassword)
+const pwMismatch = computed(
+  () => pwForm.confirm.length > 0 && pwForm.confirm !== pwForm.newPassword,
+)
 const canSavePassword = computed(
-  () => !!pwForm.currentPassword && !!pwForm.newPassword && !pwProblem.value && pwForm.confirm === pwForm.newPassword,
+  () =>
+    !!pwForm.currentPassword &&
+    !!pwForm.newPassword &&
+    !pwProblem.value &&
+    pwForm.confirm === pwForm.newPassword,
 )
 
 async function savePassword() {
@@ -78,18 +87,22 @@ async function savePassword() {
   savingPassword.value = true
   pwError.value = ''
   try {
-    await auth.changePassword({ currentPassword: pwForm.currentPassword, newPassword: pwForm.newPassword })
+    await auth.changePassword({
+      currentPassword: pwForm.currentPassword,
+      newPassword: pwForm.newPassword,
+    })
     toast.success(t('account.passwordChanged'))
     pwForm.currentPassword = ''
     pwForm.newPassword = ''
     pwForm.confirm = ''
   } catch (e) {
     const code = errorCode(e)
-    pwError.value = code === 'INVALID_CURRENT_PASSWORD'
-      ? t('account.wrongPassword')
-      : code === 'BREACHED_PASSWORD'
-        ? t('auth.passwordBreached')
-        : apiErrorMessage(e, t)
+    pwError.value =
+      code === 'INVALID_CURRENT_PASSWORD'
+        ? t('account.wrongPassword')
+        : code === 'BREACHED_PASSWORD'
+          ? t('auth.passwordBreached')
+          : apiErrorMessage(e, t)
   } finally {
     savingPassword.value = false
   }
@@ -113,10 +126,14 @@ async function logoutAll() {
 const isAdmin = computed(() => auth.user?.permission === 'admin')
 const roleLabel = computed(() => t(isAdmin.value ? 'account.roleAdmin' : 'account.roleUser'))
 const memberSince = computed(() =>
-  auth.user ? t('account.memberSince', { date: formatDate(auth.user.createdAt, locale.value) }) : '',
+  auth.user
+    ? t('account.memberSince', { date: formatDate(auth.user.createdAt, locale.value) })
+    : '',
 )
 const lastLogin = computed(() =>
-  auth.user?.lastLoginAt ? t('account.lastLogin', { date: formatDate(auth.user.lastLoginAt, locale.value) }) : '',
+  auth.user?.lastLoginAt
+    ? t('account.lastLogin', { date: formatDate(auth.user.lastLoginAt, locale.value) })
+    : '',
 )
 
 // Zona de peligro
@@ -164,7 +181,12 @@ const localeOptions = computed(() => [
               autocomplete="family-name"
             />
           </div>
-          <UiSelect v-model="form.locale" :label="$t('account.fieldLocale')" :options="localeOptions" :hint="$t('account.fieldLocaleHint')" />
+          <UiSelect
+            v-model="form.locale"
+            :label="$t('account.fieldLocale')"
+            :options="localeOptions"
+            :hint="$t('account.fieldLocaleHint')"
+          />
 
           <div class="flex justify-end">
             <UiButton type="submit" :loading="savingProfile">{{ $t('common.save') }}</UiButton>
@@ -177,14 +199,18 @@ const localeOptions = computed(() => [
         <h2 class="text-base font-semibold text-fg">{{ $t('account.emailTitle') }}</h2>
         <p class="mt-1 text-sm text-muted">
           {{ $t('account.emailCurrent', { email: auth.user?.email ?? '' }) }}
-          <UiBadge v-if="auth.user?.emailVerified" variant="success" dot class="ml-1">{{ $t('account.verified') }}</UiBadge>
+          <UiBadge v-if="auth.user?.emailVerified" variant="success" dot class="ml-1">{{
+            $t('account.verified')
+          }}</UiBadge>
         </p>
 
         <UiAlert v-if="isSso" class="mt-4" variant="info">
           {{ $t('account.ssoManaged', { provider: auth.user?.ssoProvider ?? '' }) }}
         </UiAlert>
 
-        <UiAlert v-if="emailSent" class="mt-4" variant="success">{{ $t('account.emailChangeSent', { email: emailForm.email }) }}</UiAlert>
+        <UiAlert v-if="emailSent" class="mt-4" variant="success">{{
+          $t('account.emailChangeSent', { email: emailForm.email })
+        }}</UiAlert>
 
         <form v-else class="mt-4 space-y-4" @submit.prevent="requestEmailChange">
           <UiAlert v-if="emailError" variant="danger">{{ emailError }}</UiAlert>
@@ -206,7 +232,11 @@ const localeOptions = computed(() => [
             required
           />
           <div class="flex justify-end">
-            <UiButton type="submit" :loading="savingEmail" :disabled="!emailForm.email || !emailForm.currentPassword">
+            <UiButton
+              type="submit"
+              :loading="savingEmail"
+              :disabled="!emailForm.email || !emailForm.currentPassword"
+            >
               {{ $t('account.emailChangeCta') }}
             </UiButton>
           </div>
@@ -267,7 +297,12 @@ const localeOptions = computed(() => [
             <h2 class="text-base font-semibold text-fg">{{ $t('account.sessionsTitle') }}</h2>
             <p class="mt-1 text-sm text-muted">{{ $t('account.sessionsDesc') }}</p>
           </div>
-          <UiButton variant="outline" icon="logout" class="shrink-0" @click="confirmLogoutAll = true">
+          <UiButton
+            variant="outline"
+            icon="logout"
+            class="shrink-0"
+            @click="confirmLogoutAll = true"
+          >
             {{ $t('account.sessionsCta') }}
           </UiButton>
         </div>

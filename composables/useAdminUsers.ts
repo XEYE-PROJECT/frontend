@@ -9,7 +9,7 @@ export function useAdminUsersApi() {
       $api<AdminUserPage>('/admin/users', { query: { offset, limit } }),
     update: (id: number, payload: AdminUpdateUserPayload) =>
       $api<AdminUser>(`/admin/users/${id}`, { method: 'PUT', body: payload }),
-    remove: (id: number) => $api<void>(`/admin/users/${id}`, { method: 'DELETE' }),
-    logoutAll: (id: number) => $api<void>(`/admin/users/${id}/logout-all`, { method: 'POST' }),
+    remove: (id: number) => $api<unknown>(`/admin/users/${id}`, { method: 'DELETE' }),
+    logoutAll: (id: number) => $api<unknown>(`/admin/users/${id}/logout-all`, { method: 'POST' }),
   }
 }

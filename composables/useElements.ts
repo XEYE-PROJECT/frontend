@@ -21,6 +21,6 @@ export function useElementsApi() {
       $api<Element[]>(`/lists/${listId}/elements/import`, { method: 'POST', body }),
     update: (id: number, body: UpdateElementPayload) =>
       $api<Element>(`/elements/${id}`, { method: 'PUT', body }),
-    remove: (id: number) => $api<void>(`/elements/${id}`, { method: 'DELETE' }),
+    remove: (id: number) => $api<unknown>(`/elements/${id}`, { method: 'DELETE' }),
   }
 }

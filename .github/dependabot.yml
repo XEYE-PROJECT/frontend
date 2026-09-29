@@ -9,7 +9,7 @@ updates:
       day: monday
     groups:
       actions:
-        patterns: ["*"]
+        patterns: ['*']
 
   - package-ecosystem: npm
     directory: /
@@ -18,17 +18,17 @@ updates:
       day: monday
     groups:
       npm-minor-patch:
-        update-types: ["minor", "patch"]
+        update-types: ['minor', 'patch']
     ignore:
       # Saltos mayores del framework (Nuxt 4, Vite 7/8, Pinia 3): migración a mano (backlog J).
       - dependency-name: nuxt
-        update-types: ["version-update:semver-major"]
+        update-types: ['version-update:semver-major']
       - dependency-name: vite
-        update-types: ["version-update:semver-major"]
+        update-types: ['version-update:semver-major']
       - dependency-name: pinia
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@pinia/nuxt"
-        update-types: ["version-update:semver-major"]
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@pinia/nuxt'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: docker
     directory: /

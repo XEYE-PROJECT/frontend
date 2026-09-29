@@ -29,7 +29,8 @@ onMounted(async () => {
     window.setTimeout(() => navigateTo('/dashboard'), 1200)
   } catch (e) {
     state.value = 'error'
-    errorMsg.value = errorCode(e) === 'INVALID_TOKEN' ? t('auth.verifyInvalid') : apiErrorMessage(e, t)
+    errorMsg.value =
+      errorCode(e) === 'INVALID_TOKEN' ? t('auth.verifyInvalid') : apiErrorMessage(e, t)
   }
 })
 </script>
@@ -46,14 +47,18 @@ onMounted(async () => {
       <div class="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-success-soft text-success">
         <UiIcon name="check-circle" :size="24" />
       </div>
-      <h1 class="text-2xl font-semibold tracking-tight text-fg">{{ $t('auth.verifyDoneTitle') }}</h1>
+      <h1 class="text-2xl font-semibold tracking-tight text-fg">
+        {{ $t('auth.verifyDoneTitle') }}
+      </h1>
       <p class="mt-2 text-sm text-muted">{{ $t('auth.verifyDoneDesc') }}</p>
     </template>
     <template v-else>
       <h1 class="text-2xl font-semibold tracking-tight text-fg">{{ $t('auth.verifyTitle') }}</h1>
       <UiAlert class="mt-6" variant="danger">{{ errorMsg }}</UiAlert>
       <p class="mt-4 text-sm text-muted">{{ $t('auth.verifyRetryHint') }}</p>
-      <UiButton class="mt-6" block variant="secondary" to="/login">{{ $t('auth.signInLink') }}</UiButton>
+      <UiButton class="mt-6" block variant="secondary" to="/login">{{
+        $t('auth.signInLink')
+      }}</UiButton>
     </template>
   </div>
 </template>

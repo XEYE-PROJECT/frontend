@@ -7,10 +7,9 @@ export function useApiKeysApi() {
   return {
     /** Página de claves del usuario (`limit` máximo 200). */
     list: (query: PageQuery = {}) => $api<Page<ApiKey>>('/api-keys', { query }),
-    create: (name?: string) =>
-      $api<CreatedApiKey>('/api-keys', { method: 'POST', body: { name } }),
+    create: (name?: string) => $api<CreatedApiKey>('/api-keys', { method: 'POST', body: { name } }),
     rename: (id: number, name: string) =>
       $api<ApiKey>(`/api-keys/${id}`, { method: 'PUT', body: { name } }),
-    remove: (id: number) => $api<void>(`/api-keys/${id}`, { method: 'DELETE' }),
+    remove: (id: number) => $api<unknown>(`/api-keys/${id}`, { method: 'DELETE' }),
   }
 }

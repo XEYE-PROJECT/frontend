@@ -3,7 +3,7 @@
 # 👁️ XEYE Console
 
 Consola web de **XEYE**, reconstruida desde cero con **Nuxt 3 + Vue 3 + Tailwind v4**.
-Diseño *Iris*: un único sistema de diseño con tema **claro y oscuro**, bilingüe **ES/EN**,
+Diseño _Iris_: un único sistema de diseño con tema **claro y oscuro**, bilingüe **ES/EN**,
 más cuidado e intuitivo que el frontend anterior.
 
 </div>
@@ -29,11 +29,11 @@ El panel para gestionar todo lo que expone el backend de XEYE y probar la búsqu
 
 - **Autenticación** (registro / login con JWT).
 - **Listas** — colecciones de elementos que se vuelven buscables al entrenarse.
-- **Elementos** — los ítems de cada lista (texto, *params* opcionales, descripción).
+- **Elementos** — los ítems de cada lista (texto, _params_ opcionales, descripción).
 - **Entrenamientos** — historial por lista (estado, modelo, duración, coste, el activo).
 - **Claves API** — para consultar tus listas públicas desde el servicio de búsqueda. El valor
   completo se muestra **una sola vez** al crear la clave (el backend solo guarda su hash).
-- **Búsqueda** — un *playground* que llama **directamente al microservicio de búsqueda**
+- **Búsqueda** — un _playground_ que llama **directamente al microservicio de búsqueda**
   (no al backend), exactamente como lo haría una integración real: pegas tu clave API (se
   recuerda solo en la pestaña) y eliges la lista.
 - **Cuenta** — perfil, contraseña y borrado de cuenta.
@@ -56,24 +56,24 @@ Navegador (SPA Nuxt, :3000)
 
 ## Stack
 
-| Área | Tecnología |
-|------|-----------|
+| Área      | Tecnología                                                                       |
+| --------- | -------------------------------------------------------------------------------- |
 | Framework | **Nuxt 3** (Vue 3, `<script setup lang="ts">`, auto-imports, file-based routing) |
-| Estilos | **Tailwind CSS v4** (config *CSS-first*, tokens semánticos claro/oscuro) |
-| Estado | **Pinia** (sesión) + composables `useState` (tema, idioma, toasts) |
-| i18n | ligero y propio (ES/EN, sin dependencias) |
-| HTTP | `$fetch` (ofetch) con cliente autenticado e interceptor 401 |
+| Estilos   | **Tailwind CSS v4** (config _CSS-first_, tokens semánticos claro/oscuro)         |
+| Estado    | **Pinia** (sesión) + composables `useState` (tema, idioma, toasts)               |
+| i18n      | ligero y propio (ES/EN, sin dependencias)                                        |
+| HTTP      | `$fetch` (ofetch) con cliente autenticado e interceptor 401                      |
 
 Sin librería de iconos ni de UI externas: **kit de UI e iconos propios** (`components/ui`).
 
 ## Puesta en marcha
 
-Requisitos: **Node 20+**.
+Requisitos: **Node 22** y **pnpm** (`corepack enable` lo instala con la versión de `packageManager`).
 
 ```bash
-npm install
+pnpm install
 cp .env.example .env      # ajusta las URLs si hace falta
-npm run dev               # http://localhost:3000
+pnpm dev                  # http://localhost:3000
 ```
 
 > El backend permite CORS desde `http://localhost:3000` por defecto, así que no hay que
@@ -81,9 +81,9 @@ npm run dev               # http://localhost:3000
 
 ### Variables de entorno
 
-| Variable | Descripción | Por defecto |
-|----------|-------------|-------------|
-| `NUXT_PUBLIC_BACKEND_URL` | URL del backend (auth, listas, claves, …) | `http://localhost:8000` |
+| Variable                  | Descripción                                                                                                                    | Por defecto             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| `NUXT_PUBLIC_BACKEND_URL` | URL del backend (auth, listas, claves, …)                                                                                      | `http://localhost:8000` |
 | `NUXT_PUBLIC_SEARCH_URL`  | URL del microservicio de búsqueda (solo aparece en los ejemplos de la documentación; el playground busca a través del backend) | `http://localhost:8002` |
 
 Al ser una SPA, estas URLs las usa el **navegador**: en producción apúntalas a tus dominios
@@ -98,14 +98,44 @@ nombra la variable en vez de fallar llamada a llamada. Las constantes de producc
 ## Scripts
 
 ```bash
-npm run dev         # servidor de desarrollo (hot reload)
-npm run build       # build de producción (servidor Nitro)
-npm run preview     # previsualiza el build
-npm run generate    # sitio estático (.output/public)
-npm run typecheck   # vue-tsc
+pnpm dev            # servidor de desarrollo (hot reload)
+pnpm build          # build de producción (servidor Nitro); incluye el typecheck de vue-tsc
+pnpm preview        # previsualiza el build
+pnpm generate       # sitio estático (.output/public)
+pnpm typecheck      # vue-tsc suelto
+pnpm lint           # ESLint (config oficial de Nuxt; `pnpm lint:fix` corrige)
+pnpm format:check   # Prettier (`pnpm format` reescribe)
+pnpm test           # Vitest (`pnpm test:watch` en modo interactivo)
 ```
 
+## Calidad y CI
+
+- **Tests** (`tests/`, Vitest con el entorno `nuxt` de `@nuxt/test-utils` sobre happy-dom):
+  utilidades (`apiError`, `format`, `passwordStrength`, `elementImport`), el store de sesión
+  (`stores/auth`, con la API simulada por `registerEndpoint`), composables (`useI18n`,
+  `useLists`) y componentes montados de verdad (`UiButton`, `UiBadge`, `UiAlert`,
+  `UiPagination`, `TrainingsStatusBadge`). Playwright e2e del flujo completo queda como P2:
+  necesita backend + buscador levantados; en local se cubre con el set de pruebas manuales.
+- **Typecheck en build**: `typescript.typeCheck: 'build'` en `nuxt.config.ts`, así el build de
+  Cloudflare falla con errores de tipos (en `nuxt dev` no molesta).
+- **CI** (`.github/workflows/ci.yml`, cada push y pull request): gitleaks, Trivy sobre el
+  lockfile y el job `check` (install con lockfile congelado, lint, format, typecheck, test,
+  build). La protección de `master` (PR + checks en verde) se importa desde
+  `xeye-infra/github/ruleset-master.json`.
+- **Versionar**: anota los cambios en `CHANGELOG.md` ("Unreleased") y publica con
+  `bash release.sh X.Y.Z` (mueve la sección, fija `version` en `package.json`, commit + tag;
+  después `git push origin master --tags`). El tag crea la GitHub Release con esas notas
+  (`release.yml`); el despliegue real sigue siendo el de Cloudflare desde `master`.
+- **Configuración de Wrangler**: está versionada en `nuxt.config.ts`
+  (`nitro.cloudflare.wrangler.vars`): Nitro la vuelca al `.output/server/wrangler.json` que
+  genera cada build, y `wrangler deploy` la aplica. No hay `wrangler.toml` ni variables a mano
+  en el dashboard (un deploy las borraría).
+
 ## Docker
+
+Solo para probar el build de producción y servirlo en local con Nitro (producción es
+Cloudflare Workers, esta imagen no se despliega). La imagen instala pnpm con corepack
+(`packageManager` de `package.json`) e instala con el lockfile congelado.
 
 ```bash
 # red compartida del workspace (una vez)
@@ -148,14 +178,14 @@ frontend/
 
 ## Rutas
 
-| Ruta | Descripción | Acceso |
-|------|-------------|--------|
-| `/login`, `/register` | Autenticación | Solo invitados |
-| `/dashboard` | Resumen (métricas, accesos rápidos) | Privado |
-| `/lists`, `/lists/:id` | Listas y su detalle (elementos · entrenamientos · ajustes) | Privado |
-| `/api-keys` | Gestión de claves API | Privado |
-| `/search` | Playground de búsqueda (vía backend, con la sesión) | Privado |
-| `/account` | Perfil y seguridad | Privado |
+| Ruta                   | Descripción                                                | Acceso         |
+| ---------------------- | ---------------------------------------------------------- | -------------- |
+| `/login`, `/register`  | Autenticación                                              | Solo invitados |
+| `/dashboard`           | Resumen (métricas, accesos rápidos)                        | Privado        |
+| `/lists`, `/lists/:id` | Listas y su detalle (elementos · entrenamientos · ajustes) | Privado        |
+| `/api-keys`            | Gestión de claves API                                      | Privado        |
+| `/search`              | Playground de búsqueda (vía backend, con la sesión)        | Privado        |
+| `/account`             | Perfil y seguridad                                         | Privado        |
 
 ---
 

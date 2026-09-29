@@ -1,0 +1,13 @@
+# Generados / dependencias
+node_modules
+.nuxt
+.nitro
+.output
+.cache
+dist
+coverage
+pnpm-lock.yaml
+# Script cargado en <head> antes del framework: se mantiene tal cual
+public/theme-init.js
+# Skills de terceros para Claude Code (markdown ajeno, no se reformatea)
+.claude

@@ -38,7 +38,10 @@ const selectId = computed(() => props.id ?? uid)
         :disabled="disabled"
         :aria-invalid="error ? 'true' : undefined"
         class="h-10 w-full cursor-pointer appearance-none rounded-lg border bg-surface pr-9 text-sm text-fg transition-theme focus:outline-none focus:ring-2 focus:ring-ring/60 focus:border-primary disabled:opacity-60"
-        :class="[icon ? 'pl-10' : 'pl-3', error ? 'border-danger' : 'border-line hover:border-line-strong']"
+        :class="[
+          icon ? 'pl-10' : 'pl-3',
+          error ? 'border-danger' : 'border-line hover:border-line-strong',
+        ]"
       >
         <option v-if="placeholder" :value="null" disabled>{{ placeholder }}</option>
         <template v-if="options">

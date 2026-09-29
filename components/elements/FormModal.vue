@@ -12,9 +12,7 @@ const elementsApi = useElementsApi()
 const form = reactive({ text: '', params: '', description: '' })
 const saving = ref(false)
 
-const paramsInvalid = computed(
-  () => form.params.trim().length > 0 && !isValidJson(form.params),
-)
+const paramsInvalid = computed(() => form.params.trim().length > 0 && !isValidJson(form.params))
 
 function reset() {
   form.text = props.element?.text ?? ''
@@ -57,10 +55,7 @@ async function save() {
 </script>
 
 <template>
-  <UiModal
-    v-model="open"
-    :title="element ? $t('elements.editTitle') : $t('elements.createTitle')"
-  >
+  <UiModal v-model="open" :title="element ? $t('elements.editTitle') : $t('elements.createTitle')">
     <form class="space-y-4" @submit.prevent="save">
       <UiInput
         v-model="form.text"

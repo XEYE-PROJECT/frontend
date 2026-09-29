@@ -20,9 +20,7 @@ const model = defineModel<string>()
       type="button"
       class="relative -mb-px flex items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none"
       :class="
-        model === tab.key
-          ? 'border-primary text-fg'
-          : 'border-transparent text-muted hover:text-fg'
+        model === tab.key ? 'border-primary text-fg' : 'border-transparent text-muted hover:text-fg'
       "
       @click="model = tab.key"
     >
@@ -31,11 +29,7 @@ const model = defineModel<string>()
       <UiBadge v-if="tab.badge != null" :variant="model === tab.key ? 'primary' : 'neutral'">
         {{ tab.badge }}
       </UiBadge>
-      <span
-        v-if="tab.dot"
-        class="h-2 w-2 shrink-0 rounded-full bg-warning"
-        aria-hidden="true"
-      />
+      <span v-if="tab.dot" class="h-2 w-2 shrink-0 rounded-full bg-warning" aria-hidden="true" />
     </button>
   </div>
 </template>

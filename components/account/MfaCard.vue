@@ -83,6 +83,11 @@ const disableOpen = ref(false)
 const disablePassword = ref('')
 const disableCode = ref('')
 
+function openDisable() {
+  disableOpen.value = true
+  error.value = ''
+}
+
 async function disable() {
   busy.value = true
   error.value = ''
@@ -119,15 +124,10 @@ const recoveryText = computed(() => recoveryCodes.value.join('\n'))
         </h2>
         <p class="mt-1 text-sm text-muted">{{ $t('account.mfa.desc') }}</p>
       </div>
-      <UiButton
-        v-if="!enabled"
-        icon="shield-check"
-        class="shrink-0"
-        @click="openSetup"
-      >
+      <UiButton v-if="!enabled" icon="shield-check" class="shrink-0" @click="openSetup">
         {{ $t('account.mfa.enable') }}
       </UiButton>
-      <UiButton v-else variant="outline" class="shrink-0" @click="disableOpen = true; error = ''">
+      <UiButton v-else variant="outline" class="shrink-0" @click="openDisable()">
         {{ $t('account.mfa.disable') }}
       </UiButton>
     </div>
@@ -155,7 +155,9 @@ const recoveryText = computed(() => recoveryCodes.value.join('\n'))
             <img :src="qr" alt="QR TOTP" width="200" height="200" class="rounded-lg bg-white p-2" />
             <details class="w-full text-xs text-subtle">
               <summary class="cursor-pointer">{{ $t('account.mfa.manualEntry') }}</summary>
-              <code class="mt-1 block break-all rounded bg-surface-2 p-2 font-mono text-fg">{{ setup.secret }}</code>
+              <code class="mt-1 block break-all rounded bg-surface-2 p-2 font-mono text-fg">{{
+                setup.secret
+              }}</code>
             </details>
           </div>
           <UiInput
@@ -186,16 +188,24 @@ const recoveryText = computed(() => recoveryCodes.value.join('\n'))
       <template #footer>
         <template v-if="step === 1">
           <UiButton variant="ghost" @click="setupOpen = false">{{ $t('common.cancel') }}</UiButton>
-          <UiButton :loading="busy" :disabled="!password" @click="startSetup">{{ $t('common.confirm') }}</UiButton>
+          <UiButton :loading="busy" :disabled="!password" @click="startSetup">{{
+            $t('common.confirm')
+          }}</UiButton>
         </template>
         <template v-else-if="step === 2">
           <UiButton variant="ghost" @click="setupOpen = false">{{ $t('common.cancel') }}</UiButton>
-          <UiButton :loading="busy" :disabled="code.replace(/\s/g, '').length !== 6" @click="enable">
+          <UiButton
+            :loading="busy"
+            :disabled="code.replace(/\s/g, '').length !== 6"
+            @click="enable"
+          >
             {{ $t('account.mfa.activate') }}
           </UiButton>
         </template>
         <template v-else>
-          <UiButton :disabled="!acknowledged" @click="finishSetup">{{ $t('common.close') }}</UiButton>
+          <UiButton :disabled="!acknowledged" @click="finishSetup">{{
+            $t('common.close')
+          }}</UiButton>
         </template>
       </template>
     </UiModal>
@@ -221,7 +231,12 @@ const recoveryText = computed(() => recoveryCodes.value.join('\n'))
       </div>
       <template #footer>
         <UiButton variant="ghost" @click="disableOpen = false">{{ $t('common.cancel') }}</UiButton>
-        <UiButton variant="danger" :loading="busy" :disabled="!disablePassword || !disableCode" @click="disable">
+        <UiButton
+          variant="danger"
+          :loading="busy"
+          :disabled="!disablePassword || !disableCode"
+          @click="disable"
+        >
           {{ $t('account.mfa.disable') }}
         </UiButton>
       </template>

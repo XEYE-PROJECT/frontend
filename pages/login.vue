@@ -36,7 +36,9 @@ const redirectTarget = computed(() => {
   return r && r.startsWith('/') && !r.startsWith('//') ? r : '/dashboard'
 })
 
-const needsCaptcha = computed(() => authConfig.value.captchaProvider !== 'none' && !!authConfig.value.captchaSiteKey)
+const needsCaptcha = computed(
+  () => authConfig.value.captchaProvider !== 'none' && !!authConfig.value.captchaSiteKey,
+)
 
 async function submit() {
   loading.value = true
@@ -71,6 +73,13 @@ async function submit() {
   } finally {
     loading.value = false
   }
+}
+
+/** Vuelve al primer paso del login (descarta el token del segundo factor). */
+function backToCredentials() {
+  mfaToken.value = null
+  mfaCode.value = ''
+  errorMsg.value = ''
 }
 
 async function submitMfa() {
@@ -160,7 +169,10 @@ async function resendVerification() {
             required
           />
           <div class="text-right">
-            <NuxtLink to="/forgot-password" class="text-xs font-medium text-primary hover:underline">
+            <NuxtLink
+              to="/forgot-password"
+              class="text-xs font-medium text-primary hover:underline"
+            >
               {{ $t('auth.forgotPassword') }}
             </NuxtLink>
           </div>
@@ -173,7 +185,13 @@ async function resendVerification() {
           :site-key="authConfig.captchaSiteKey"
         />
 
-        <UiButton type="submit" block size="lg" :loading="loading" :disabled="needsCaptcha && !captchaToken">
+        <UiButton
+          type="submit"
+          block
+          size="lg"
+          :loading="loading"
+          :disabled="needsCaptcha && !captchaToken"
+        >
           {{ loading ? $t('auth.signingIn') : $t('auth.signIn') }}
         </UiButton>
 
@@ -214,7 +232,7 @@ async function resendVerification() {
         <UiButton type="submit" block size="lg" :loading="loading">
           {{ $t('auth.mfaVerify') }}
         </UiButton>
-        <UiButton type="button" variant="ghost" block @click="mfaToken = null; mfaCode = ''; errorMsg = ''">
+        <UiButton type="button" variant="ghost" block @click="backToCredentials()">
           {{ $t('common.back') }}
         </UiButton>
       </form>

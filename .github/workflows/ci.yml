@@ -1,9 +1,12 @@
 name: CI
 
-# El despliegue de la consola lo hace Cloudflare (integración Git) en cada push; aquí solo
-# corren las comprobaciones de seguridad: gitleaks (ningún secreto en el historial) y Trivy
-# sobre el lockfile de pnpm (una dependencia con vulnerabilidad CRÍTICA y arreglo disponible
-# pone el check en rojo; el informe completo va a Security → Code scanning).
+# El despliegue de la consola lo hace Cloudflare (integración Git) en cada push a master; aquí
+# corren, en cada push y pull request:
+#   gitleaks → ningún secreto en el historial
+#   scan     → Trivy sobre el lockfile de pnpm (CRÍTICA con arreglo = rojo; informe en Code scanning)
+#   check    → pnpm install --frozen-lockfile, ESLint, Prettier, vue-tsc, Vitest y `nuxt build`
+#              (el mismo build que hará Cloudflare, con typecheck incluido)
+# Los tags vX.Y.Z publican una GitHub Release (release.yml).
 #
 # Actions fijadas por SHA de commit (el tag es un comentario); Dependabot las actualiza.
 on:
@@ -58,3 +61,20 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
           skip-setup-trivy: true
+
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        # Versión de pnpm: la de `packageManager` en package.json.
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build

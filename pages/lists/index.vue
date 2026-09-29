@@ -59,7 +59,6 @@ const filterOptions = computed(() => [
   { value: 'private', label: t('lists.filterPrivate') },
 ])
 
-
 // Crear / editar
 const showForm = ref(false)
 const editing = ref<ItemList | undefined>(undefined)

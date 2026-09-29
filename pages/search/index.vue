@@ -50,7 +50,9 @@ const result = ref<ConsoleSearchResponse | null>(null)
 // caducos…): se muestra el motivo para que el usuario sepa si fiarse del ranking.
 const degradedMsg = computed(() => {
   if (!result.value?.degraded) return ''
-  const reasons = (result.value.degradationReasons ?? []).map((r) => t(`search.degradedReasons.${r}`))
+  const reasons = (result.value.degradationReasons ?? []).map((r) =>
+    t(`search.degradedReasons.${r}`),
+  )
   return t('search.degradedWarning', { reasons: reasons.join('; ') })
 })
 
@@ -151,7 +153,12 @@ async function run() {
 
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <label class="flex cursor-pointer items-center gap-2 text-sm text-fg">
-              <input v-model="form.breakdown" type="checkbox" class="accent-primary" :disabled="!hasLists" />
+              <input
+                v-model="form.breakdown"
+                type="checkbox"
+                class="accent-primary"
+                :disabled="!hasLists"
+              />
               <span>{{ $t('search.breakdownToggle') }}</span>
             </label>
             <UiButton
@@ -199,7 +206,9 @@ async function run() {
 
       <p class="mt-6 text-xs text-subtle">
         {{ $t('search.apiNote') }}
-        <NuxtLink to="/docs/api" class="text-primary hover:underline">{{ $t('search.apiNoteLink') }}</NuxtLink>
+        <NuxtLink to="/docs/api" class="text-primary hover:underline">{{
+          $t('search.apiNoteLink')
+        }}</NuxtLink>
       </p>
     </template>
   </div>

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: xeye-frontend
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       # OJO: al ser una SPA estas URL las usa el NAVEGADOR, no el contenedor —
       # deben ser alcanzables desde fuera (localhost en dev, dominios públicos en prod).

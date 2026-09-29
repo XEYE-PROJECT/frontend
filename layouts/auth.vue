@@ -31,9 +31,13 @@
       </div>
 
       <div class="relative flex items-center gap-6 text-sm text-white/70">
-        <span class="inline-flex items-center gap-2"><UiIcon name="sparkles" :size="16" /> Semantic</span>
+        <span class="inline-flex items-center gap-2"
+          ><UiIcon name="sparkles" :size="16" /> Semantic</span
+        >
         <span class="inline-flex items-center gap-2"><UiIcon name="zap" :size="16" /> Fuzzy</span>
-        <span class="inline-flex items-center gap-2"><UiIcon name="key" :size="16" /> API-first</span>
+        <span class="inline-flex items-center gap-2"
+          ><UiIcon name="key" :size="16" /> API-first</span
+        >
       </div>
     </aside>
 

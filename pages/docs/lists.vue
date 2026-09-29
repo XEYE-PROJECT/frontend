@@ -53,7 +53,9 @@ const importExample = `[
       <ul class="space-y-3">
         <li v-for="field in listFields" :key="field.name" class="flex items-start gap-3">
           <UiIcon name="chevron-right" :size="14" class="mt-1 shrink-0 text-subtle" />
-          <p><span class="font-medium text-fg">{{ field.name }}.</span> {{ field.desc }}</p>
+          <p>
+            <span class="font-medium text-fg">{{ field.name }}.</span> {{ field.desc }}
+          </p>
         </li>
       </ul>
     </DocsBlock>
@@ -63,7 +65,9 @@ const importExample = `[
       <ul class="space-y-3">
         <li v-for="field in elementFields" :key="field.name" class="flex items-start gap-3">
           <UiIcon name="chevron-right" :size="14" class="mt-1 shrink-0 text-subtle" />
-          <p><span class="font-medium text-fg">{{ field.name }}.</span> {{ field.desc }}</p>
+          <p>
+            <span class="font-medium text-fg">{{ field.name }}.</span> {{ field.desc }}
+          </p>
         </li>
       </ul>
       <DocsCodeBlock :code="elementExample" :label="$t('docs.lists.exampleTitle')" />

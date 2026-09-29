@@ -23,7 +23,9 @@ const passwordProblem = computed(() => {
   if (strength.value.bytes > 72) return t('auth.strength.tooLong')
   return undefined
 })
-const needsCaptcha = computed(() => authConfig.value.captchaProvider !== 'none' && !!authConfig.value.captchaSiteKey)
+const needsCaptcha = computed(
+  () => authConfig.value.captchaProvider !== 'none' && !!authConfig.value.captchaSiteKey,
+)
 
 async function submit() {
   if (passwordProblem.value) {
@@ -43,7 +45,8 @@ async function submit() {
     turnstile.value?.reset()
     const code = errorCode(e)
     if (code === 'WEAK_PASSWORD' || code === 'BREACHED_PASSWORD') {
-      errorMsg.value = code === 'BREACHED_PASSWORD' ? t('auth.passwordBreached') : apiErrorMessage(e, t)
+      errorMsg.value =
+        code === 'BREACHED_PASSWORD' ? t('auth.passwordBreached') : apiErrorMessage(e, t)
     } else if (code === 'RATE_LIMITED') {
       errorMsg.value = t('auth.rateLimited', { seconds: retryAfterSeconds(e) ?? 60 })
     } else {
@@ -65,10 +68,14 @@ async function submit() {
       <div class="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
         <UiIcon name="mail" :size="24" />
       </div>
-      <h1 class="text-2xl font-semibold tracking-tight text-fg">{{ $t('auth.checkInboxTitle') }}</h1>
+      <h1 class="text-2xl font-semibold tracking-tight text-fg">
+        {{ $t('auth.checkInboxTitle') }}
+      </h1>
       <p class="mt-2 text-sm text-muted">{{ $t('auth.checkInboxDesc', { email: form.email }) }}</p>
       <p class="mt-4 text-xs text-subtle">{{ $t('auth.checkInboxHint') }}</p>
-      <UiButton class="mt-8" block variant="secondary" to="/login">{{ $t('auth.signInLink') }}</UiButton>
+      <UiButton class="mt-8" block variant="secondary" to="/login">{{
+        $t('auth.signInLink')
+      }}</UiButton>
     </template>
 
     <template v-else>
@@ -79,8 +86,18 @@ async function submit() {
         <UiAlert v-if="errorMsg" variant="danger">{{ errorMsg }}</UiAlert>
 
         <div class="grid grid-cols-2 gap-3">
-          <UiInput v-model="form.name" :label="$t('auth.firstName')" autocomplete="given-name" required />
-          <UiInput v-model="form.surname" :label="$t('auth.lastName')" autocomplete="family-name" required />
+          <UiInput
+            v-model="form.name"
+            :label="$t('auth.firstName')"
+            autocomplete="given-name"
+            required
+          />
+          <UiInput
+            v-model="form.surname"
+            :label="$t('auth.lastName')"
+            autocomplete="family-name"
+            required
+          />
         </div>
 
         <UiInput
@@ -114,7 +131,13 @@ async function submit() {
           :site-key="authConfig.captchaSiteKey"
         />
 
-        <UiButton type="submit" block size="lg" :loading="loading" :disabled="needsCaptcha && !captchaToken">
+        <UiButton
+          type="submit"
+          block
+          size="lg"
+          :loading="loading"
+          :disabled="needsCaptcha && !captchaToken"
+        >
           {{ loading ? $t('auth.signingUp') : $t('auth.signUp') }}
         </UiButton>
 

@@ -3,6 +3,13 @@ import type { Element } from '~/types/api'
 
 defineProps<{ element: Element }>()
 const emit = defineEmits<{ edit: []; delete: [] }>()
+
+/** Emite la acción del menú y lo cierra (la función `close` la da el slot del dropdown). */
+function pick(action: 'edit' | 'delete', close: () => void) {
+  if (action === 'edit') emit('edit')
+  else emit('delete')
+  close()
+}
 </script>
 
 <template>
@@ -26,7 +33,7 @@ const emit = defineEmits<{ edit: []; delete: [] }>()
         <pre
           v-if="element.params"
           class="max-h-40 overflow-x-auto overflow-y-auto rounded-lg bg-surface-2 p-2 font-mono text-xs text-muted"
-        >{{ prettyParams(element.params) }}</pre>
+          >{{ prettyParams(element.params) }}</pre>
       </div>
 
       <UiDropdown align="right">
@@ -39,10 +46,10 @@ const emit = defineEmits<{ edit: []; delete: [] }>()
           />
         </template>
         <template #default="{ close }">
-          <UiDropdownItem icon="edit" @click="emit('edit'); close()">
+          <UiDropdownItem icon="edit" @click="pick('edit', close)">
             {{ $t('common.edit') }}
           </UiDropdownItem>
-          <UiDropdownItem icon="trash" danger @click="emit('delete'); close()">
+          <UiDropdownItem icon="trash" danger @click="pick('delete', close)">
             {{ $t('common.delete') }}
           </UiDropdownItem>
         </template>

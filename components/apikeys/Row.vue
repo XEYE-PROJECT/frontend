@@ -5,6 +5,13 @@ const props = defineProps<{ apiKey: ApiKey }>()
 const emit = defineEmits<{ rename: [key: ApiKey]; delete: [key: ApiKey] }>()
 
 const { locale } = useI18n()
+
+/** Emite la acción del menú con la clave y lo cierra (`close` viene del slot del dropdown). */
+function pick(action: 'rename' | 'delete', close: () => void) {
+  if (action === 'rename') emit('rename', props.apiKey)
+  else emit('delete', props.apiKey)
+  close()
+}
 </script>
 
 <template>
@@ -30,10 +37,10 @@ const { locale } = useI18n()
               />
             </template>
             <template #default="{ close }">
-              <UiDropdownItem icon="edit" @click="emit('rename', props.apiKey); close()">
+              <UiDropdownItem icon="edit" @click="pick('rename', close)">
                 {{ $t('common.edit') }}
               </UiDropdownItem>
-              <UiDropdownItem icon="trash" danger @click="emit('delete', props.apiKey); close()">
+              <UiDropdownItem icon="trash" danger @click="pick('delete', close)">
                 {{ $t('common.delete') }}
               </UiDropdownItem>
             </template>

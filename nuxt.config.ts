@@ -54,7 +54,13 @@ export default defineNuxtConfig({
         // $development más abajo). El playground NO llama al buscador (pasa por el backend); el
         // buscador está aquí solo por la página pública de estado (/status), que consulta su
         // sonda /ready desde el navegador.
-        'connect-src': ["'self'", PROD_BACKEND_URL, PROD_SEARCH_URL, 'https://*.sentry.io', 'https://challenges.cloudflare.com'],
+        'connect-src': [
+          "'self'",
+          PROD_BACKEND_URL,
+          PROD_SEARCH_URL,
+          'https://*.sentry.io',
+          'https://challenges.cloudflare.com',
+        ],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
         'form-action': ["'self'"],
@@ -151,8 +157,10 @@ export default defineNuxtConfig({
     },
   },
 
+  // Typecheck (vue-tsc) solo en `nuxt build`: un error de tipos tumba el build de Cloudflare
+  // antes de desplegar; en `nuxt dev` no molesta. En local: `pnpm typecheck`.
   typescript: {
     strict: true,
-    typeCheck: false,
+    typeCheck: 'build',
   },
 })

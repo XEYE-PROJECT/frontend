@@ -27,15 +27,19 @@ async function submit() {
   loading.value = true
   errorMsg.value = ''
   try {
-    await $api('/auth/reset-password', { method: 'POST', body: { token: token.value, password: password.value } })
+    await $api('/auth/reset-password', {
+      method: 'POST',
+      body: { token: token.value, password: password.value },
+    })
     await navigateTo({ path: '/login', query: { reason: 'password-reset' } })
   } catch (e) {
     const code = errorCode(e)
-    errorMsg.value = code === 'INVALID_TOKEN'
-      ? t('auth.resetInvalid')
-      : code === 'BREACHED_PASSWORD'
-        ? t('auth.passwordBreached')
-        : apiErrorMessage(e, t)
+    errorMsg.value =
+      code === 'INVALID_TOKEN'
+        ? t('auth.resetInvalid')
+        : code === 'BREACHED_PASSWORD'
+          ? t('auth.passwordBreached')
+          : apiErrorMessage(e, t)
   } finally {
     loading.value = false
   }
@@ -76,13 +80,21 @@ async function submit() {
         :error="mismatch ? $t('auth.passwordMismatch') : undefined"
         required
       />
-      <UiButton type="submit" block size="lg" :loading="loading" :disabled="!!problem || mismatch || !confirm">
+      <UiButton
+        type="submit"
+        block
+        size="lg"
+        :loading="loading"
+        :disabled="!!problem || mismatch || !confirm"
+      >
         {{ $t('auth.resetCta') }}
       </UiButton>
     </form>
 
     <p class="mt-6 text-center text-sm text-muted">
-      <NuxtLink to="/login" class="font-medium text-primary hover:underline">{{ $t('auth.backToLogin') }}</NuxtLink>
+      <NuxtLink to="/login" class="font-medium text-primary hover:underline">{{
+        $t('auth.backToLogin')
+      }}</NuxtLink>
     </p>
   </div>
 </template>
