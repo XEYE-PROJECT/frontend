@@ -35,3 +35,7 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    ignore:
+      # Node mayor (22 -> 24/26): junto con la migración de Nuxt, a mano. Solo parches y digests.
+      - dependency-name: node
+        update-types: ['version-update:semver-major']
